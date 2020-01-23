@@ -1,0 +1,15 @@
+{
+  "folders": [
+	{
+		"path": "/home/mario/Scrivania/EsameLSO"
+	},
+	{
+		"path": "."
+	}
+],
+  "settings": {
+    "files.associations": {
+      "stat.h": "c"
+    }
+  }
+}

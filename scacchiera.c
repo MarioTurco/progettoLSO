@@ -23,6 +23,7 @@ struct player {
 void fillGridInitializer();
 void generateObstalePositions();
 void generatePackagesPositions();
+// void generatePlayerPosition(char);
 void printGrid();
 void start();
 void printScore();
@@ -43,6 +44,7 @@ void start() {
   fillGridInitializer();
   generateObstalePositions();
   generatePackagesPositions();
+  // generatePlayerPosition("P");
   // grid[riga][colonna] = '#';
   system("clear");
   printAll();
@@ -161,10 +163,21 @@ void generatePackagesPositions() {
     y = rand() % ROWS;
     if (grid[y][x] == '-') {
       grid[y][x] = '$';
-      // obstaclesGrid[indiceRigaOstacoli][0] = y;
-      // obstaclesGrid[indiceRigaOstacoli][1] = x;
-      //  printf("Generati: (%d, %d)\n", x, y);
     } else
       i--;
   }
 }
+/*
+void generatePlayerPosition(char n) {
+  int x, y, i;
+  char player;
+  srand(time(NULL));
+  for (i = 0; i < 1; i++) {
+    x = rand() % COLUMNS;
+    y = rand() % ROWS;
+    if (grid[y][x] == '-') {
+      grid[y][x] = n;
+    } else
+      i--;
+  }
+}*/

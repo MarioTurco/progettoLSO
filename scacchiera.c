@@ -8,6 +8,8 @@
 #define COLUMNS 65
 #define numberOfObstacles 100
 #define numberOfPackages 30
+#define timeLimitInSeconds 240
+#define packageLimitNumber 8
 /*
 player prototype to be implemented in the future
 struct player {

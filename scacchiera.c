@@ -5,7 +5,16 @@
 
 #define ROWS 20
 #define COLUMNS 65
-
+/*
+player prototype to be implemented in the future
+struct player {
+  char username[20];
+  char password[20];
+  int row;
+  int column;
+  int score;
+} player;
+*/
 void fillGridInitializer();
 void printGrid();
 void start();
@@ -15,6 +24,7 @@ void gameOver();
 
 char grid[ROWS][COLUMNS];
 int score = 0;
+
 int main(int argc, char *argv[]) {
   start();
   return 0;

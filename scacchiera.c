@@ -6,6 +6,7 @@
 
 #define ROWS 20
 #define COLUMNS 65
+#define numberOfObstacles 50
 /*
 player prototype to be implemented in the future
 struct player {
@@ -131,10 +132,10 @@ void printMenu() {
 }
 
 void generateObstalePositions() {
-  int x, y;
+  int x, y, i;
   int indiceRigaOstacoli = 0;
   srand(time(NULL));
-  for (int i = 0; i < 50; i++) {
+  for (i = 0; i < numberOfObstacles; i++) {
     x = rand() % COLUMNS;
     y = rand() % ROWS;
     if (grid[y][x] == '-') {

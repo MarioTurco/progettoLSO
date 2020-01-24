@@ -17,6 +17,7 @@ struct player {
 } player;
 */
 void fillGridInitializer();
+void generateObstalePositions();
 void printGrid();
 void start();
 void printScore();
@@ -25,6 +26,7 @@ void gameOver();
 void printMenu();
 char grid[ROWS][COLUMNS];
 int score = 0;
+char obstaclesGrid[50][2];
 
 /*int main(int argc, char *argv[]) {
   start();
@@ -34,7 +36,8 @@ void start() {
   int movement;
   int riga = 0, colonna = 0;
   fillGridInitializer();
-  grid[riga][colonna] = '#';
+  generateObstalePositions();
+  // grid[riga][colonna] = '#';
   system("clear");
   printAll();
   while (1) {
@@ -81,7 +84,7 @@ void start() {
       break;
     }
     system("clear");
-    grid[riga][colonna] = '#';
+    // grid[riga][colonna] = '#';
     printAll();
   }
 }
@@ -109,7 +112,6 @@ void printGrid() {
     printf("\n");
   }
 }
-
 void gameOver() {
   char c;
   system("clear");
@@ -121,10 +123,26 @@ void gameOver() {
   scanf("%c", &c);
   return;
 }
-
 void printMenu() {
   printf("\t Cosa vuoi fare?\n");
   printf("\t 1) Login\n");
   printf("\t 2) Registrati\n");
   printf("\t 3) Esci\n");
+}
+
+void generateObstalePositions() {
+  int x, y;
+  int indiceRigaOstacoli = 0;
+  srand(time(NULL));
+  for (int i = 0; i < 50; i++) {
+    x = rand() % COLUMNS;
+    y = rand() % ROWS;
+    if (grid[y][x] == '-') {
+      grid[y][x] = '@';
+      // obstaclesGrid[indiceRigaOstacoli][0] = y;
+      // obstaclesGrid[indiceRigaOstacoli][1] = x;
+      //  printf("Generati: (%d, %d)\n", x, y);
+    } else
+      i--;
+  }
 }

@@ -1,3 +1,4 @@
+#include "scacchiera.h"
 #include <netinet/in.h> //conversioni
 #include <netinet/ip.h> //struttura
 #include <pthread.h>

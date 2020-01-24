@@ -1,14 +1,18 @@
 #include <netinet/in.h> //conversioni
 #include <netinet/ip.h> //struttura
+#include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/socket.h>
 #include <unistd.h>
 
+void *threadFunction(void *string);
+void *thr_fn(void *arg);
 int main() {
   int numeroClient = 0;
   int socketDesc, clientDesc;
+  pthread_t tid;
   struct sockaddr_in mio_indirizzo;
   char buffer[] = {"Saluti dal server\n"};
   mio_indirizzo.sin_family = AF_INET;
@@ -28,8 +32,18 @@ int main() {
     printf("Connessione effettuata (totale client connessi: %d)\n",
            numeroClient);
     write(clientDesc, buffer, sizeof(buffer));
+    pthread_create(&tid, NULL, threadFunction, "Prova\n");
   }
   close(clientDesc);
   close(socketDesc);
   exit(0);
+}
+void *thr_fn(void *arg) {
+  printf("Nuovo thread\n");
+  return ((void *)0);
+}
+void *threadFunction(void *string) {
+  printf("Thread avviato\n");
+  printf("%s", (char *)string);
+  return (void *)0;
 }

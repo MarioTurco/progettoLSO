@@ -1,3 +1,4 @@
+#include "scacchiera.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -21,14 +22,14 @@ void start();
 void printScore();
 void printAll();
 void gameOver();
-
+void printMenu();
 char grid[ROWS][COLUMNS];
 int score = 0;
 
-int main(int argc, char *argv[]) {
+/*int main(int argc, char *argv[]) {
   start();
   return 0;
-}
+}*/
 void start() {
   int movement;
   int riga = 0, colonna = 0;
@@ -119,4 +120,11 @@ void gameOver() {
   fflush(stdin);
   scanf("%c", &c);
   return;
+}
+
+void printMenu() {
+  printf("\t Cosa vuoi fare?\n");
+  printf("\t 1) Login\n");
+  printf("\t 2) Registrati\n");
+  printf("\t 3) Esci\n");
 }

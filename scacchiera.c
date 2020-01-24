@@ -6,7 +6,8 @@
 
 #define ROWS 20
 #define COLUMNS 65
-#define numberOfObstacles 50
+#define numberOfObstacles 100
+#define numberOfPackages 30
 /*
 player prototype to be implemented in the future
 struct player {
@@ -19,6 +20,7 @@ struct player {
 */
 void fillGridInitializer();
 void generateObstalePositions();
+void generatePackagesPositions();
 void printGrid();
 void start();
 void printScore();
@@ -38,6 +40,7 @@ void start() {
   int riga = 0, colonna = 0;
   fillGridInitializer();
   generateObstalePositions();
+  generatePackagesPositions();
   // grid[riga][colonna] = '#';
   system("clear");
   printAll();
@@ -134,13 +137,28 @@ void printMenu() {
 void generateObstalePositions() {
 
   int x, y, i;
-  int indiceRigaOstacoli = 0;
   srand(time(NULL));
   for (i = 0; i < numberOfObstacles; i++) {
     x = rand() % COLUMNS;
     y = rand() % ROWS;
     if (grid[y][x] == '-') {
       grid[y][x] = '@';
+      // obstaclesGrid[indiceRigaOstacoli][0] = y;
+      // obstaclesGrid[indiceRigaOstacoli][1] = x;
+      //  printf("Generati: (%d, %d)\n", x, y);
+    } else
+      i--;
+  }
+}
+
+void generatePackagesPositions() {
+  int x, y, i;
+  srand(time(NULL));
+  for (i = 0; i < numberOfPackages; i++) {
+    x = rand() % COLUMNS;
+    y = rand() % ROWS;
+    if (grid[y][x] == '-') {
+      grid[y][x] = '$';
       // obstaclesGrid[indiceRigaOstacoli][0] = y;
       // obstaclesGrid[indiceRigaOstacoli][1] = x;
       //  printf("Generati: (%d, %d)\n", x, y);

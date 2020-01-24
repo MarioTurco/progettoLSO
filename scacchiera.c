@@ -28,10 +28,10 @@ char grid[ROWS][COLUMNS];
 int score = 0;
 char obstaclesGrid[50][2];
 
-/*int main(int argc, char *argv[]) {
+int main(int argc, char *argv[]) {
   start();
   return 0;
-}*/
+}
 void start() {
   int movement;
   int riga = 0, colonna = 0;
@@ -131,10 +131,10 @@ void printMenu() {
 }
 
 void generateObstalePositions() {
-  int x, y;
+  int x, y,i;
   int indiceRigaOstacoli = 0;
   srand(time(NULL));
-  for (int i = 0; i < 50; i++) {
+  for ( i = 0; i < 50; i++) {
     x = rand() % COLUMNS;
     y = rand() % ROWS;
     if (grid[y][x] == '-') {

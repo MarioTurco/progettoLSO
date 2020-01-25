@@ -1,4 +1,5 @@
 #include "boardUtility.h"
+#include "parser.h"
 #include <arpa/inet.h>
 #include <fcntl.h>
 #include <netinet/in.h> //conversioni
@@ -10,8 +11,8 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
-
-#define ipaddr "100.93.163.180"
+#define MAX_IP_LEN 16
+#define ipaddr /*"100.93.163.180"*/ "10.0.2.15"
 char grigliaDiGioco[ROWS][COLUMNS];
 void printMenu();
 int registrati(int);
@@ -105,4 +106,13 @@ void printMenu() {
   printf("\1 Gioca\n");
   printf("\2 Registrati\n");
   printf("\3 Esci\n");
+}
+
+void getIpAddress(char* ipadd){ //dachiamare
+  int fDes=openFileRDON("IpAddress");
+
+  read(fDes,ipadd,MAX_IP_LEN);
+
+  close(fDes);
+
 }

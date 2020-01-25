@@ -56,10 +56,6 @@ int isRegistered(char *name, char *file) {
   system(command);
   int fileDes = openFileRDON("tmp");
 
-  if (fileDes < 0) {
-    perror("Error while opening file");
-    exit(-1);
-  }
   struct stat info;
   fstat(fileDes, &info);
   if ((int)info.st_size > 0)
@@ -84,10 +80,7 @@ int validateLogin(char *name, char *pwd, char *file) {
   int ret = 0;
   system(command);
   int fileDes = openFileRDON("tmp");
-  if (fileDes < 0) {
-    perror("Error while opening file");
-    exit(-1);
-  }
+
   struct stat info;
   fstat(fileDes, &info);
   if ((int)info.st_size > 0)

@@ -7,6 +7,7 @@
 #include <string.h>
 #include <sys/socket.h>
 #include <unistd.h>
+
 char grigliaDiGiocoConPacchiSenzaOstacoli[ROWS][COLUMNS];
 char grigliaOstacoliSenzaPacchi[ROWS][COLUMNS];
 int registraClient(int);
@@ -93,3 +94,4 @@ int registraClient(int clientDesc) {
 */
   return 0;
 }
+

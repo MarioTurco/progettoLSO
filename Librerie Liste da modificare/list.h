@@ -1,5 +1,3 @@
-#ifndef Graph_List_h
-#define Graph_List_h
 
 struct TList {
     int target;
@@ -37,4 +35,3 @@ void freeList(List L);
 
 // Stampa la lista
 void printList(List L);
-#endif

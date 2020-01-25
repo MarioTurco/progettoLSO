@@ -4,6 +4,8 @@
 #include <time.h>
 #include <unistd.h>
 
+void inserisciPlayerNellaGrigliaInPosizioneCasuale(
+    char grigliaDiGioco[ROWS][COLUMNS], char grigliaOstacoli[ROWS][COLUMNS]);
 void inizializzaGrigliaVuota(char grigliaDiGioco[ROWS][COLUMNS]);
 void generaPosizioneOstacoli(char grigliaDiGioco[ROWS][COLUMNS],
                              char grigliaOstacoli[ROWS][COLUMNS]);
@@ -160,4 +162,15 @@ void riempiGrigliaConGliOstacoli(char grigliaDiGioco[ROWS][COLUMNS],
         grigliaDiGioco[i][j] = 'O';
     }
   }
+}
+
+void inserisciPlayerNellaGrigliaInPosizioneCasuale(
+    char grigliaDiGioco[ROWS][COLUMNS], char grigliaOstacoli[ROWS][COLUMNS]) {
+  int x, y;
+  srand(time(NULL));
+  do {
+    x = rand() % COLUMNS;
+    y = rand() % ROWS;
+  } while (grigliaDiGioco[y][x] != '-' && grigliaOstacoli[y][x] != '-');
+  grigliaDiGioco[y][x] = 'P';
 }

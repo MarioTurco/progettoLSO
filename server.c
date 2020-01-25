@@ -72,6 +72,8 @@ void *gestisci(void *descriptor) {
     }
     printf("Utente registrato con successo\n");
   } else if (bufferRecieve[0] == 1) {
+    inserisciPlayerNellaGrigliaInPosizioneCasuale(
+        grigliaDiGiocoConPacchiSenzaOstacoli, grigliaOstacoliSenzaPacchi);
     write(client_sd, grigliaDiGiocoConPacchiSenzaOstacoli,
           sizeof(grigliaDiGiocoConPacchiSenzaOstacoli));
     // userMovement();
@@ -84,14 +86,6 @@ void *gestisci(void *descriptor) {
 
 int registraClient(int clientDesc) {
   printf("TODO\n");
-  /* char username[20], password[20];
-  int dimUser, dimPass;
-  dimUser = read(clientDesc, username, 20);
-  dimPass = read(clientDesc, password, 20);
-  if (dimUser < 0 || dimPass < 0)
-    return -1;
-  printf("Username: %s, Password: %s\n", username, password);
-*/
+
   return 0;
 }
-

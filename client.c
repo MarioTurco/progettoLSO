@@ -12,7 +12,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 #define MAX_IP_LEN 16
-#define ipaddr /*"100.93.163.180"*/ "10.0.2.15"
+#define ipaddr /*"100.93.163.180"*/ "100.92.185.189"
 char grigliaDiGioco[ROWS][COLUMNS];
 void printMenu();
 int registrati(int);
@@ -107,7 +107,7 @@ void printMenu() {
   printf("\2 Registrati\n");
   printf("\3 Esci\n");
 }
-
+/*
 void getIpAddress(char* ipadd){ //dachiamare
   int fDes=openFileRDON("IpAddress");
 
@@ -115,4 +115,4 @@ void getIpAddress(char* ipadd){ //dachiamare
 
   close(fDes);
 
-}
+}*/

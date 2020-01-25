@@ -10,10 +10,13 @@
 #define timeLimitInSeconds 240
 #define packageLimitNumber 8
 
+void inserisciPlayerNellaGrigliaInPosizioneCasuale(
+    char grigliaDiGioco[ROWS][COLUMNS], char grigliaOstacoli[ROWS][COLUMNS]);
 void inizializzaGrigliaVuota(char grigliaDiGioco[ROWS][COLUMNS]);
 void generaPosizioneOstacoli(char grigliaDiGioco[ROWS][COLUMNS],
                              char grigliaOstacoli[ROWS][COLUMNS]);
-void riempiGrigliaConPacchiInPosizioniGenerateCasualmente(char grigliaDiGioco[ROWS][COLUMNS]);
+void riempiGrigliaConPacchiInPosizioniGenerateCasualmente(
+    char grigliaDiGioco[ROWS][COLUMNS]);
 void printGrid(char grigliaDaStampare[ROWS][COLUMNS]);
 void start(char grigliaDiGioco[ROWS][COLUMNS],
            char grigliaOstacoli[ROWS][COLUMNS]);

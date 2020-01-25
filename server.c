@@ -34,6 +34,7 @@ int main() {
       perror("Impossibile effettuare connessione\n");
       exit(-1);
     }
+    printf("%d", clientDesc);
     numeroClient++;
     printf("Connessione effettuata (totale client connessi: %d)\n",
            numeroClient);
@@ -48,11 +49,18 @@ int main() {
 }
 
 void *gestisci(void *descriptor) {
+  char grigliaDiGiocoConPacchiSenzaOstacoli[ROWS][COLUMNS];
+  char grigliaOstacoliSenzaPacchi[ROWS][COLUMNS];
   int bufferSend[2] = {0};
   int bufferRecieve[2] = {1};
   int client_sd;
   int ret = 1;
   client_sd = *(int *)descriptor;
+  inizializzaGrigliaVuota(grigliaDiGiocoConPacchiSenzaOstacoli);
+  riempiGrigliaConPacchiInPosizioniGenerateCasualmente(
+      grigliaDiGiocoConPacchiSenzaOstacoli);
+  generaPosizioneOstacoli(grigliaDiGiocoConPacchiSenzaOstacoli,
+                          grigliaOstacoliSenzaPacchi);
   printf("server: gestisci sd = %d \n", client_sd);
   write(client_sd, bufferSend, 1);
   read(client_sd, bufferRecieve, 1);
@@ -62,7 +70,8 @@ void *gestisci(void *descriptor) {
     }
     printf("Utente registrato con successo\n");
   } else if (bufferRecieve[0] == 1) {
-    printf("TODO\n");
+    write(client_sd, grigliaDiGiocoConPacchiSenzaOstacoli,
+          sizeof(grigliaDiGiocoConPacchiSenzaOstacoli));
     // userMovement();
   }
 

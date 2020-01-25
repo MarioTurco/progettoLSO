@@ -16,13 +16,13 @@ void gameOver();
 void printObs(char grigliaOstacoli[ROWS][COLUMNS]);
 void riempiGrigliaConGliOstacoli(char grigliaDiGioco[ROWS][COLUMNS],
                                  char grigliaOstacoli[ROWS][COLUMNS]);
-int main(int argc, char *argv[]) {
+/*int main(int argc, char *argv[]) {
   char grigliaDiGioco[ROWS][COLUMNS];
   char grigliaOstacoli[ROWS][COLUMNS];
 
   start(grigliaDiGioco, grigliaOstacoli);
   return 0;
-}
+}*/
 void start(char grigliaDiGioco[ROWS][COLUMNS],
            char grigliaOstacoli[ROWS][COLUMNS]) {
   int movement;

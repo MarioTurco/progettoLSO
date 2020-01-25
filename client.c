@@ -11,8 +11,9 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-#define ipaddr "127.0.0.1"
-
+#define ipaddr "100.93.163.180"
+char grigliaDiGioco[ROWS][COLUMNS];
+void printMenu();
 int registrati(int);
 int gestisci(int, int);
 char getUserInput();
@@ -27,10 +28,13 @@ int main() {
   inet_aton(ipaddr, &mio_indirizzo.sin_addr);
   if ((socketDesc = socket(PF_INET, SOCK_STREAM, 0)) < 0)
     perror("Impossibile creare socket"), exit(-1);
+  else
+    printf("Socket creato\n");
   if (connect(socketDesc, (struct sockaddr *)&mio_indirizzo,
               sizeof(mio_indirizzo)) < 0)
     perror("Impossibile connettersi"), exit(-1);
-
+  else
+    printf("Connesso a %s\n", ipaddr);
   if (read(socketDesc, bufferRecieve, 1) < 0) {
     printf("impossibile leggere il messaggio\n");
   }
@@ -57,7 +61,10 @@ int gestisci(int inputFromServer, int serverSocket) {
       registrati(serverSocket);
       printf("Utente registrato con successso\n");
     } else if (choice == '1') {
-
+      msg = 1;
+      write(serverSocket, &msg, sizeof(int));
+      read(serverSocket, grigliaDiGioco, sizeof(grigliaDiGioco));
+      printGrid(grigliaDiGioco);
     } else {
       printf("Wrong input");
       gestisci(inputFromServer, serverSocket);
@@ -91,4 +98,11 @@ int registrati(int serverSocket) {
   write(serverSocket, username, dimUser);
   write(serverSocket, password, dimPass);
   return 0;
+}
+void printMenu() {
+  system("clear");
+  printf("\t Cosa vuoi fare?\n");
+  printf("\1 Gioca\n");
+  printf("\2 Registrati\n");
+  printf("\3 Esci\n");
 }

@@ -12,14 +12,12 @@
 
 void inizializzaGrigliaVuota(char grigliaDiGioco[ROWS][COLUMNS]);
 void generaPosizioneOstacoli(char grigliaDiGioco[ROWS][COLUMNS],
-                             char grigliaOstacoli[numberOfObstacles][2]);
-void generatePackagesPositions(char grigliaDiGioco[ROWS][COLUMNS],
-                               char grigliaPacchi[numberOfPackages][2]);
+                             char grigliaOstacoli[ROWS][COLUMNS]);
+void generatePackagesPositions(char grigliaDiGioco[ROWS][COLUMNS]);
 void printGrid(char grigliaDaStampare[ROWS][COLUMNS]);
 void start(char grigliaDiGioco[ROWS][COLUMNS],
-           char grigliaOstacoli[numberOfObstacles][2],
-           char grigliaPacchi[numberOfPackages][2]);
+           char grigliaOstacoli[ROWS][COLUMNS]);
 void gameOver();
-void printObs(char grigliaOstacoli[numberOfObstacles][2]);
+void printObs(char grigliaOstacoli[ROWS][COLUMNS]);
 void riempiGrigliaConGliOstacoli(char grigliaDiGioco[ROWS][COLUMNS],
-                                 char grigliaOstacoli[numberOfObstacles][2]);
+                                 char grigliaOstacoli[ROWS][COLUMNS]);

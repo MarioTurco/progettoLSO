@@ -7,6 +7,8 @@
 #include <string.h>
 #include <sys/socket.h>
 #include <unistd.h>
+char grigliaDiGiocoConPacchiSenzaOstacoli[ROWS][COLUMNS];
+char grigliaOstacoliSenzaPacchi[ROWS][COLUMNS];
 int registraClient(int);
 void *gestisci(void *descriptor);
 int main() {
@@ -25,6 +27,11 @@ int main() {
             sizeof(mio_indirizzo))) < 0)
     perror("Impossibile effettuare bind"), exit(-1);
 
+  inizializzaGrigliaVuota(grigliaDiGiocoConPacchiSenzaOstacoli);
+  riempiGrigliaConPacchiInPosizioniGenerateCasualmente(
+      grigliaDiGiocoConPacchiSenzaOstacoli);
+  generaPosizioneOstacoli(grigliaDiGiocoConPacchiSenzaOstacoli,
+                          grigliaOstacoliSenzaPacchi);
   while (1 == 1) {
     printf("..\n");
     if (listen(socketDesc, 3) < 0)
@@ -49,18 +56,12 @@ int main() {
 }
 
 void *gestisci(void *descriptor) {
-  char grigliaDiGiocoConPacchiSenzaOstacoli[ROWS][COLUMNS];
-  char grigliaOstacoliSenzaPacchi[ROWS][COLUMNS];
   int bufferSend[2] = {0};
   int bufferRecieve[2] = {1};
   int client_sd;
   int ret = 1;
   client_sd = *(int *)descriptor;
-  inizializzaGrigliaVuota(grigliaDiGiocoConPacchiSenzaOstacoli);
-  riempiGrigliaConPacchiInPosizioniGenerateCasualmente(
-      grigliaDiGiocoConPacchiSenzaOstacoli);
-  generaPosizioneOstacoli(grigliaDiGiocoConPacchiSenzaOstacoli,
-                          grigliaOstacoliSenzaPacchi);
+
   printf("server: gestisci sd = %d \n", client_sd);
   write(client_sd, bufferSend, 1);
   read(client_sd, bufferRecieve, 1);

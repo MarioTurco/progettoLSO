@@ -11,9 +11,11 @@
 #define packageLimitNumber 8
 
 void fillGridInitializer();
-void printGrid();
+void generateObstalePositions();
+void generatePackagesPositions();
+void printGrid(char grigliaDaStampare[ROWS][COLUMNS]);
 void start();
-void printScore();
 void printAll();
 void gameOver();
 void printMenu();
+void printObs();

@@ -4,19 +4,31 @@
 #include <time.h>
 #include <unistd.h>
 
+// void generatePlayerPosition(char);
+// void printScore();
 void fillGridInitializer();
 void generateObstalePositions();
 void generatePackagesPositions();
-// void generatePlayerPosition(char);
-void printGrid();
+void printGrid(char grigliaDaStampare[ROWS][COLUMNS]);
 void start();
-// void printScore();
 void printAll();
 void gameOver();
 void printMenu();
+void printObs();
 char grid[ROWS][COLUMNS];
-int score = 0;
 char obstaclesGrid[50][2];
+
+void printObs() {
+  int i = 0, j = 0;
+  for (i = 0; i < 50; i++) {
+    printf("(");
+    for (j = 0; j < 2; j++) {
+      printf("%d,", obstaclesGrid[i][j]);
+    }
+    printf("); ");
+  }
+  printf("\n");
+}
 
 int main(int argc, char *argv[]) {
   start();
@@ -82,8 +94,9 @@ void start() {
 }
 
 void printAll() {
-  printScore();
-  printGrid();
+  // printScore();
+  printGrid(grid);
+  printObs();
 }
 void fillGridInitializer() {
   int i = 0, j = 0;
@@ -93,12 +106,12 @@ void fillGridInitializer() {
     }
   }
 }
-void printGrid() {
+void printGrid(char grigliaDaStampare[ROWS][COLUMNS]) {
   int i = 0, j = 0;
   for (i = 0; i < ROWS; i++) {
     printf("\t");
     for (j = 0; j < COLUMNS; j++) {
-      printf("%c", grid[i][j]);
+      printf("%c", grigliaDaStampare[i][j]);
     }
     printf("\n");
   }
@@ -107,7 +120,7 @@ void gameOver() {
   char c;
   system("clear");
   printf("____________Game over_______________\n");
-  printf("\tYour score was: %d\n", score);
+  // printf("\tYour score was: %d\n", score);
   // printf("\tPress enter to continue...\n");
   printf("____________Game over_______________\n");
   fflush(stdin);
@@ -121,9 +134,10 @@ void printMenu() {
   printf("\t 3) Esci\n");
 }
 
+// TODO: bisogna aggiungere una matrice che mantiene la posizione degli
+// ostacoli
 void generateObstalePositions() {
-  // TODO: bisogna aggiungere una matrice che mantiene la posizione degli
-  // ostacoli
+  int indexOstacoli = 0;
   int x, y, i;
   srand(time(NULL));
   for (i = 0; i < numberOfObstacles; i++) {
@@ -131,9 +145,9 @@ void generateObstalePositions() {
     y = rand() % ROWS;
     if (grid[y][x] == '-') {
       grid[y][x] = '@';
-      // obstaclesGrid[indiceRigaOstacoli][0] = y;
-      // obstaclesGrid[indiceRigaOstacoli][1] = x;
-      //  printf("Generati: (%d, %d)\n", x, y);
+      obstaclesGrid[indexOstacoli][0] = y;
+      obstaclesGrid[indexOstacoli][1] = x;
+      indexOstacoli++;
     } else
       i--;
   }

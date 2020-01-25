@@ -12,7 +12,7 @@
 #include <unistd.h>
 
 #define ipaddr "127.0.0.1"
-char *retriveIpAddressFromFile();
+
 int registrati(int);
 int gestisci(int, int);
 char getUserInput();

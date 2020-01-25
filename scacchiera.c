@@ -4,29 +4,13 @@
 #include <time.h>
 #include <unistd.h>
 
-#define ROWS 20
-#define COLUMNS 65
-#define numberOfObstacles 100
-#define numberOfPackages 30
-#define timeLimitInSeconds 240
-#define packageLimitNumber 8
-/*
-player prototype to be implemented in the future
-struct player {
-  char username[20];
-  char password[20];
-  int row;
-  int column;
-  int score;
-} player;
-*/
 void fillGridInitializer();
 void generateObstalePositions();
 void generatePackagesPositions();
 // void generatePlayerPosition(char);
 void printGrid();
 void start();
-void printScore();
+// void printScore();
 void printAll();
 void gameOver();
 void printMenu();
@@ -109,7 +93,6 @@ void fillGridInitializer() {
     }
   }
 }
-void printScore() { printf("\t SCORE: %d\n", score); }
 void printGrid() {
   int i = 0, j = 0;
   for (i = 0; i < ROWS; i++) {
@@ -139,7 +122,8 @@ void printMenu() {
 }
 
 void generateObstalePositions() {
-
+  // TODO: bisogna aggiungere una matrice che mantiene la posizione degli
+  // ostacoli
   int x, y, i;
   srand(time(NULL));
   for (i = 0; i < numberOfObstacles; i++) {
@@ -181,3 +165,6 @@ void generatePlayerPosition(char n) {
       i--;
   }
 }*/
+/*
+Questa funziona va rivista perchè ogni utente avrà un suo score
+void printScore() { printf("\t SCORE: %d\n", score); }*/

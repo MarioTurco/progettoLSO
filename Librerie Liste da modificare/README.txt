@@ -1,0 +1,1 @@
+Le modifico io con calma in modo che possiamo usare questa lista concatenata di utenti connessi comune a tutti i thread per tenere traccia degli utenti loggati

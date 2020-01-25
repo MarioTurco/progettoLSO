@@ -7,7 +7,8 @@
 void inizializzaGrigliaVuota(char grigliaDiGioco[ROWS][COLUMNS]);
 void generaPosizioneOstacoli(char grigliaDiGioco[ROWS][COLUMNS],
                              char grigliaOstacoli[ROWS][COLUMNS]);
-void generatePackagesPositions(char grigliaDiGioco[ROWS][COLUMNS]);
+void riempiGrigliaConPacchiInPosizioniGenerateCasualmente(
+    char grigliaDiGioco[ROWS][COLUMNS]);
 void printGrid(char grigliaDaStampare[ROWS][COLUMNS]);
 void start(char grigliaDiGioco[ROWS][COLUMNS],
            char grigliaOstacoli[ROWS][COLUMNS]);
@@ -27,7 +28,7 @@ void start(char grigliaDiGioco[ROWS][COLUMNS],
   int movement;
   int riga = 0, colonna = 0;
   inizializzaGrigliaVuota(grigliaDiGioco);
-  generatePackagesPositions(grigliaDiGioco);
+  riempiGrigliaConPacchiInPosizioniGenerateCasualmente(grigliaDiGioco);
   generaPosizioneOstacoli(grigliaDiGioco, grigliaOstacoli);
   system("clear");
   // riempiGrigliaConGliOstacoli(grigliaDiGioco, grigliaOstacoli);
@@ -125,7 +126,8 @@ void generaPosizioneOstacoli(char grigliaDiGioco[ROWS][COLUMNS],
   }
 }
 
-void generatePackagesPositions(char grigliaDiGioco[ROWS][COLUMNS]) {
+void riempiGrigliaConPacchiInPosizioniGenerateCasualmente(
+    char grigliaDiGioco[ROWS][COLUMNS]) {
   int x, y, i;
   srand(time(NULL));
   for (i = 0; i < numberOfPackages; i++) {

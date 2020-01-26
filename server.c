@@ -34,7 +34,6 @@ int main() {
   generaPosizioneOstacoli(grigliaDiGiocoConPacchiSenzaOstacoli,
                           grigliaOstacoliSenzaPacchi);
   while (1 == 1) {
-    printf("..\n");
     if (listen(socketDesc, 3) < 0)
       perror("Impossibile mettersi in ascolto"), exit(-1);
     printf("In ascolto..\n");

@@ -99,9 +99,11 @@ void *gestisci(void *descriptor) {
     // userMovement();
   } else if (bufferRecieve[0] == 3) {
     disconnettiClient(client_sd, descriptor);
+  } else {
+    printf("Input invalido, uscita...\n");
+    close(client_sd);
+    free(descriptor);
   }
-  close(client_sd);
-  free(descriptor);
 
   pthread_exit(NULL);
 }
@@ -112,14 +114,14 @@ void disconnettiClient(int clientDescriptor, int *threadDescriptor) {
   free(threadDescriptor);
 }
 int registraClient(int clientDesc) {
-  char *userName=(char*)calloc(MAX_BUF,1);
+  char *userName = (char *)calloc(MAX_BUF, 1);
   char password[MAX_BUF];
-  int dimName,dimPwd;
-  read(clientDesc,&dimName,sizeof(int));
-  read(clientDesc,&dimPwd,sizeof(int));
+  int dimName, dimPwd;
+  read(clientDesc, &dimName, sizeof(int));
+  read(clientDesc, &dimPwd, sizeof(int));
   read(clientDesc, userName, dimName);
   read(clientDesc, password, dimPwd);
-  printf("%s:%d\n%s:%d\n", userName,dimName,password,dimPwd);
+  printf("%s:%d\n%s:%d\n", userName, dimName, password, dimPwd);
 
   return 0;
 }

@@ -92,9 +92,9 @@ char getUserInput() {
   char c;
   c = getchar();
   int daIgnorare;
-  while ((daIgnorare = getchar()) != '\n' && daIgnorare != EOF) {
-  }
   return c;
+  /*while ((daIgnorare = getchar()) != '\n' && daIgnorare != EOF) {
+  }*/
 }
 int login() { return 0; }
 
@@ -106,10 +106,10 @@ int registrati(int serverSocket) {
   scanf("%s", username);
   printf("\nInserisci password(MAX 20 caratteri):");
   scanf("%s", password);
-  int dimUname=strlen(username),dimPwd=strlen(password);
-  if(write(serverSocket,&dimUname,sizeof(dimUname))<0)
+  int dimUname = strlen(username), dimPwd = strlen(password);
+  if (write(serverSocket, &dimUname, sizeof(dimUname)) < 0)
     return 0;
-  if(write(serverSocket,&dimPwd,sizeof(dimPwd))<0)
+  if (write(serverSocket, &dimPwd, sizeof(dimPwd)) < 0)
     return 0;
   if (write(serverSocket, username, dimUname) < 0)
     return 0;

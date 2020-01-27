@@ -42,7 +42,8 @@ int main(int argc, char **argv) {
 }
 int connettiAlServer(char **argv, char *indirizzoServer) {
   int socketDesc;
-  uint16_t porta = argv[2];
+  uint16_t porta = strtoul(argv[2], NULL, 10);
+
   indirizzoServer = ipResolver(argv);
   struct sockaddr_in mio_indirizzo;
   mio_indirizzo.sin_family = AF_INET;

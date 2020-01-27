@@ -110,12 +110,11 @@ int registraClient(int clientDesc) {
   char userName[MAX_BUF];
   char password[MAX_BUF];
   int dimName,dimPwd;
-  read(clientDesc,dimName,sizeof(int));
-  read(clientDesc,dimPwd,sizeof(int));
-  //printf("length :%ld\n", read(clientDesc, userName, MAX_BUF));
+  read(clientDesc,&dimName,sizeof(int));
+  read(clientDesc,&dimPwd,sizeof(int));
   read(clientDesc, userName, dimName);
   read(clientDesc, password, dimPwd);
-  printf("%s\n%s\n", userName,password);
+  printf("%s:%d\n%s:%d\n", userName,dimName,password,dimPwd);
 
   return 0;
 }

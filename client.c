@@ -126,6 +126,7 @@ int registrati(int serverSocket) {
     return 0;
   return 1;
 }
+
 void printMenu() {
   system("clear");
   printf("\t Cosa vuoi fare?\n");

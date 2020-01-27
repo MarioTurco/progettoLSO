@@ -14,8 +14,6 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-#define MAX_IP_LEN 16
-#define ipaddr /*"100.93.163.180"*/ "100.92.165.197"
 char grigliaDiGioco[ROWS][COLUMNS];
 void printMenu();
 char *ipResolver(char **argv);

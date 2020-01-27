@@ -85,7 +85,7 @@ int gestisci(int serverSocket) {
     else if (choice == '2') {
       msg = 2;
       write(serverSocket, &msg, sizeof(int));
-      if (registrati(serverSocket) < 0) {
+      if (!registrati(serverSocket)) {
        printf("Impossibile registrare Utente, riprovare");
       }
       else{

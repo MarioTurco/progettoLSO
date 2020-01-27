@@ -102,8 +102,8 @@ void *gestisci(void *descriptor) {
     read(client_sd, bufferReceive, sizeof(bufferReceive));
   
     if (bufferReceive[0] == 2) {
-     if (registraClient(client_sd) < 0) {
-        int ret=-1;
+      int ret=registraClient(client_sd);
+      if (!ret) {
         write(client_sd,&ret,sizeof(ret));
         printf("Impossibile registrare utente, riprovare\n");
      }
@@ -180,7 +180,6 @@ int registraClient(int clientDesc) {
   //printf("%s:%d\n%s:%d\n", userName, dimName, password, dimPwd);
   //TODO proteggere con un mutex
   int ret=appendPlayer(userName,password,users);
- 
   
   return ret;
 }

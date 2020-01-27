@@ -113,7 +113,7 @@ void disconnettiClient(int clientDescriptor, int *threadDescriptor) {
 }
 int registraClient(int clientDesc) {
   char *userName=(char*)calloc(MAX_BUF,1);
-  char password[MAX_BUF];
+  char *password=(char*)calloc(MAX_BUF,1);
   int dimName,dimPwd;
   read(clientDesc,&dimName,sizeof(int));
   read(clientDesc,&dimPwd,sizeof(int));

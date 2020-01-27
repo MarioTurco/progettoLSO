@@ -26,6 +26,9 @@ int main(int argc, char **argv) {
   int socketDesc;
   char bufferRecieve[2];
   char *indirizzoServer;
+  if (argc != 3)
+    perror("Inseire indirizzo ip/url e porta (./client 127.0.0.1 5200)"),
+        exit(-1);
   if ((socketDesc = connettiAlServer(argv, indirizzoServer)) < 0)
     exit(-1);
   if (read(socketDesc, bufferRecieve, 1) < 0) {
@@ -39,10 +42,11 @@ int main(int argc, char **argv) {
 }
 int connettiAlServer(char **argv, char *indirizzoServer) {
   int socketDesc;
+  uint16_t porta = argv[2];
   indirizzoServer = ipResolver(argv);
   struct sockaddr_in mio_indirizzo;
   mio_indirizzo.sin_family = AF_INET;
-  mio_indirizzo.sin_port = htons(5200);
+  mio_indirizzo.sin_port = htons(porta);
   inet_aton(indirizzoServer, &mio_indirizzo.sin_addr);
   if ((socketDesc = socket(PF_INET, SOCK_STREAM, 0)) < 0)
     perror("Impossibile creare socket"), exit(-1);

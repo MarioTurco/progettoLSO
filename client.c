@@ -40,6 +40,7 @@ int main(int argc, char **argv) {
   if ((socketDesc = connettiAlServer(argv, indirizzoServer)) < 0)
     exit(-1);
 
+  signal(SIGSTOP, crashHandler);
   gestisci(socketDesc);
   close(socketDesc);
   exit(0);

@@ -68,7 +68,6 @@ void *gestisci(void *descriptor) {
   client_sd = *(int *)descriptor;
 
   printf("server: gestisci sd = %d \n", client_sd);
-  write(client_sd, bufferSend, 1);
   read(client_sd, bufferRecieve, 1);
   if (bufferRecieve[0] == 2) {
     if (registraClient(client_sd) < 0) {

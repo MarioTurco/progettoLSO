@@ -18,7 +18,7 @@ void printMenu();
 int connettiAlServer(char **argv, char *indirizzoServer);
 char *ipResolver(char **argv);
 int registrati(int);
-int gestisci(int, int);
+int gestisci(int);
 char getUserInput();
 int login();
 int main(int argc, char **argv) {
@@ -30,11 +30,7 @@ int main(int argc, char **argv) {
         exit(-1);
   if ((socketDesc = connettiAlServer(argv, indirizzoServer)) < 0)
     exit(-1);
-  if (read(socketDesc, bufferRecieve, 1) < 0) {
-    printf("impossibile leggere il messaggio\n");
-  }
-  printf("Ricevuto %d\n", bufferRecieve[0]);
-  gestisci(bufferRecieve[0], socketDesc);
+  gestisci(socketDesc);
 
   close(socketDesc);
   exit(0);
@@ -59,43 +55,36 @@ int connettiAlServer(char **argv, char *indirizzoServer) {
   return socketDesc;
 }
 
-int gestisci(int inputFromServer, int serverSocket) {
+int gestisci(int serverSocket) {
   char choice;
   int msg;
-  switch (inputFromServer) {
-  case 0:
-    printMenu();
-    choice = getUserInput();
-    system("clear");
-    if (choice == '3') {
-      printf("Uscita in corso\n");
-      msg = 3;
-      write(serverSocket, &msg, sizeof(int));
-      return (0);
-    } else if (choice == '2') {
-      msg = 2;
-      write(serverSocket, &msg, sizeof(int));
-      if (registrati(serverSocket) < 0) {
-        printf("Impossibile registrare Utente, riprovare");
-        gestisci(inputFromServer, serverSocket);
-        break;
-      }
-      printf("Utente registrato con successso\n");
-    } else if (choice == '1') {
-      msg = 1;
-      write(serverSocket, &msg, sizeof(int));
-      while (1) {
-        read(serverSocket, grigliaDiGioco, sizeof(grigliaDiGioco));
-        printGrid(grigliaDiGioco);
-      }
-    } else {
-      printf("Wrong input");
-      gestisci(inputFromServer, serverSocket);
-    }
-    break;
 
-  default:
-    break;
+  printMenu();
+  choice = getUserInput();
+  system("clear");
+  if (choice == '3') {
+    printf("Uscita in corso\n");
+    msg = 3;
+    write(serverSocket, &msg, sizeof(int));
+    return (0);
+  } else if (choice == '2') {
+    msg = 2;
+    write(serverSocket, &msg, sizeof(int));
+    if (registrati(serverSocket) < 0) {
+      printf("Impossibile registrare Utente, riprovare");
+      gestisci(serverSocket);
+    }
+    printf("Utente registrato con successso\n");
+  } else if (choice == '1') {
+    msg = 1;
+    write(serverSocket, &msg, sizeof(int));
+    while (1) {
+      read(serverSocket, grigliaDiGioco, sizeof(grigliaDiGioco));
+      printGrid(grigliaDiGioco);
+    }
+  } else {
+    printf("Wrong input");
+    gestisci(serverSocket);
   }
 }
 

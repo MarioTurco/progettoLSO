@@ -14,6 +14,7 @@
 #include <unistd.h>
 
 char grigliaDiGioco[ROWS][COLUMNS];
+int tryLogin(int serverSocket);
 void printMenu();
 int connettiAlServer(char **argv, char *indirizzoServer);
 char *ipResolver(char **argv);
@@ -21,20 +22,24 @@ int registrati(int);
 int gestisci(int);
 char getUserInput();
 int login();
+
 int main(int argc, char **argv) {
   int socketDesc;
-  char bufferRecieve[2];
+  char bufferReceive[2];
   char *indirizzoServer;
+
   if (argc != 3)
     perror("Inserire indirizzo ip/url e porta (./client 127.0.0.1 5200)"),
         exit(-1);
+
   if ((socketDesc = connettiAlServer(argv, indirizzoServer)) < 0)
     exit(-1);
-  gestisci(socketDesc);
 
+  gestisci(socketDesc);
   close(socketDesc);
   exit(0);
 }
+
 int connettiAlServer(char **argv, char *indirizzoServer) {
   int socketDesc;
   uint16_t porta = strtoul(argv[2], NULL, 10);
@@ -43,15 +48,20 @@ int connettiAlServer(char **argv, char *indirizzoServer) {
   mio_indirizzo.sin_family = AF_INET;
   mio_indirizzo.sin_port = htons(porta);
   inet_aton(indirizzoServer, &mio_indirizzo.sin_addr);
+  
   if ((socketDesc = socket(PF_INET, SOCK_STREAM, 0)) < 0)
     perror("Impossibile creare socket"), exit(-1);
+  
   else
     printf("Socket creato\n");
+  
   if (connect(socketDesc, (struct sockaddr *)&mio_indirizzo,
               sizeof(mio_indirizzo)) < 0)
     perror("Impossibile connettersi"), exit(-1);
+  
   else
     printf("Connesso a %s\n", indirizzoServer);
+  
   return socketDesc;
 }
 
@@ -59,33 +69,86 @@ int gestisci(int serverSocket) {
   char choice;
   int msg;
 
-  printMenu();
-  choice = getUserInput();
-  system("clear");
-  if (choice == '3') {
-    printf("Uscita in corso\n");
-    msg = 3;
-    write(serverSocket, &msg, sizeof(int));
-    return (0);
-  } else if (choice == '2') {
-    msg = 2;
-    write(serverSocket, &msg, sizeof(int));
-    if (registrati(serverSocket) < 0) {
-      printf("Impossibile registrare Utente, riprovare");
-      gestisci(serverSocket);
+  while(1){
+    printMenu();
+    //choice = getUserInput();
+    scanf("%c",&choice);
+    system("clear");
+  
+    if (choice == '3') {
+      printf("Uscita in corso\n");
+      msg = 3;
+      write(serverSocket, &msg, sizeof(int));
+      return (0);
+    } 
+  
+    else if (choice == '2') {
+      msg = 2;
+      write(serverSocket, &msg, sizeof(int));
+      if (registrati(serverSocket) < 0) {
+       printf("Impossibile registrare Utente, riprovare");
+      }
+      else{
+        printf("Utente registrato con successo\n");
+      }
+      sleep(2);
     }
-    printf("Utente registrato con successso\n");
-  } else if (choice == '1') {
-    msg = 1;
-    write(serverSocket, &msg, sizeof(int));
-    while (1) {
-      read(serverSocket, grigliaDiGioco, sizeof(grigliaDiGioco));
-      printGrid(grigliaDiGioco);
+  
+   else if (choice == '1') {
+      msg = 1;
+      write(serverSocket, &msg, sizeof(int));
+
+      if(!tryLogin(serverSocket)){
+        printf("Credenziali Errate: riprova\n");
+        sleep(2);
+      }
+      else{
+        printf("Accesso effettuato\n");
+        sleep(2);
+        while (1) {
+          read(serverSocket, grigliaDiGioco, sizeof(grigliaDiGioco));
+          printGrid(grigliaDiGioco);
+        }
+      }
+    } 
+
+    else {
+      printf("Wrong input\n");
     }
-  } else {
-    printf("Wrong input");
-    gestisci(serverSocket);
   }
+}
+
+int tryLogin(int serverSocket){
+  system("clear");
+  printf("Inserisci i dati per il Login\n");
+  
+  char username[20];
+  char password[20];
+
+  printf("Inserisci nome utente(MAX 20 caratteri): ");
+  scanf("%s", username);
+  printf("\nInserisci password(MAX 20 caratteri):");
+  scanf("%s", password);
+
+  int dimUname = strlen(username), dimPwd = strlen(password);
+
+  if (write(serverSocket, &dimUname, sizeof(dimUname)) < 0)
+    return 0;
+
+  if (write(serverSocket, &dimPwd, sizeof(dimPwd)) < 0)
+    return 0;
+
+  if (write(serverSocket, username, dimUname) < 0)
+    return 0;
+
+  if (write(serverSocket, password, dimPwd) < 0)
+    return 0;
+  
+  int ret=0;
+
+  read(serverSocket,&ret,sizeof(ret));
+  
+  return ret;
 }
 
 char getUserInput() {
@@ -115,7 +178,12 @@ int registrati(int serverSocket) {
     return 0;
   if (write(serverSocket, password, dimPwd) < 0)
     return 0;
-  return 1;
+
+  int ret=0;
+
+  read(serverSocket,&ret,sizeof(ret));
+  
+  return ret;
 }
 
 void printMenu() {

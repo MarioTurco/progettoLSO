@@ -31,7 +31,7 @@ int openFileRDON(char *file) {
 
 int appendPlayer(char *name, char *pwd, char *file) {
   if (isRegistered(name, file))
-    return 0;
+    return -1;
   int fileDes = openFileRDWRAPP(file);
 
   write(fileDes, name, strlen(name));

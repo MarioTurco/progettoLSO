@@ -73,7 +73,11 @@ int gestisci(int inputFromServer, int serverSocket) {
     } else if (choice == '2') {
       msg = 2;
       write(serverSocket, &msg, sizeof(int));
-      registrati(serverSocket);
+      if (registrati(serverSocket) < 0) {
+        printf("Impossibile registrare Utente, riprovare");
+        gestisci(inputFromServer, serverSocket);
+        break;
+      }
       printf("Utente registrato con successso\n");
     } else if (choice == '1') {
       msg = 1;
@@ -112,9 +116,11 @@ int registrati(int serverSocket) {
   dimUser = scanf("%s", username);
   printf("\nInserisci password(MAX 20 caratteri):");
   dimPass = scanf("%s", password);
-  write(serverSocket, username, dimUser);
-  write(serverSocket, password, dimPass);
-  return 0;
+  if (write(serverSocket, username, dimUser) < 0)
+    return 0;
+  if (write(serverSocket, password, dimPass) < 0)
+    return 0;
+  return 1;
 }
 void printMenu() {
   system("clear");

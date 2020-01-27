@@ -7,6 +7,7 @@
 #include <string.h>
 #include <sys/socket.h>
 #include <unistd.h>
+#define MAX_BUF 100
 
 int registraClient(int);
 void *gestisci(void *descriptor);
@@ -103,7 +104,10 @@ void *gestisci(void *descriptor) {
 }
 
 int registraClient(int clientDesc) {
-  printf("TODO\n");
+  char userName[MAX_BUF];
+  printf("length :%ld\n", read(clientDesc,userName,MAX_BUF));
+  read(clientDesc,userName,MAX_BUF);
+  printf("%s\n",userName);
 
   return 0;
 }

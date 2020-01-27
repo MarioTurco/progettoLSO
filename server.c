@@ -68,43 +68,45 @@ void *gestisci(void *descriptor) {
   client_sd = *(int *)descriptor;
 
   printf("server: gestisci sd = %d \n", client_sd);
-  read(client_sd, bufferRecieve, sizeof(bufferRecieve));
-  if (bufferRecieve[0] == 2) {
-    if (registraClient(client_sd) < 0) {
-      perror("Impossibile registrare utente, riprovare\n");
+  while (1) {
+    read(client_sd, bufferRecieve, sizeof(bufferRecieve));
+    if (bufferRecieve[0] == 2) {
+      if (registraClient(client_sd) < 0) {
+        perror("Impossibile registrare utente, riprovare\n");
+      }
+      printf("Utente registrato con successo\n");
+    } else if (bufferRecieve[0] == 1) {
+      inserisciPlayerNellaGrigliaInPosizioneCasuale(
+          grigliaDiGiocoConPacchiSenzaOstacoli, grigliaOstacoliSenzaPacchi);
+      write(client_sd, grigliaDiGiocoConPacchiSenzaOstacoli,
+            sizeof(grigliaDiGiocoConPacchiSenzaOstacoli));
+      /* while (1) {
+         sleep(1);
+         timer--;
+         printf("%ld\n", timer);
+         if (timer == 0) {
+           inizializzaGrigliaVuota(grigliaDiGiocoConPacchiSenzaOstacoli);
+           riempiGrigliaConPacchiInPosizioniGenerateCasualmente(
+               grigliaDiGiocoConPacchiSenzaOstacoli);
+           generaPosizioneOstacoli(grigliaDiGiocoConPacchiSenzaOstacoli,
+                                   grigliaOstacoliSenzaPacchi);
+           inserisciPlayerNellaGrigliaInPosizioneCasuale(
+               grigliaDiGiocoConPacchiSenzaOstacoli,
+       grigliaOstacoliSenzaPacchi); write(client_sd,
+       grigliaDiGiocoConPacchiSenzaOstacoli,
+                 sizeof(grigliaDiGiocoConPacchiSenzaOstacoli));
+           timer = TIME_LIMIT_IN_SECONDS;
+         }
+       }*/
+      // userMovement();
+    } else if (bufferRecieve[0] == 3) {
+      disconnettiClient(client_sd, descriptor);
+    } else {
+      printf("Input invalido, uscita...\n");
+      close(client_sd);
+      free(descriptor);
     }
-    printf("Utente registrato con successo\n");
-  } else if (bufferRecieve[0] == 1) {
-    inserisciPlayerNellaGrigliaInPosizioneCasuale(
-        grigliaDiGiocoConPacchiSenzaOstacoli, grigliaOstacoliSenzaPacchi);
-    write(client_sd, grigliaDiGiocoConPacchiSenzaOstacoli,
-          sizeof(grigliaDiGiocoConPacchiSenzaOstacoli));
-    /* while (1) {
-       sleep(1);
-       timer--;
-       printf("%ld\n", timer);
-       if (timer == 0) {
-         inizializzaGrigliaVuota(grigliaDiGiocoConPacchiSenzaOstacoli);
-         riempiGrigliaConPacchiInPosizioniGenerateCasualmente(
-             grigliaDiGiocoConPacchiSenzaOstacoli);
-         generaPosizioneOstacoli(grigliaDiGiocoConPacchiSenzaOstacoli,
-                                 grigliaOstacoliSenzaPacchi);
-         inserisciPlayerNellaGrigliaInPosizioneCasuale(
-             grigliaDiGiocoConPacchiSenzaOstacoli, grigliaOstacoliSenzaPacchi);
-         write(client_sd, grigliaDiGiocoConPacchiSenzaOstacoli,
-               sizeof(grigliaDiGiocoConPacchiSenzaOstacoli));
-         timer = TIME_LIMIT_IN_SECONDS;
-       }
-     }*/
-    // userMovement();
-  } else if (bufferRecieve[0] == 3) {
-    disconnettiClient(client_sd, descriptor);
-  } else {
-    printf("Input invalido, uscita...\n");
-    close(client_sd);
-    free(descriptor);
   }
-
   pthread_exit(NULL);
 }
 void disconnettiClient(int clientDescriptor, int *threadDescriptor) {
@@ -114,11 +116,11 @@ void disconnettiClient(int clientDescriptor, int *threadDescriptor) {
   free(threadDescriptor);
 }
 int registraClient(int clientDesc) {
-  char *userName=(char*)calloc(MAX_BUF,1);
-  char *password=(char*)calloc(MAX_BUF,1);
-  int dimName,dimPwd;
-  read(clientDesc,&dimName,sizeof(int));
-  read(clientDesc,&dimPwd,sizeof(int));
+  char *userName = (char *)calloc(MAX_BUF, 1);
+  char *password = (char *)calloc(MAX_BUF, 1);
+  int dimName, dimPwd;
+  read(clientDesc, &dimName, sizeof(int));
+  read(clientDesc, &dimPwd, sizeof(int));
   read(clientDesc, userName, dimName);
   read(clientDesc, password, dimPwd);
   printf("%s:%d\n%s:%d\n", userName, dimName, password, dimPwd);

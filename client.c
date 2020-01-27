@@ -63,6 +63,7 @@ int gestisci(int inputFromServer, int serverSocket) {
   case 0:
     printMenu();
     choice = getUserInput();
+    system("clear");
     if (choice == '3') {
       printf("Uscita in corso\n");
       return (0);
@@ -115,9 +116,9 @@ int registrati(int serverSocket) {
 void printMenu() {
   system("clear");
   printf("\t Cosa vuoi fare?\n");
-  printf("\1 Gioca\n");
-  printf("\2 Registrati\n");
-  printf("\3 Esci\n");
+  printf("\t1 Gioca\n");
+  printf("\t2 Registrati\n");
+  printf("\t3 Esci\n");
 }
 
 char *ipResolver(char **argv) {

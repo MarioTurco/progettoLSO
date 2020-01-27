@@ -68,7 +68,7 @@ void *gestisci(void *descriptor) {
 
   printf("server: gestisci sd = %d \n", client_sd);
   write(client_sd, bufferSend, 1);
-  read(client_sd, bufferRecieve, 1);
+  read(client_sd, bufferRecieve, sizeof(bufferRecieve));
   if (bufferRecieve[0] == 2) {
     if (registraClient(client_sd) < 0) {
       perror("Impossibile registrare utente, riprovare\n");
@@ -107,9 +107,14 @@ void *gestisci(void *descriptor) {
 
 int registraClient(int clientDesc) {
   char userName[MAX_BUF];
-  printf("length :%ld\n", read(clientDesc, userName, MAX_BUF));
-  read(clientDesc, userName, MAX_BUF);
-  printf("%s\n", userName);
+  char password[MAX_BUF];
+  int dimName,dimPwd;
+  read(clientDesc,dimName,sizeof(int));
+  read(clientDesc,dimPwd,sizeof(int));
+  //printf("length :%ld\n", read(clientDesc, userName, MAX_BUF));
+  read(clientDesc, userName, dimName);
+  read(clientDesc, password, dimPwd);
+  printf("%s\n%s\n", userName,password);
 
   return 0;
 }

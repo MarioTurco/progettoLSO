@@ -8,10 +8,11 @@
 #include <sys/socket.h>
 #include <unistd.h>
 
-char grigliaDiGiocoConPacchiSenzaOstacoli[ROWS][COLUMNS];
-char grigliaOstacoliSenzaPacchi[ROWS][COLUMNS];
 int registraClient(int);
 void *gestisci(void *descriptor);
+char grigliaDiGiocoConPacchiSenzaOstacoli[ROWS][COLUMNS];
+char grigliaOstacoliSenzaPacchi[ROWS][COLUMNS];
+time_t timer = TIME_LIMIT_IN_SECONDS;
 int main() {
   int numeroClient = 0;
   int socketDesc, clientDesc;
@@ -60,6 +61,7 @@ void *gestisci(void *descriptor) {
   int bufferRecieve[2] = {1};
   int client_sd;
   int ret = 1;
+
   client_sd = *(int *)descriptor;
 
   printf("server: gestisci sd = %d \n", client_sd);
@@ -75,6 +77,23 @@ void *gestisci(void *descriptor) {
         grigliaDiGiocoConPacchiSenzaOstacoli, grigliaOstacoliSenzaPacchi);
     write(client_sd, grigliaDiGiocoConPacchiSenzaOstacoli,
           sizeof(grigliaDiGiocoConPacchiSenzaOstacoli));
+    /*while (1) {
+      sleep(1);
+      timer--;
+      printf("%ld\n", timer);
+      if (timer == 0) {
+        inizializzaGrigliaVuota(grigliaDiGiocoConPacchiSenzaOstacoli);
+        riempiGrigliaConPacchiInPosizioniGenerateCasualmente(
+            grigliaDiGiocoConPacchiSenzaOstacoli);
+        generaPosizioneOstacoli(grigliaDiGiocoConPacchiSenzaOstacoli,
+                                grigliaOstacoliSenzaPacchi);
+        inserisciPlayerNellaGrigliaInPosizioneCasuale(
+            grigliaDiGiocoConPacchiSenzaOstacoli, grigliaOstacoliSenzaPacchi);
+        write(client_sd, grigliaDiGiocoConPacchiSenzaOstacoli,
+              sizeof(grigliaDiGiocoConPacchiSenzaOstacoli));
+        timer = TIME_LIMIT_IN_SECONDS;
+      }
+  }*/
     // userMovement();
   }
 

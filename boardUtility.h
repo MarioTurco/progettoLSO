@@ -7,7 +7,7 @@
 #define COLUMNS 65
 #define numberOfObstacles 100
 #define numberOfPackages 30
-#define timeLimitInSeconds 240
+#define TIME_LIMIT_IN_SECONDS 240
 #define packageLimitNumber 8
 
 void inserisciPlayerNellaGrigliaInPosizioneCasuale(

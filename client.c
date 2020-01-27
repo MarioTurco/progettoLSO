@@ -2,7 +2,9 @@
 #include "parser.h"
 #include <arpa/inet.h>
 #include <fcntl.h>
+#include <netdb.h>
 #include <netinet/in.h> //conversioni
+#include <netinet/in.h>
 #include <netinet/ip.h> //struttura
 #include <stdio.h>
 #include <stdlib.h>
@@ -11,22 +13,25 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
+
 #define MAX_IP_LEN 16
-#define ipaddr /*"100.93.163.180"*/ "100.92.185.189"
+#define ipaddr /*"100.93.163.180"*/ "100.92.165.197"
 char grigliaDiGioco[ROWS][COLUMNS];
 void printMenu();
+char *ipResolver(char **argv);
 int registrati(int);
 int gestisci(int, int);
 char getUserInput();
 int login();
-int main() {
+int main(int argc, char **argv) {
   int socketDesc;
   char bufferRecieve[2];
-
+  char *indirizzoServer;
+  indirizzoServer = ipResolver(argv);
   struct sockaddr_in mio_indirizzo;
   mio_indirizzo.sin_family = AF_INET;
   mio_indirizzo.sin_port = htons(5200);
-  inet_aton(ipaddr, &mio_indirizzo.sin_addr);
+  inet_aton(indirizzoServer, &mio_indirizzo.sin_addr);
   if ((socketDesc = socket(PF_INET, SOCK_STREAM, 0)) < 0)
     perror("Impossibile creare socket"), exit(-1);
   else
@@ -35,7 +40,7 @@ int main() {
               sizeof(mio_indirizzo)) < 0)
     perror("Impossibile connettersi"), exit(-1);
   else
-    printf("Connesso a %s\n", ipaddr);
+    printf("Connesso a %s\n", indirizzoServer);
   if (read(socketDesc, bufferRecieve, 1) < 0) {
     printf("impossibile leggere il messaggio\n");
   }
@@ -64,8 +69,10 @@ int gestisci(int inputFromServer, int serverSocket) {
     } else if (choice == '1') {
       msg = 1;
       write(serverSocket, &msg, sizeof(int));
-      read(serverSocket, grigliaDiGioco, sizeof(grigliaDiGioco));
-      printGrid(grigliaDiGioco);
+      while (1) {
+        read(serverSocket, grigliaDiGioco, sizeof(grigliaDiGioco));
+        printGrid(grigliaDiGioco);
+      }
     } else {
       printf("Wrong input");
       gestisci(inputFromServer, serverSocket);
@@ -107,12 +114,15 @@ void printMenu() {
   printf("\2 Registrati\n");
   printf("\3 Esci\n");
 }
-/*
-void getIpAddress(char* ipadd){ //dachiamare
-  int fDes=openFileRDON("IpAddress");
 
-  read(fDes,ipadd,MAX_IP_LEN);
-
-  close(fDes);
-
-}*/
+char *ipResolver(char **argv) {
+  char *ipAddress;
+  struct hostent *hp;
+  hp = gethostbyname(argv[1]);
+  if (!hp) {
+    perror("Impossibile risolvere l'indirizzo ip\n");
+    exit(-1);
+  }
+  printf("Address:\t%s\n", inet_ntoa(*(struct in_addr *)hp->h_addr_list[0]));
+  return inet_ntoa(*(struct in_addr *)hp->h_addr_list[0]);
+}

@@ -36,7 +36,7 @@ int main() {
   generaPosizioneOstacoli(grigliaDiGiocoConPacchiSenzaOstacoli,
                           grigliaOstacoliSenzaPacchi);
   while (1 == 1) {
-    if (listen(socketDesc, 3) < 0)
+    if (listen(socketDesc, 10) < 0)
       perror("Impossibile mettersi in ascolto"), exit(-1);
     printf("In ascolto..\n");
     if ((clientDesc = accept(socketDesc, NULL, NULL)) < 0) {
@@ -105,9 +105,11 @@ void *gestisci(void *descriptor) {
 
 int registraClient(int clientDesc) {
   char userName[MAX_BUF];
+  char password[MAX_BUF];
   printf("length :%ld\n", read(clientDesc,userName,MAX_BUF));
   read(clientDesc,userName,MAX_BUF);
-  printf("%s\n",userName);
+  read(clientDesc,password,MAX_BUF);
+  printf("%s\n%s\n",userName,password);
 
   return 0;
 }

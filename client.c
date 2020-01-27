@@ -109,16 +109,19 @@ int login() { return 0; }
 
 int registrati(int serverSocket) {
   char username[20];
-  int dimUser, dimPass;
   char password[20];
   system("clear");
   printf("Inserisci nome utente(MAX 20 caratteri): ");
-  dimUser = scanf("%s", username);
+  scanf("%s", username);
   printf("\nInserisci password(MAX 20 caratteri):");
-  dimPass = scanf("%s", password);
-  if (write(serverSocket, username, dimUser) < 0)
+  scanf("%s", password);
+  if(write(serverSocket,strlen(username),sizeof(strlen(username)))<0)
     return 0;
-  if (write(serverSocket, password, dimPass) < 0)
+  if(write(serverSocket,strlen(password),sizeof(strlen(password)))<0)
+    return 0;
+  if (write(serverSocket, username, strlen(username)) < 0)
+    return 0;
+  if (write(serverSocket, password, strlen(password)) < 0)
     return 0;
   return 1;
 }

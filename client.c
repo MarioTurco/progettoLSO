@@ -69,6 +69,8 @@ int gestisci(int inputFromServer, int serverSocket) {
     system("clear");
     if (choice == '3') {
       printf("Uscita in corso\n");
+      msg = 3;
+      write(serverSocket, &msg, sizeof(int));
       return (0);
     } else if (choice == '2') {
       msg = 2;

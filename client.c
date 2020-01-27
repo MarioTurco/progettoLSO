@@ -92,9 +92,9 @@ char getUserInput() {
   char c;
   c = getchar();
   int daIgnorare;
+  while ((daIgnorare = getchar()) != '\n' && daIgnorare != EOF) {
+  }
   return c;
-  /*while ((daIgnorare = getchar()) != '\n' && daIgnorare != EOF) {
-  }*/
 }
 int login() { return 0; }
 

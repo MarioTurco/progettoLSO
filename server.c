@@ -77,7 +77,7 @@ void *gestisci(void *descriptor) {
         grigliaDiGiocoConPacchiSenzaOstacoli, grigliaOstacoliSenzaPacchi);
     write(client_sd, grigliaDiGiocoConPacchiSenzaOstacoli,
           sizeof(grigliaDiGiocoConPacchiSenzaOstacoli));
-    /*while (1) {
+    while (1) {
       sleep(1);
       timer--;
       printf("%ld\n", timer);
@@ -93,7 +93,7 @@ void *gestisci(void *descriptor) {
               sizeof(grigliaDiGiocoConPacchiSenzaOstacoli));
         timer = TIME_LIMIT_IN_SECONDS;
       }
-  }*/
+    }
     // userMovement();
   }
 

@@ -10,12 +10,13 @@
 #define MAX_BUF 100
 
 int registraClient(int);
+void timer(void *args);
 void *gestisci(void *descriptor);
 char grigliaDiGiocoConPacchiSenzaOstacoli[ROWS][COLUMNS];
 char grigliaOstacoliSenzaPacchi[ROWS][COLUMNS];
-time_t timer = TIME_LIMIT_IN_SECONDS;
+int numeroClient = 0;
+time_t timerCount = TIME_LIMIT_IN_SECONDS;
 int main() {
-  int numeroClient = 0;
   int socketDesc, clientDesc;
   int *thread_desc;
   pthread_t tid;
@@ -36,7 +37,7 @@ int main() {
   generaPosizioneOstacoli(grigliaDiGiocoConPacchiSenzaOstacoli,
                           grigliaOstacoliSenzaPacchi);
   while (1 == 1) {
-    if (listen(socketDesc, 3) < 0)
+    if (listen(socketDesc, 10) < 0)
       perror("Impossibile mettersi in ascolto"), exit(-1);
     printf("In ascolto..\n");
     if ((clientDesc = accept(socketDesc, NULL, NULL)) < 0) {
@@ -78,36 +79,42 @@ void *gestisci(void *descriptor) {
         grigliaDiGiocoConPacchiSenzaOstacoli, grigliaOstacoliSenzaPacchi);
     write(client_sd, grigliaDiGiocoConPacchiSenzaOstacoli,
           sizeof(grigliaDiGiocoConPacchiSenzaOstacoli));
-    while (1) {
-      sleep(1);
-      timer--;
-      printf("%ld\n", timer);
-      if (timer == 0) {
-        inizializzaGrigliaVuota(grigliaDiGiocoConPacchiSenzaOstacoli);
-        riempiGrigliaConPacchiInPosizioniGenerateCasualmente(
-            grigliaDiGiocoConPacchiSenzaOstacoli);
-        generaPosizioneOstacoli(grigliaDiGiocoConPacchiSenzaOstacoli,
-                                grigliaOstacoliSenzaPacchi);
-        inserisciPlayerNellaGrigliaInPosizioneCasuale(
-            grigliaDiGiocoConPacchiSenzaOstacoli, grigliaOstacoliSenzaPacchi);
-        write(client_sd, grigliaDiGiocoConPacchiSenzaOstacoli,
-              sizeof(grigliaDiGiocoConPacchiSenzaOstacoli));
-        timer = TIME_LIMIT_IN_SECONDS;
-      }
-    }
+    /* while (1) {
+       sleep(1);
+       timer--;
+       printf("%ld\n", timer);
+       if (timer == 0) {
+         inizializzaGrigliaVuota(grigliaDiGiocoConPacchiSenzaOstacoli);
+         riempiGrigliaConPacchiInPosizioniGenerateCasualmente(
+             grigliaDiGiocoConPacchiSenzaOstacoli);
+         generaPosizioneOstacoli(grigliaDiGiocoConPacchiSenzaOstacoli,
+                                 grigliaOstacoliSenzaPacchi);
+         inserisciPlayerNellaGrigliaInPosizioneCasuale(
+             grigliaDiGiocoConPacchiSenzaOstacoli, grigliaOstacoliSenzaPacchi);
+         write(client_sd, grigliaDiGiocoConPacchiSenzaOstacoli,
+               sizeof(grigliaDiGiocoConPacchiSenzaOstacoli));
+         timer = TIME_LIMIT_IN_SECONDS;
+       }
+     }*/
     // userMovement();
   }
-
+  numeroClient--;
   close(client_sd);
   free(descriptor);
+  printf("Client disconnesso (client attuali: %d)\n", numeroClient);
   pthread_exit(NULL);
 }
 
 int registraClient(int clientDesc) {
   char userName[MAX_BUF];
-  printf("length :%ld\n", read(clientDesc,userName,MAX_BUF));
-  read(clientDesc,userName,MAX_BUF);
-  printf("%s\n",userName);
+  printf("length :%ld\n", read(clientDesc, userName, MAX_BUF));
+  read(clientDesc, userName, MAX_BUF);
+  printf("%s\n", userName);
 
   return 0;
+}
+
+void timer(void *args) {
+
+  // TODO
 }

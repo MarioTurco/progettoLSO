@@ -26,7 +26,7 @@ int main(int argc, char **argv) {
   char bufferRecieve[2];
   char *indirizzoServer;
   if (argc != 3)
-    perror("Inseire indirizzo ip/url e porta (./client 127.0.0.1 5200)"),
+    perror("Inserire indirizzo ip/url e porta (./client 127.0.0.1 5200)"),
         exit(-1);
   if ((socketDesc = connettiAlServer(argv, indirizzoServer)) < 0)
     exit(-1);

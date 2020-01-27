@@ -2,6 +2,7 @@
 #include <netinet/in.h> //conversioni
 #include <netinet/ip.h> //struttura
 #include <pthread.h>
+#include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -9,6 +10,7 @@
 #include <unistd.h>
 #define MAX_BUF 100
 
+void disconnettiClient();
 int registraClient(int);
 void timer(void *args);
 void *gestisci(void *descriptor);
@@ -63,7 +65,7 @@ void *gestisci(void *descriptor) {
   int bufferRecieve[2] = {1};
   int client_sd;
   int ret = 1;
-
+  signal(SIGPIPE, disconnettiClient);
   client_sd = *(int *)descriptor;
 
   printf("server: gestisci sd = %d \n", client_sd);
@@ -98,13 +100,12 @@ void *gestisci(void *descriptor) {
      }*/
     // userMovement();
   }
-  numeroClient--;
   close(client_sd);
   free(descriptor);
   printf("Client disconnesso (client attuali: %d)\n", numeroClient);
   pthread_exit(NULL);
 }
-
+void disconnettiClient() { numeroClient--; }
 int registraClient(int clientDesc) {
   char userName[MAX_BUF];
   printf("length :%ld\n", read(clientDesc, userName, MAX_BUF));

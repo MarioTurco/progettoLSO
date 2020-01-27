@@ -16,6 +16,7 @@
 
 char grigliaDiGioco[ROWS][COLUMNS];
 void printMenu();
+int connettiAlServer(char **argv, char *indirizzoServer);
 char *ipResolver(char **argv);
 int registrati(int);
 int gestisci(int, int);
@@ -25,6 +26,19 @@ int main(int argc, char **argv) {
   int socketDesc;
   char bufferRecieve[2];
   char *indirizzoServer;
+  if ((socketDesc = connettiAlServer(argv, indirizzoServer)) < 0)
+    exit(-1);
+  if (read(socketDesc, bufferRecieve, 1) < 0) {
+    printf("impossibile leggere il messaggio\n");
+  }
+  printf("Ricevuto %d\n", bufferRecieve[0]);
+  gestisci(bufferRecieve[0], socketDesc);
+
+  close(socketDesc);
+  exit(0);
+}
+int connettiAlServer(char **argv, char *indirizzoServer) {
+  int socketDesc;
   indirizzoServer = ipResolver(argv);
   struct sockaddr_in mio_indirizzo;
   mio_indirizzo.sin_family = AF_INET;
@@ -39,14 +53,7 @@ int main(int argc, char **argv) {
     perror("Impossibile connettersi"), exit(-1);
   else
     printf("Connesso a %s\n", indirizzoServer);
-  if (read(socketDesc, bufferRecieve, 1) < 0) {
-    printf("impossibile leggere il messaggio\n");
-  }
-  printf("Ricevuto %d\n", bufferRecieve[0]);
-  gestisci(bufferRecieve[0], socketDesc);
-
-  close(socketDesc);
-  exit(0);
+  return socketDesc;
 }
 
 int gestisci(int inputFromServer, int serverSocket) {

@@ -65,12 +65,10 @@ void *gestisci(void *descriptor) {
   int bufferRecieve[2] = {1};
   int client_sd;
   int ret = 1;
-  signal(SIGPIPE, disconnettiClient);
   client_sd = *(int *)descriptor;
 
   printf("server: gestisci sd = %d \n", client_sd);
-  write(client_sd, bufferSend, 1);
-  read(client_sd, bufferRecieve, sizeof(bufferRecieve));
+  read(client_sd, bufferRecieve, strlen(bufferRecieve));
   if (bufferRecieve[0] == 2) {
     if (registraClient(client_sd) < 0) {
       perror("Impossibile registrare utente, riprovare\n");
@@ -99,13 +97,20 @@ void *gestisci(void *descriptor) {
        }
      }*/
     // userMovement();
+  } else if (bufferRecieve[0] == 3) {
+    disconnettiClient(client_sd, descriptor);
   }
   close(client_sd);
   free(descriptor);
-  printf("Client disconnesso (client attuali: %d)\n", numeroClient);
+
   pthread_exit(NULL);
 }
-void disconnettiClient() { numeroClient--; }
+void disconnettiClient(int clientDescriptor, int *threadDescriptor) {
+  numeroClient--;
+  printf("Client disconnesso (client attuali: %d)\n", numeroClient);
+  close(clientDescriptor);
+  free(threadDescriptor);
+}
 int registraClient(int clientDesc) {
   char userName[MAX_BUF];
   char password[MAX_BUF];

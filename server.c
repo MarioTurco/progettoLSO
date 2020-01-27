@@ -11,7 +11,7 @@
 #include <unistd.h>
 #define MAX_BUF 100
 
-char* users;
+char *users;
 
 int tryLogin(int clientDescriptor);
 void disconnettiClient();
@@ -23,14 +23,14 @@ char grigliaOstacoliSenzaPacchi[ROWS][COLUMNS];
 int numeroClient = 0;
 time_t timerCount = TIME_LIMIT_IN_SECONDS;
 
-int main(int argc,char**argv) {
-  
-  if(argc!=2){ 
-    printf("Wrong parameters number\n");        
+int main(int argc, char **argv) {
+
+  if (argc != 2) {
+    printf("Wrong parameters number(Usage: ./server usersFile)\n");
     exit(-1);
   }
 
-  users=argv[1];
+  users = argv[1];
   int socketDesc, clientDesc;
   int *thread_desc;
   pthread_t tid;
@@ -72,19 +72,19 @@ int main(int argc,char**argv) {
   return 0;
 }
 
-int tryLogin(int clientDesc){
-  //TODO proteggere con un mutex
-  char *userName=(char*)calloc(MAX_BUF,1);
-  char *password=(char*)calloc(MAX_BUF,1);
-  int dimName,dimPwd;
-  read(clientDesc,&dimName,sizeof(int));
-  read(clientDesc,&dimPwd,sizeof(int));
+int tryLogin(int clientDesc) {
+  // TODO proteggere con un mutex
+  char *userName = (char *)calloc(MAX_BUF, 1);
+  char *password = (char *)calloc(MAX_BUF, 1);
+  int dimName, dimPwd;
+  read(clientDesc, &dimName, sizeof(int));
+  read(clientDesc, &dimPwd, sizeof(int));
   read(clientDesc, userName, dimName);
   read(clientDesc, password, dimPwd);
 
-  int ret=0;
-  if(validateLogin(userName,password,users))
-    ret=1;
+  int ret = 0;
+  if (validateLogin(userName, password, users))
+    ret = 1;
 
   return ret;
 }
@@ -97,31 +97,31 @@ void *gestisci(void *descriptor) {
   client_sd = *(int *)descriptor;
 
   printf("server: gestisci sd = %d \n", client_sd);
-  
-  while(1){
+
+  while (1) {
     read(client_sd, bufferReceive, sizeof(bufferReceive));
-  
+
     if (bufferReceive[0] == 2) {
-      int ret=registraClient(client_sd);
+      int ret = registraClient(client_sd);
       if (!ret) {
-        write(client_sd,&ret,sizeof(ret));
+        write(client_sd, &ret, sizeof(ret));
         printf("Impossibile registrare utente, riprovare\n");
-     }
-     else{
-       int ret=1;
-       write(client_sd,&ret,sizeof(ret));
-       printf("Utente registrato con successo\n");
-     }
-   } 
-  
-   else if (bufferReceive[0] == 1) {
-      int grantAccess=tryLogin(client_sd);
-      if(grantAccess){
-        write(client_sd,&grantAccess,sizeof(grantAccess));
-        inserisciPlayerNellaGrigliaInPosizioneCasuale(grigliaDiGiocoConPacchiSenzaOstacoli,grigliaOstacoliSenzaPacchi);
+      } else {
+        int ret = 1;
+        write(client_sd, &ret, sizeof(ret));
+        printf("Utente registrato con successo\n");
+      }
+    }
+
+    else if (bufferReceive[0] == 1) {
+      int grantAccess = tryLogin(client_sd);
+      if (grantAccess) {
+        write(client_sd, &grantAccess, sizeof(grantAccess));
+        inserisciPlayerNellaGrigliaInPosizioneCasuale(
+            grigliaDiGiocoConPacchiSenzaOstacoli, grigliaOstacoliSenzaPacchi);
 
         write(client_sd, grigliaDiGiocoConPacchiSenzaOstacoli,
-            sizeof(grigliaDiGiocoConPacchiSenzaOstacoli));
+              sizeof(grigliaDiGiocoConPacchiSenzaOstacoli));
         /* while (1) {
           sleep(1);
           timer--;
@@ -139,18 +139,17 @@ void *gestisci(void *descriptor) {
            timer = TIME_LIMIT_IN_SECONDS;
          }
        }*/
-       // userMovement();
-     }
-     else{
-      write(client_sd,&grantAccess,sizeof(grantAccess));
-     }
-   } 
-  
-    else if (bufferReceive[0] == 3) {
-     disconnettiClient(client_sd, descriptor);
-     break;
+        // userMovement();
+      } else {
+        write(client_sd, &grantAccess, sizeof(grantAccess));
+      }
     }
-  
+
+    else if (bufferReceive[0] == 3) {
+      disconnettiClient(client_sd, descriptor);
+      break;
+    }
+
     else {
       printf("Input invalido, uscita...\n");
       close(client_sd);
@@ -170,17 +169,17 @@ void disconnettiClient(int clientDescriptor, int *threadDescriptor) {
 }
 
 int registraClient(int clientDesc) {
-  char *userName=(char*)calloc(MAX_BUF,1);
-  char *password=(char*)calloc(MAX_BUF,1);
-  int dimName,dimPwd;
-  read(clientDesc,&dimName,sizeof(int));
-  read(clientDesc,&dimPwd,sizeof(int));
+  char *userName = (char *)calloc(MAX_BUF, 1);
+  char *password = (char *)calloc(MAX_BUF, 1);
+  int dimName, dimPwd;
+  read(clientDesc, &dimName, sizeof(int));
+  read(clientDesc, &dimPwd, sizeof(int));
   read(clientDesc, userName, dimName);
   read(clientDesc, password, dimPwd);
-  //printf("%s:%d\n%s:%d\n", userName, dimName, password, dimPwd);
-  //TODO proteggere con un mutex
-  int ret=appendPlayer(userName,password,users);
-  
+  // printf("%s:%d\n%s:%d\n", userName, dimName, password, dimPwd);
+  // TODO proteggere con un mutex
+  int ret = appendPlayer(userName, password, users);
+
   return ret;
 }
 

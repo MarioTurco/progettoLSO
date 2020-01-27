@@ -18,12 +18,15 @@ void disconnettiClient();
 int registraClient(int);
 void timer(void *args);
 void *gestisci(void *descriptor);
+void clientCrashHandler(int signalNum);
+/*//////////////////////////////////*/
 char grigliaDiGiocoConPacchiSenzaOstacoli[ROWS][COLUMNS];
 char grigliaOstacoliSenzaPacchi[ROWS][COLUMNS];
 int numeroClient = 0;
 time_t timerCount = TIME_LIMIT_IN_SECONDS;
+/*///////////////////////////////*/
 int main(int argc, char **argv) {
-  signal(SIGPIPE, SIG_IGN);
+  signal(SIGPIPE, clientCrashHandler);
   if (argc != 2) {
     printf("Wrong parameters number(Usage: ./server usersFile)\n");
     exit(-1);
@@ -159,7 +162,11 @@ void *gestisci(void *descriptor) {
   printf("uscita thread\n");
   pthread_exit(NULL);
 }
-
+void clientCrashHandler(int signalNum) {
+  numeroClient--;
+  printf("Client disconnesso (client attuali: %d)\n", numeroClient);
+  signal(SIGPIPE, SIG_IGN);
+}
 void disconnettiClient(int clientDescriptor, int *threadDescriptor) {
   numeroClient--;
   printf("Client disconnesso (client attuali: %d)\n", numeroClient);

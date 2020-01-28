@@ -21,15 +21,18 @@ int registrati();
 int gestisci();
 char getUserInput();
 int login();
-void crashHandler(int numSegnale);
+void clientCrashHandler();
+void serverCrashed();
 /*/////////////////////////////*/
 int socketDesc;
 char grigliaDiGioco[ROWS][COLUMNS];
 /*//////////////////////////////*/
 int main(int argc, char **argv) {
-  signal(SIGINT, crashHandler);
-  signal(SIGQUIT, crashHandler);
-  signal(SIGTERM, crashHandler);
+  signal(SIGINT, clientCrashHandler);
+  signal(SIGHUP, clientCrashHandler);
+  signal(SIGQUIT, clientCrashHandler);
+  signal(SIGTERM, clientCrashHandler);
+  signal(SIGPIPE, serverCrashed);
   char *indirizzoServer;
 
   char bufferReceive[2];
@@ -40,7 +43,7 @@ int main(int argc, char **argv) {
   if ((socketDesc = connettiAlServer(argv, indirizzoServer)) < 0)
     exit(-1);
 
-  signal(SIGSTOP, crashHandler);
+  signal(SIGSTOP, clientCrashHandler);
   gestisci(socketDesc);
   close(socketDesc);
   exit(0);
@@ -208,8 +211,18 @@ char *ipResolver(char **argv) {
   return inet_ntoa(*(struct in_addr *)hp->h_addr_list[0]);
 }
 
-void crashHandler(int numSegnale) {
+void clientCrashHandler() {
   int msg = 3;
   write(socketDesc, &msg, sizeof(int));
+  signal(SIGINT, SIG_IGN);
+  signal(SIGQUIT, SIG_IGN);
+  signal(SIGTERM, SIG_IGN);
+  exit(0);
+}
+void serverCrashed() {
+  system("clear");
+  printf("Il server è crashato o è irraggiungibile\n");
+  signal(SIGPIPE, SIG_IGN);
+
   exit(0);
 }

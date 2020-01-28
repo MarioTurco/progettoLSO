@@ -16,17 +16,21 @@ char *users;
 int tryLogin(int clientDescriptor);
 void disconnettiClient();
 int registraClient(int);
-void timer(void *args);
+void *timer(void *args);
 void *gestisci(void *descriptor);
+void quitServer();
 void clientCrashHandler(int signalNum);
 /*//////////////////////////////////*/
 char grigliaDiGiocoConPacchiSenzaOstacoli[ROWS][COLUMNS];
 char grigliaOstacoliSenzaPacchi[ROWS][COLUMNS];
 int numeroClient = 0;
 time_t timerCount = TIME_LIMIT_IN_SECONDS;
+pthread_t tidTimer;
 /*///////////////////////////////*/
 int main(int argc, char **argv) {
   signal(SIGPIPE, clientCrashHandler);
+  signal(SIGINT, quitServer);
+  signal(SIGHUP, quitServer);
   if (argc != 2) {
     printf("Wrong parameters number(Usage: ./server usersFile)\n");
     exit(-1);
@@ -52,6 +56,7 @@ int main(int argc, char **argv) {
       grigliaDiGiocoConPacchiSenzaOstacoli);
   generaPosizioneOstacoli(grigliaDiGiocoConPacchiSenzaOstacoli,
                           grigliaOstacoliSenzaPacchi);
+  pthread_create(&tidTimer, NULL, timer, NULL);
   while (1 == 1) {
     if (listen(socketDesc, 10) < 0)
       perror("Impossibile mettersi in ascolto"), exit(-1);
@@ -125,9 +130,6 @@ void *gestisci(void *descriptor) {
         write(client_sd, grigliaDiGiocoConPacchiSenzaOstacoli,
               sizeof(grigliaDiGiocoConPacchiSenzaOstacoli));
         /* while (1) {
-          sleep(1);
-          timer--;
-          printf("%ld\n", timer);
           if (timer == 0) {
             inizializzaGrigliaVuota(grigliaDiGiocoConPacchiSenzaOstacoli);
            riempiGrigliaConPacchiInPosizioniGenerateCasualmente(
@@ -189,7 +191,26 @@ int registraClient(int clientDesc) {
   return ret;
 }
 
-void timer(void *args) {
+void quitServer() {
+  int msg = -1;
+  printf("Chiusura server in corso..\n");
 
-  // TODO
+  exit(-1);
+}
+void *timer(void *args) {
+  int cambiato = 1;
+  while (1) {
+    if (numeroClient > 0) {
+      cambiato = 1;
+      sleep(1);
+      timerCount--;
+      fprintf(stdout, "Time left: %ld\n", timerCount);
+    } else if (numeroClient == 0) {
+      timerCount = TIME_LIMIT_IN_SECONDS;
+      if (cambiato) {
+        fprintf(stdout, "Time left: %ld\n", timerCount);
+        cambiato = 0;
+      }
+    }
+  }
 }

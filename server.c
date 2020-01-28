@@ -194,7 +194,7 @@ int registraClient(int clientDesc) {
 void quitServer() {
   int msg = -1;
   printf("Chiusura server in corso..\n");
-
+  
   exit(-1);
 }
 void *timer(void *args) {

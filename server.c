@@ -73,14 +73,6 @@ int main(int argc, char **argv) {
     thread_desc = (int *)malloc(sizeof(int));
     *thread_desc = clientDesc;
     pthread_create(&tid, NULL, gestisci, (void *)thread_desc);
-    if (timerCount == 0) {
-      printf("Reset timer e generazione nuova mappa..\n");
-      inizializzaGrigliaVuota(grigliaDiGiocoConPacchiSenzaOstacoli);
-      riempiGrigliaConPacchiInPosizioniGenerateCasualmente(
-          grigliaDiGiocoConPacchiSenzaOstacoli);
-      generaPosizioneOstacoli(grigliaDiGiocoConPacchiSenzaOstacoli,
-                              grigliaOstacoliSenzaPacchi);
-    }
   }
   close(clientDesc);
   close(socketDesc);
@@ -138,6 +130,11 @@ void *gestisci(void *descriptor) {
         write(client_sd, grigliaDiGiocoConPacchiSenzaOstacoli,
               sizeof(grigliaDiGiocoConPacchiSenzaOstacoli));
         while (1) {
+          if (timerCount == TIME_LIMIT_IN_SECONDS) {
+            inserisciPlayerNellaGrigliaInPosizioneCasuale(
+                grigliaDiGiocoConPacchiSenzaOstacoli,
+                grigliaOstacoliSenzaPacchi);
+          }
           sleep(2); // al posto di questo sleep va messo un read
                     // così il server non invia continuamente ed il cliente non
                     // stampa continuamente il server deve aspettare l'input del
@@ -216,6 +213,16 @@ void *timer(void *args) {
         fprintf(stdout, "Time left: %ld\n", timerCount);
         cambiato = 0;
       }
+    }
+    if (timerCount == 0) {
+      printf("Reset timer e generazione nuova mappa..\n");
+      inizializzaGrigliaVuota(grigliaDiGiocoConPacchiSenzaOstacoli);
+      riempiGrigliaConPacchiInPosizioniGenerateCasualmente(
+          grigliaDiGiocoConPacchiSenzaOstacoli);
+      generaPosizioneOstacoli(grigliaDiGiocoConPacchiSenzaOstacoli,
+                              grigliaOstacoliSenzaPacchi);
+      timerCount = TIME_LIMIT_IN_SECONDS;
+      sleep(2);
     }
   }
 }

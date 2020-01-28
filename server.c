@@ -200,7 +200,7 @@ void quitServer() {
 void *timer(void *args) {
   int cambiato = 1;
   while (1) {
-    if (numeroClient > 0) {
+    if (numeroClient > 0 && timerCount > 0) {
       cambiato = 1;
       sleep(1);
       timerCount--;

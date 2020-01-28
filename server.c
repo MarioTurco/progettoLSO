@@ -73,6 +73,14 @@ int main(int argc, char **argv) {
     thread_desc = (int *)malloc(sizeof(int));
     *thread_desc = clientDesc;
     pthread_create(&tid, NULL, gestisci, (void *)thread_desc);
+    if (timerCount == 0) {
+      printf("Reset timer e generazione nuova mappa..\n");
+      inizializzaGrigliaVuota(grigliaDiGiocoConPacchiSenzaOstacoli);
+      riempiGrigliaConPacchiInPosizioniGenerateCasualmente(
+          grigliaDiGiocoConPacchiSenzaOstacoli);
+      generaPosizioneOstacoli(grigliaDiGiocoConPacchiSenzaOstacoli,
+                              grigliaOstacoliSenzaPacchi);
+    }
   }
   close(clientDesc);
   close(socketDesc);
@@ -129,20 +137,12 @@ void *gestisci(void *descriptor) {
 
         write(client_sd, grigliaDiGiocoConPacchiSenzaOstacoli,
               sizeof(grigliaDiGiocoConPacchiSenzaOstacoli));
-        /* while (1) {
-          if (timer == 0) {
-            inizializzaGrigliaVuota(grigliaDiGiocoConPacchiSenzaOstacoli);
-           riempiGrigliaConPacchiInPosizioniGenerateCasualmente(
-                grigliaDiGiocoConPacchiSenzaOstacoli);
-            generaPosizioneOstacoli(grigliaDiGiocoConPacchiSenzaOstacoli,
-                                 grigliaOstacoliSenzaPacchi);
-           inserisciPlayerNellaGrigliaInPosizioneCasuale(
-              grigliaDiGiocoConPacchiSenzaOstacoli, grigliaOstacoliSenzaPacchi);
-           write(client_sd, grigliaDiGiocoConPacchiSenzaOstacoli,
+        while (1) {
+          sleep(2);
+          write(client_sd, grigliaDiGiocoConPacchiSenzaOstacoli,
                 sizeof(grigliaDiGiocoConPacchiSenzaOstacoli));
-           timer = TIME_LIMIT_IN_SECONDS;
-         }
-       }*/
+        }
+
         // userMovement();
       } else {
         write(client_sd, &grantAccess, sizeof(grantAccess));
@@ -194,7 +194,7 @@ int registraClient(int clientDesc) {
 void quitServer() {
   int msg = -1;
   printf("Chiusura server in corso..\n");
-  
+
   exit(-1);
 }
 void *timer(void *args) {

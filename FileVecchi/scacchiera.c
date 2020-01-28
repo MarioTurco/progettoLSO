@@ -107,6 +107,7 @@ void fillGridInitializer() {
   }
 }
 void printGrid(char grigliaDaStampare[ROWS][COLUMNS]) {
+  system("clear");
   int i = 0, j = 0;
   for (i = 0; i < ROWS; i++) {
     printf("\t");

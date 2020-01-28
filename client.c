@@ -103,17 +103,21 @@ int gestisci() {
     else if (choice == '1') {
       msg = 1;
       write(socketDesc, &msg, sizeof(int));
-
+      char inputUtente;
       if (!tryLogin(socketDesc)) {
         printf("Credenziali Errate: riprova\n");
         sleep(2);
       } else {
         printf("Accesso effettuato\n");
         sleep(2);
+        system("clear");
         while (1) {
+          printf("Lettura \n");
           if (read(socketDesc, grigliaDiGioco, sizeof(grigliaDiGioco)) < 1)
             printf("Impossibile comunicare con il server\n"), exit(-1);
           printGrid(grigliaDiGioco);
+          // inputUtente = getchar();
+          // printf(" Input:%c\n", inputUtente);
         }
       }
     }

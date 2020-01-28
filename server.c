@@ -138,7 +138,12 @@ void *gestisci(void *descriptor) {
         write(client_sd, grigliaDiGiocoConPacchiSenzaOstacoli,
               sizeof(grigliaDiGiocoConPacchiSenzaOstacoli));
         while (1) {
-          sleep(2);
+          sleep(2); // al posto di questo sleep va messo un read
+                    // così il server non invia continuamente ed il cliente non
+                    // stampa continuamente il server deve aspettare l'input del
+                    // client (tramite read che è bloccante) modificare la
+                    // griglia in base all'input dell utente e reinviarla
+                    // Poi lo faccio domani, ora non ho tempo per farlo
           write(client_sd, grigliaDiGiocoConPacchiSenzaOstacoli,
                 sizeof(grigliaDiGiocoConPacchiSenzaOstacoli));
         }

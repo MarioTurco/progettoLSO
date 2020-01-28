@@ -66,7 +66,6 @@ int main(int argc, char **argv) {
       exit(-1);
     }
     printf("%d", clientDesc);
-    numeroClient++;
     printf("Connessione effettuata (totale client connessi: %d)\n",
            numeroClient);
     // creo un puntatore per il socket del client e lo passo al thread
@@ -90,8 +89,10 @@ int tryLogin(int clientDesc) {
   read(clientDesc, password, dimPwd);
 
   int ret = 0;
-  if (validateLogin(userName, password, users))
+  if (validateLogin(userName, password, users)) {
     ret = 1;
+    numeroClient++;
+  }
 
   return ret;
 }
@@ -101,8 +102,10 @@ void *gestisci(void *descriptor) {
   int bufferReceive[2] = {1};
   int client_sd;
   int ret = 1;
+  int posizione[2];
   client_sd = *(int *)descriptor;
-
+  pthread_t tid = pthread_self();
+  printf("Sono il thread: %ld", tid);
   printf("server: gestisci sd = %d \n", client_sd);
 
   while (1) {
@@ -122,18 +125,19 @@ void *gestisci(void *descriptor) {
 
     else if (bufferReceive[0] == 1) {
       int grantAccess = tryLogin(client_sd);
+
       if (grantAccess) {
         write(client_sd, &grantAccess, sizeof(grantAccess));
         inserisciPlayerNellaGrigliaInPosizioneCasuale(
-            grigliaDiGiocoConPacchiSenzaOstacoli, grigliaOstacoliSenzaPacchi);
-
+            grigliaDiGiocoConPacchiSenzaOstacoli, grigliaOstacoliSenzaPacchi,
+            posizione);
         write(client_sd, grigliaDiGiocoConPacchiSenzaOstacoli,
               sizeof(grigliaDiGiocoConPacchiSenzaOstacoli));
         while (1) {
           if (timerCount == TIME_LIMIT_IN_SECONDS) {
             inserisciPlayerNellaGrigliaInPosizioneCasuale(
                 grigliaDiGiocoConPacchiSenzaOstacoli,
-                grigliaOstacoliSenzaPacchi);
+                grigliaOstacoliSenzaPacchi, posizione);
           }
           sleep(2); // al posto di questo sleep va messo un read
                     // così il server non invia continuamente ed il cliente non

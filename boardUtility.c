@@ -5,7 +5,8 @@
 #include <unistd.h>
 
 void inserisciPlayerNellaGrigliaInPosizioneCasuale(
-    char grigliaDiGioco[ROWS][COLUMNS], char grigliaOstacoli[ROWS][COLUMNS]);
+    char grigliaDiGioco[ROWS][COLUMNS], char grigliaOstacoli[ROWS][COLUMNS],
+    int posizione[2]);
 void inizializzaGrigliaVuota(char grigliaDiGioco[ROWS][COLUMNS]);
 void generaPosizioneOstacoli(char grigliaDiGioco[ROWS][COLUMNS],
                              char grigliaOstacoli[ROWS][COLUMNS]);
@@ -117,7 +118,7 @@ void generaPosizioneOstacoli(char grigliaDiGioco[ROWS][COLUMNS],
 
   int x, y, i;
   inizializzaGrigliaVuota(grigliaOstacoli);
-  srand(time(NULL));
+  srand(time(0));
   for (i = 0; i < numberOfObstacles; i++) {
     x = rand() % COLUMNS;
     y = rand() % ROWS;
@@ -131,7 +132,7 @@ void generaPosizioneOstacoli(char grigliaDiGioco[ROWS][COLUMNS],
 void riempiGrigliaConPacchiInPosizioniGenerateCasualmente(
     char grigliaDiGioco[ROWS][COLUMNS]) {
   int x, y, i;
-  srand(time(NULL));
+  srand(time(0));
   for (i = 0; i < numberOfPackages; i++) {
     x = rand() % COLUMNS;
     y = rand() % ROWS;
@@ -165,12 +166,15 @@ void riempiGrigliaConGliOstacoli(char grigliaDiGioco[ROWS][COLUMNS],
 }
 
 void inserisciPlayerNellaGrigliaInPosizioneCasuale(
-    char grigliaDiGioco[ROWS][COLUMNS], char grigliaOstacoli[ROWS][COLUMNS]) {
+    char grigliaDiGioco[ROWS][COLUMNS], char grigliaOstacoli[ROWS][COLUMNS],
+    int posizione[2]) {
   int x, y;
-  srand(time(NULL));
+  srand(time(0));
   do {
     x = rand() % COLUMNS;
     y = rand() % ROWS;
   } while (grigliaDiGioco[y][x] != '-' && grigliaOstacoli[y][x] != '-');
   grigliaDiGioco[y][x] = 'P';
+  posizione[0] = y;
+  posizione[1] = x;
 }

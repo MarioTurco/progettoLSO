@@ -13,6 +13,7 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
+
 int tryLogin();
 void printMenu();
 int connettiAlServer(char **argv);
@@ -23,6 +24,8 @@ char getUserInput();
 int login();
 void clientCrashHandler();
 void serverCrashed();
+
+void esciDalServer();
 /*/////////////////////////////*/
 int socketDesc;
 char grigliaDiGioco[ROWS][COLUMNS];
@@ -49,6 +52,12 @@ int main(int argc, char **argv) {
   exit(0);
 }
 
+void esciDalServer() {
+  int msg = 3;
+  printf("Uscita in corso\n");
+  write(socketDesc, &msg, sizeof(int));
+  close(socketDesc);
+}
 int connettiAlServer(char **argv) {
   char *indirizzoServer;
   uint16_t porta = strtoul(argv[2], NULL, 10);
@@ -72,7 +81,6 @@ int connettiAlServer(char **argv) {
     printf("Connesso a %s\n", indirizzoServer);
   return socketDesc;
 }
-
 int gestisci() {
   char choice;
   int msg;
@@ -82,23 +90,18 @@ int gestisci() {
     // choice = getUserInput();
     scanf("%c", &choice);
     system("clear");
-
+    fflush(stdin);
     if (choice == '3') {
-      printf("Uscita in corso\n");
-      msg = 3;
-      write(socketDesc, &msg, sizeof(int));
-      close(socketDesc);
+      esciDalServer();
       return (0);
     }
 
     else if (choice == '2') {
-      msg = 2;
-      write(socketDesc, &msg, sizeof(int));
-      if (!registrati(socketDesc)) {
+      if (!registrati())
         printf("Impossibile registrare Utente, riprovare");
-      } else {
+      else
         printf("Utente registrato con successo\n");
-      }
+
       sleep(2);
     }
 
@@ -106,7 +109,7 @@ int gestisci() {
       msg = 1;
       write(socketDesc, &msg, sizeof(int));
       char inputUtente;
-      if (!tryLogin(socketDesc)) {
+      if (!tryLogin()) {
         printf("Credenziali Errate: riprova\n");
         sleep(2);
       } else {
@@ -174,8 +177,10 @@ char getUserInput() {
 int login() { return 0; }
 
 int registrati() {
+  int msg = 2;
   char username[20];
   char password[20];
+  write(socketDesc, &msg, sizeof(int));
   system("clear");
   printf("Inserisci nome utente(MAX 20 caratteri): ");
   scanf("%s", username);

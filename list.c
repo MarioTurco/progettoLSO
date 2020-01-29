@@ -1,8 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <time.h>
-#include <pthread.h>
 #include "list.h"
 #define MAX_BUF 200
 
@@ -16,12 +14,12 @@ List initNodeList(char* name, int sockDes) {
 }
 
 int isAlreadyLogged(List L,char* name){
-    ret=0;
+    int ret=0;
     if(L != NULL){
         if(strcmp(L->name,name)==0)
             ret=1;
         else  ret=0;
-        ret=isInList(L->next,name);
+        ret=isAlreadyLogged(L->next,name);
     }
     return ret;
 }

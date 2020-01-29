@@ -1,6 +1,6 @@
-#include <pthread.h>
 
-struct TList {
+
+struct TList { 
     char* name;
     struct TList* next;
     int sockDes;
@@ -27,4 +27,4 @@ void freeList(List L);
 void printList(List L);
 
 //Controlla se un utente è già loggato
-int isAlreadyLogged(List L,char* name)
+int isAlreadyLogged(List L,char* name);

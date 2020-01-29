@@ -191,7 +191,6 @@ int registrati() {
   char validate;
   int ret;
   read(socketDesc, &validate, sizeof(char));
-  /*printf("REGISTRATO?: %c\n", validate);*/
   if (validate == 'y') {
     ret = 1;
     printf("Registrato con successo\n");

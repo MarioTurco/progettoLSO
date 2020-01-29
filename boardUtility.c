@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <unistd.h>
-
+//
 void inserisciPlayerNellaGrigliaInPosizioneCasuale(
     char grigliaDiGioco[ROWS][COLUMNS], char grigliaOstacoli[ROWS][COLUMNS],
     int posizione[2]);
@@ -137,7 +137,7 @@ void riempiGrigliaConPacchiInPosizioniGenerateCasualmente(
     x = rand() % COLUMNS;
     y = rand() % ROWS;
     if (grigliaDiGioco[y][x] == '-') {
-      grigliaDiGioco[y][x] = 'I';
+      grigliaDiGioco[y][x] = '$';
     } else
       i--;
   }

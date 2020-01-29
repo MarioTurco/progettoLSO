@@ -1,4 +1,0 @@
-#! /bin/gcc
-
-gcc -o server server.c boardUtility.c  -lpthread;
-gcc -o client client.c boardUtility.c  -lpthread;

@@ -23,6 +23,7 @@ void *gestisci(void *descriptor);
 void quitServer();
 void clientCrashHandler(int signalNum);
 void startTimer();
+struct sockaddr_in configuraIndirizzo();
 /*//////////////////////////////////*/
 char grigliaDiGiocoConPacchiSenzaOstacoli[ROWS][COLUMNS];
 char grigliaOstacoliSenzaPacchi[ROWS][COLUMNS];
@@ -40,15 +41,11 @@ int main(int argc, char **argv) {
     printf("Wrong parameters number(Usage: ./server usersFile)\n");
     exit(-1);
   }
-
+  struct sockaddr_in mio_indirizzo = configuraIndirizzo();
   users = argv[1];
   int clientDesc;
   int *thread_desc;
   pthread_t tid;
-  struct sockaddr_in mio_indirizzo;
-  mio_indirizzo.sin_family = AF_INET;
-  mio_indirizzo.sin_port = htons(5200);
-  mio_indirizzo.sin_addr.s_addr = htonl(INADDR_ANY);
 
   if ((socketDesc = socket(PF_INET, SOCK_STREAM, 0)) < 0)
     perror("Impossibile creare socket"), exit(-1);
@@ -82,7 +79,14 @@ int main(int argc, char **argv) {
   quitServer();
   return 0;
 }
-
+struct sockaddr_in configuraIndirizzo() {
+  struct sockaddr_in mio_indirizzo;
+  mio_indirizzo.sin_family = AF_INET;
+  mio_indirizzo.sin_port = htons(5200);
+  mio_indirizzo.sin_addr.s_addr = htonl(INADDR_ANY);
+  printf("Indirizzo socket configurato\n");
+  return mio_indirizzo;
+}
 void startTimer() {
   printf("Thread timer avviato\n");
   pthread_create(&tidTimer, NULL, timer, NULL);

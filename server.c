@@ -1,6 +1,6 @@
-#include "boardUtility.h"
-#include "list.h"
-#include "parser.h"
+#include "lib/boardUtility.h"
+#include "lib/list.h"
+#include "lib/parser.h"
 #include <netinet/in.h> //conversioni
 #include <netinet/ip.h> //struttura
 #include <pthread.h>

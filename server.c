@@ -22,7 +22,7 @@ void *timer(void *args);
 void *gestisci(void *descriptor);
 void quitServer();
 void clientCrashHandler(int signalNum);
-
+void startTimer();
 /*//////////////////////////////////*/
 char grigliaDiGiocoConPacchiSenzaOstacoli[ROWS][COLUMNS];
 char grigliaOstacoliSenzaPacchi[ROWS][COLUMNS];
@@ -62,7 +62,6 @@ int main(int argc, char **argv) {
 
   inizializzaGiocoSenzaPlayer(grigliaDiGiocoConPacchiSenzaOstacoli,
                               grigliaOstacoliSenzaPacchi);
-  pthread_create(&tidTimer, NULL, timer, NULL);
 
   while (1 == 1) {
     if (listen(socketDesc, 10) < 0)
@@ -84,6 +83,10 @@ int main(int argc, char **argv) {
   return 0;
 }
 
+void startTimer() {
+  printf("Thread timer avviato\n");
+  pthread_create(&tidTimer, NULL, timer, NULL);
+}
 int tryLogin(int clientDesc) {
   // TODO proteggere con un mutex
   char *userName = (char *)calloc(MAX_BUF, 1);
@@ -189,10 +192,9 @@ void *gestisci(void *descriptor) {
 void clientCrashHandler(int signalNum) {
   numeroClient--;
   printf("Client disconnesso (client attuali: %d)\n", numeroClient);
-  //TODO proteggere con un mutex
-  //onLineUsers = removePlayer(onLineUsers, clientDescriptor); //trovare il modo per cancellare il player giusto
-  //printList(onLineUsers);
-  //printf("\n");
+  // TODO proteggere con un mutex
+  // onLineUsers = removePlayer(onLineUsers, clientDescriptor); //trovare il
+  // modo per cancellare il player giusto printList(onLineUsers); printf("\n");
   signal(SIGPIPE, SIG_IGN);
 }
 void disconnettiClient(int clientDescriptor, int *threadDescriptor) {

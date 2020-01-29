@@ -96,6 +96,7 @@ int tryLogin(int clientDesc) {
   if (validateLogin(userName, password, users)) {
     ret = 1;
     numeroClient++;
+    printf("Nuovo client loggato, client loggati : %d\n", numeroClient);
   }
 
   return ret;
@@ -109,8 +110,6 @@ void *gestisci(void *descriptor) {
   int posizione[2];
   client_sd = *(int *)descriptor;
   pthread_t tid = pthread_self();
-  printf("Sono il thread: %ld", tid);
-  printf("server: gestisci sd = %d \n", client_sd);
 
   while (1) {
     read(client_sd, bufferReceive, sizeof(bufferReceive));

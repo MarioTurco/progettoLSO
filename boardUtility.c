@@ -19,13 +19,22 @@ void gameOver();
 void printObs(char grigliaOstacoli[ROWS][COLUMNS]);
 void riempiGrigliaConGliOstacoli(char grigliaDiGioco[ROWS][COLUMNS],
                                  char grigliaOstacoli[ROWS][COLUMNS]);
-/*int main(int argc, char *argv[]) {
-  char grigliaDiGioco[ROWS][COLUMNS];
-  char grigliaOstacoli[ROWS][COLUMNS];
 
-  start(grigliaDiGioco, grigliaOstacoli);
-  return 0;
-}*/
+void printMenu();
+/*int main(int argc, char *argv[]) {
+      char grigliaDiGioco[ROWS][COLUMNS];
+      char grigliaOstacoli[ROWS][COLUMNS];
+
+      start(grigliaDiGioco, grigliaOstacoli);
+      return 0;
+    }*/
+void printMenu() {
+  system("clear");
+  printf("\t Cosa vuoi fare?\n");
+  printf("\t1 Gioca\n");
+  printf("\t2 Registrati\n");
+  printf("\t3 Esci\n");
+}
 void start(char grigliaDiGioco[ROWS][COLUMNS],
            char grigliaOstacoli[ROWS][COLUMNS]) {
   int movement;

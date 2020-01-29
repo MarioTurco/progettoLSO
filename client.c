@@ -108,8 +108,7 @@ int gestisci() {
         system("clear");
         play();
       }
-    }
-    else {
+    } else {
       printf("Wrong input\n");
     }
   }
@@ -192,14 +191,6 @@ int registrati() {
   read(socketDesc, &ret, sizeof(ret));
 
   return ret;
-}
-
-void printMenu() {
-  system("clear");
-  printf("\t Cosa vuoi fare?\n");
-  printf("\t1 Gioca\n");
-  printf("\t2 Registrati\n");
-  printf("\t3 Esci\n");
 }
 
 char *ipResolver(char **argv) {

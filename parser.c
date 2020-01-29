@@ -72,9 +72,11 @@ int validateLogin(char *name, char *pwd, char *file) {
 
   char command[MAX_BUF] = "cat  ";
   strcat(command, file);
-  char toApp[] = " |cut -d\" \" -f2|grep \"^";
+  char toApp[] = " |grep \"^";
   strcat(command, toApp);
-  strcat(command, pwd);
+  strcat(command, name);
+  strcat(command," ");
+  strcat(command,pwd);
   char toApp2[] = "$\">tmp";
   strcat(command, toApp2);
   int ret = 0;

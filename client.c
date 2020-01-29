@@ -146,11 +146,10 @@ int tryLogin() {
   if (validate == 'y') {
     ret = 1;
     printf("Accesso effettuato\n");
-    sleep(2);
+    getchar();
   } else if (validate == 'n') {
     printf("Credenziali Errate o Login già effettuato\n");
     ret = 0;
-    sleep(2);
   }
 
   return ret;

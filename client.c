@@ -194,12 +194,14 @@ int registrati() {
   if (validate == 'y') {
     ret = 1;
     printf("Registrato con successo\n");
+    premiEnterPerContinuare();
   }
   if (validate == 'n') {
     ret = 0;
     printf("Registrazione fallita\n");
+    premiEnterPerContinuare();
   }
-  premiEnterPerContinuare();
+
   return ret;
 }
 

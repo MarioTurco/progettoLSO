@@ -95,9 +95,4 @@ int validateLogin(char *name, char *pwd, char *file) {
 
 void premiEnterPerContinuare() {
   sleep(2);
-  /*char enter = 0;
-  printf("Premi enter per continuare...\n");
-  scanf("%c", &enter);
-  fflush(stdin);
-  return;*/
 }

@@ -189,6 +189,10 @@ void *gestisci(void *descriptor) {
 void clientCrashHandler(int signalNum) {
   numeroClient--;
   printf("Client disconnesso (client attuali: %d)\n", numeroClient);
+  //TODO proteggere con un mutex
+  //onLineUsers = removePlayer(onLineUsers, clientDescriptor); //trovare il modo per cancellare il player giusto
+  //printList(onLineUsers);
+  //printf("\n");
   signal(SIGPIPE, SIG_IGN);
 }
 void disconnettiClient(int clientDescriptor, int *threadDescriptor) {

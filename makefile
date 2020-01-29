@@ -1,4 +1,4 @@
-server: server.o boardUtility.o  parser.o
+server: server.o boardUtility.o  parser.o client.o
 	gcc server.o boardUtility.o  parser.o -o server -lpthread
 	gcc client.o boardUtility.o parser.o -o client -lpthread
 

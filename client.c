@@ -81,6 +81,7 @@ int connettiAlServer(char **argv) {
     printf("Connesso a %s\n", indirizzoServer);
   return socketDesc;
 }
+
 int gestisci() {
   char choice;
   int msg;
@@ -88,19 +89,23 @@ int gestisci() {
     printMenu();
     scanf("%c", &choice);
     system("clear");
-    fflush(stdin);
     if (choice == '3') {
       esciDalServer();
       return (0);
     } else if (choice == '2') {
-      if (!registrati())
+      if (!registrati()){
         printf("Impossibile registrare Utente, riprovare");
-      else
+        sleep(2);
+      }
+      else{
         printf("Utente registrato con successo\n");
-      sleep(2);
+        sleep(2);
+      }
     } else if (choice == '1') {
-      if (!tryLogin())
-        printf("Credenziali Errate: riprova\n");
+      if (!tryLogin()){
+        printf("Credenziali Errate o Login già effettuato\n");
+        sleep(2);
+      }
       else {
         printf("Accesso effettuato\n");
         sleep(2);
@@ -120,6 +125,7 @@ void play() {
     printGrid(grigliaDiGioco);
   }
 }
+
 int tryLogin() {
   int msg = 1;
   write(socketDesc, &msg, sizeof(int));
@@ -148,9 +154,11 @@ int tryLogin() {
   if (write(socketDesc, password, dimPwd) < 0)
     return 0;
 
-  int ret = 0;
-
-  read(socketDesc, &ret, sizeof(ret));
+  char validate;
+  int ret;
+  read(socketDesc, &validate, 1);
+  if(validate=='y') ret=1;
+  if(validate=='n') ret=0;
 
   return ret;
 }
@@ -167,9 +175,9 @@ int login() { return 0; }
 
 int registrati() {
   int msg = 2;
+  write(socketDesc, &msg, sizeof(int));
   char username[20];
   char password[20];
-  write(socketDesc, &msg, sizeof(int));
   system("clear");
   printf("Inserisci nome utente(MAX 20 caratteri): ");
   scanf("%s", username);
@@ -185,9 +193,13 @@ int registrati() {
   if (write(socketDesc, password, dimPwd) < 0)
     return 0;
 
-  int ret = 0;
-
-  read(socketDesc, &ret, sizeof(ret));
+  char validate;
+  int ret;
+  read(socketDesc, &validate, 1);
+  printf("REGISTRATO?: %c",validate);
+  if(validate=='y') ret=1;
+  if(validate=='n') ret=0;
+  
 
   return ret;
 }

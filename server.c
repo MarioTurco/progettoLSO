@@ -124,11 +124,10 @@ void *gestisci(void *descriptor) {
     if (bufferReceive[0] == 2) {
       int ret = registraClient(client_sd);
       if (!ret) {
-        write(client_sd, &ret, sizeof(ret));
+        write(client_sd, "n", 1);
         printf("Impossibile registrare utente, riprovare\n");
       } else {
-        int ret = 1;
-        write(client_sd, &ret, sizeof(ret));
+        write(client_sd, "y", 1);
         printf("Utente registrato con successo\n");
       }
     }
@@ -138,14 +137,14 @@ void *gestisci(void *descriptor) {
 
       if (grantAccess) {
         int n;
-        write(client_sd, &grantAccess, sizeof(grantAccess));
+        write(client_sd, "y", 1);
 
         inserisciPlayerNellaGrigliaInPosizioneCasuale(
             grigliaDiGiocoConPacchiSenzaOstacoli, grigliaOstacoliSenzaPacchi,
             posizione);
         n = write(client_sd, grigliaDiGiocoConPacchiSenzaOstacoli,
                   sizeof(grigliaDiGiocoConPacchiSenzaOstacoli));
-        printf("Size: %ld, sent %d", MATRIX_DIMENSION, n);
+        printf("Size: %ld, sent %d\n", MATRIX_DIMENSION, n);
         int true = 1;
         while (true) {
           if (timerCount == TIME_LIMIT_IN_SECONDS) {
@@ -165,7 +164,7 @@ void *gestisci(void *descriptor) {
 
         // userMovement();
       } else {
-        write(client_sd, &grantAccess, sizeof(grantAccess));
+        write(client_sd, "n", 1);
       }
     }
 
@@ -193,6 +192,8 @@ void disconnettiClient(int clientDescriptor, int *threadDescriptor) {
     numeroClient--;
   // TODO proteggere con un mutex
   onLineUsers = removePlayer(onLineUsers, clientDescriptor);
+  printList(onLineUsers);
+  printf("\n");
   int msg = 1;
   printf("Client disconnesso (client attuali: %d)\n", numeroClient);
   write(clientDescriptor, &msg, sizeof(msg));

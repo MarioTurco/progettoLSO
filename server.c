@@ -23,6 +23,8 @@ void startTimer();
 void configuraSocket(struct sockaddr_in mio_indirizzo);
 struct sockaddr_in configuraIndirizzo();
 void startListening();
+int clientDisconnesso(int clientSocket);
+void play(int clientDesc, pthread_t tid);
 /*//////////////////////////////////*/
 char grigliaDiGiocoConPacchiSenzaOstacoli[ROWS][COLUMNS];
 char grigliaOstacoliSenzaPacchi[ROWS][COLUMNS];
@@ -48,6 +50,7 @@ int main(int argc, char **argv) {
     printf("Wrong parameters number(Usage: ./server usersFile)\n");
     exit(-1);
   }
+  startTimer();
   inizializzaGiocoSenzaPlayer(grigliaDiGiocoConPacchiSenzaOstacoli,
                               grigliaOstacoliSenzaPacchi);
   startListening();
@@ -108,7 +111,6 @@ int tryLogin(int clientDesc) {
     printList(onLineUsers);
     printf("\n");
   }
-
   return ret;
 }
 
@@ -117,13 +119,12 @@ void *gestisci(void *descriptor) {
   int bufferReceive[2] = {1};
   int client_sd;
   int ret = 1;
-  int posizione[2];
+  int true = 1;
   client_sd = *(int *)descriptor;
   pthread_t tid = pthread_self();
 
-  while (1) {
+  while (true) {
     read(client_sd, bufferReceive, sizeof(bufferReceive));
-
     if (bufferReceive[0] == 2) {
       int ret = registraClient(client_sd);
       char risposta;
@@ -143,33 +144,9 @@ void *gestisci(void *descriptor) {
       int grantAccess = tryLogin(client_sd);
 
       if (grantAccess) {
-        int n;
         write(client_sd, "y", 1);
-
-        inserisciPlayerNellaGrigliaInPosizioneCasuale(
-            grigliaDiGiocoConPacchiSenzaOstacoli, grigliaOstacoliSenzaPacchi,
-            posizione);
-        n = write(client_sd, grigliaDiGiocoConPacchiSenzaOstacoli,
-                  sizeof(grigliaDiGiocoConPacchiSenzaOstacoli));
-        printf("Size: %ld, sent %d\n", MATRIX_DIMENSION, n);
-        int true = 1;
-        while (true) {
-          if (timerCount == TIME_LIMIT_IN_SECONDS) {
-            inserisciPlayerNellaGrigliaInPosizioneCasuale(
-                grigliaDiGiocoConPacchiSenzaOstacoli,
-                grigliaOstacoliSenzaPacchi, posizione);
-          }
-          sleep(2); // al posto di questo sleep va messo un read
-                    // così il server non invia continuamente ed il cliente non
-                    // stampa continuamente il server deve aspettare l'input del
-                    // client (tramite read che è bloccante) modificare la
-                    // griglia in base all'input dell utente e reinviarla
-                    // Poi lo faccio domani, ora non ho tempo per farlo
-          write(client_sd, grigliaDiGiocoConPacchiSenzaOstacoli,
-                sizeof(grigliaDiGiocoConPacchiSenzaOstacoli));
-        }
-
-        // userMovement();
+        play(client_sd, tid);
+        true = 0;
       } else {
         write(client_sd, "n", 1);
       }
@@ -186,8 +163,33 @@ void *gestisci(void *descriptor) {
       break;
     }
   }
-  printf("uscita thread\n");
-  pthread_exit(NULL);
+}
+
+void play(int clientDesc, pthread_t tid) {
+  int posizioneGenerata = 0;
+  int true = 1;
+  int posizione[2];
+  inserisciPlayerNellaGrigliaInPosizioneCasuale(
+      grigliaDiGiocoConPacchiSenzaOstacoli, grigliaOstacoliSenzaPacchi,
+      posizione);
+  posizioneGenerata = 1;
+  while (true) {
+    if (clientDisconnesso(clientDesc)) {
+      disconnettiClient(clientDesc, tid);
+      return;
+    }
+    if (timerCount == TIME_LIMIT_IN_SECONDS && posizioneGenerata == 0) {
+      inserisciPlayerNellaGrigliaInPosizioneCasuale(
+          grigliaDiGiocoConPacchiSenzaOstacoli, grigliaOstacoliSenzaPacchi,
+          posizione);
+      posizioneGenerata = 1;
+    } else {
+      posizioneGenerata = 0;
+    }
+    sleep(2);
+    write(clientDesc, grigliaDiGiocoConPacchiSenzaOstacoli,
+          sizeof(grigliaDiGiocoConPacchiSenzaOstacoli));
+  }
 }
 void clientCrashHandler(int signalNum) {
   numeroClient--;
@@ -208,9 +210,18 @@ void disconnettiClient(int clientDescriptor, int *threadDescriptor) {
   printf("Client disconnesso (client attuali: %d)\n", numeroClient);
   write(clientDescriptor, &msg, sizeof(msg));
   close(clientDescriptor);
-  free(threadDescriptor);
 }
 
+int clientDisconnesso(int clientSocket) {
+  char msg[1] = {'u'}; // UP?
+  if (write(clientSocket, msg, sizeof(msg)) < 0) {
+    return 1;
+  }
+  if (read(clientSocket, msg, sizeof(char)) < 0) {
+    return 1;
+  } else
+    return 0;
+}
 int registraClient(int clientDesc) {
   char *userName = (char *)calloc(MAX_BUF, 1);
   char *password = (char *)calloc(MAX_BUF, 1);
@@ -253,7 +264,6 @@ void *timer(void *args) {
       generaPosizioneOstacoli(grigliaDiGiocoConPacchiSenzaOstacoli,
                               grigliaOstacoliSenzaPacchi);
       timerCount = TIME_LIMIT_IN_SECONDS;
-      sleep(2);
     }
   }
 }

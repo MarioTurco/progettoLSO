@@ -180,6 +180,7 @@ void inserisciPlayerNellaGrigliaInPosizioneCasuale(
     int posizione[2]) {
   int x, y;
   srand(time(0));
+  printf("Inserisco player\n");
   do {
     x = rand() % COLUMNS;
     y = rand() % ROWS;

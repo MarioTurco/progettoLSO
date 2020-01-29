@@ -75,8 +75,8 @@ int validateLogin(char *name, char *pwd, char *file) {
   char toApp[] = " |grep \"^";
   strcat(command, toApp);
   strcat(command, name);
-  strcat(command," ");
-  strcat(command,pwd);
+  strcat(command, " ");
+  strcat(command, pwd);
   char toApp2[] = "$\">tmp";
   strcat(command, toApp2);
   int ret = 0;
@@ -91,4 +91,9 @@ int validateLogin(char *name, char *pwd, char *file) {
   close(fileDes);
   system("rm tmp");
   return ret;
+}
+
+void premiEnterPerContinuare() {
+  printf("Premi enter per continuare...");
+  getchar();
 }

@@ -1,4 +1,5 @@
 #include "boardUtility.h"
+#include "parser.h"
 #include <arpa/inet.h>
 #include <fcntl.h>
 #include <netdb.h>
@@ -147,10 +148,11 @@ int tryLogin() {
   if (validate == 'y') {
     ret = 1;
     printf("Accesso effettuato\n");
-    getchar();
+    premiEnterPerContinuare();
   } else if (validate == 'n') {
     printf("Credenziali Errate o Login già effettuato\n");
     ret = 0;
+    premiEnterPerContinuare();
   }
 
   return ret;
@@ -198,7 +200,7 @@ int registrati() {
     ret = 0;
     printf("Registrazione fallita\n");
   }
-  sleep(2);
+  premiEnterPerContinuare();
   return ret;
 }
 
@@ -234,5 +236,6 @@ void serverCrashed() {
   printf("Il server è crashato o è irraggiungibile\n");
   close(socketDesc);
   signal(SIGPIPE, SIG_IGN);
+  premiEnterPerContinuare();
   exit(0);
 }

@@ -17,8 +17,7 @@ int isAlreadyLogged(List L,char* name){
     int ret=0;
     if(L != NULL){
         if(strcmp(L->name,name)==0)
-            ret=1;
-        else  ret=0;
+            return 1;
         ret=isAlreadyLogged(L->next,name);
     }
     return ret;
@@ -55,7 +54,7 @@ void freeList(List L) {
 
 void printList(List L) {
     if (L != NULL) {
-        printf("%s ", L->name);
+        printf("%s ->", L->name);
         printList(L->next);
     }
 }

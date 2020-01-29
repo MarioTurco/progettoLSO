@@ -130,12 +130,14 @@ void *gestisci(void *descriptor) {
       int grantAccess = tryLogin(client_sd);
 
       if (grantAccess) {
+        int n;
         write(client_sd, &grantAccess, sizeof(grantAccess));
         inserisciPlayerNellaGrigliaInPosizioneCasuale(
             grigliaDiGiocoConPacchiSenzaOstacoli, grigliaOstacoliSenzaPacchi,
             posizione);
-        write(client_sd, grigliaDiGiocoConPacchiSenzaOstacoli,
-              sizeof(grigliaDiGiocoConPacchiSenzaOstacoli));
+        n = write(client_sd, grigliaDiGiocoConPacchiSenzaOstacoli,
+                  sizeof(grigliaDiGiocoConPacchiSenzaOstacoli));
+        printf("Size: %ld, sent %d", MATRIX_DIMENSION, n);
         int true = 1;
         while (true) {
           if (timerCount == TIME_LIMIT_IN_SECONDS) {

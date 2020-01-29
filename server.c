@@ -23,6 +23,7 @@ void *gestisci(void *descriptor);
 void quitServer();
 void clientCrashHandler(int signalNum);
 void startTimer();
+void configuraSocket(struct sockaddr_in mio_indirizzo);
 struct sockaddr_in configuraIndirizzo();
 /*//////////////////////////////////*/
 char grigliaDiGiocoConPacchiSenzaOstacoli[ROWS][COLUMNS];
@@ -42,20 +43,11 @@ int main(int argc, char **argv) {
     exit(-1);
   }
   struct sockaddr_in mio_indirizzo = configuraIndirizzo();
+  configuraSocket(mio_indirizzo);
   users = argv[1];
   int clientDesc;
   int *thread_desc;
   pthread_t tid;
-
-  if ((socketDesc = socket(PF_INET, SOCK_STREAM, 0)) < 0)
-    perror("Impossibile creare socket"), exit(-1);
-  if (setsockopt(socketDesc, SOL_SOCKET, SO_REUSEADDR, &(int){1}, sizeof(int)) <
-      0)
-    perror("Impossibile impostare il riutilizzo dell'indirizzo ip e della "
-           "porta\n");
-  if ((bind(socketDesc, (struct sockaddr *)&mio_indirizzo,
-            sizeof(mio_indirizzo))) < 0)
-    perror("Impossibile effettuare bind"), exit(-1);
 
   inizializzaGiocoSenzaPlayer(grigliaDiGiocoConPacchiSenzaOstacoli,
                               grigliaOstacoliSenzaPacchi);
@@ -259,5 +251,21 @@ void *timer(void *args) {
       timerCount = TIME_LIMIT_IN_SECONDS;
       sleep(2);
     }
+  }
+}
+
+void configuraSocket(struct sockaddr_in mio_indirizzo) {
+  if ((socketDesc = socket(PF_INET, SOCK_STREAM, 0)) < 0) {
+    perror("Impossibile creare socket");
+    exit(-1);
+  }
+  if (setsockopt(socketDesc, SOL_SOCKET, SO_REUSEADDR, &(int){1}, sizeof(int)) <
+      0)
+    perror("Impossibile impostare il riutilizzo dell'indirizzo ip e della "
+           "porta\n");
+  if ((bind(socketDesc, (struct sockaddr *)&mio_indirizzo,
+            sizeof(mio_indirizzo))) < 0) {
+    perror("Impossibile effettuare bind");
+    exit(-1);
   }
 }

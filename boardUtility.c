@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <unistd.h>
-//
+
 void inserisciPlayerNellaGrigliaInPosizioneCasuale(
     char grigliaDiGioco[ROWS][COLUMNS], char grigliaOstacoli[ROWS][COLUMNS],
     int posizione[2]);

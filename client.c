@@ -236,7 +236,7 @@ void clientCrashHandler() {
 void serverCrashed() {
   system("clear");
   printf("Il server è crashato o è irraggiungibile\n");
+  close(socketDesc);
   signal(SIGPIPE, SIG_IGN);
-
   exit(0);
 }

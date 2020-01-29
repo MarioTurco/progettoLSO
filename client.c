@@ -14,6 +14,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 
+void play();
 int tryLogin();
 void printMenu();
 int connettiAlServer(char **argv);
@@ -84,56 +85,46 @@ int connettiAlServer(char **argv) {
 int gestisci() {
   char choice;
   int msg;
-
   while (1) {
     printMenu();
-    // choice = getUserInput();
     scanf("%c", &choice);
     system("clear");
     fflush(stdin);
     if (choice == '3') {
       esciDalServer();
       return (0);
-    }
-
-    else if (choice == '2') {
+    } else if (choice == '2') {
       if (!registrati())
         printf("Impossibile registrare Utente, riprovare");
       else
         printf("Utente registrato con successo\n");
-
       sleep(2);
-    }
-
-    else if (choice == '1') {
-      msg = 1;
-      write(socketDesc, &msg, sizeof(int));
-      char inputUtente;
-      if (!tryLogin()) {
+    } else if (choice == '1') {
+      if (!tryLogin())
         printf("Credenziali Errate: riprova\n");
-        sleep(2);
-      } else {
+      else {
         printf("Accesso effettuato\n");
         sleep(2);
         system("clear");
-        while (1) {
-
-          if (read(socketDesc, grigliaDiGioco, sizeof(grigliaDiGioco)) < 1)
-            printf("Impossibile comunicare con il server\n"), exit(-1);
-          printGrid(grigliaDiGioco);
-          // inputUtente = getchar();
-          // printf(" Input:%c\n", inputUtente);
-        }
+        play();
       }
     }
-
     else {
       printf("Wrong input\n");
     }
   }
 }
-
+void play() {
+  int exitFlag = 0;
+  while (!exitFlag) {
+    if (read(socketDesc, grigliaDiGioco, sizeof(grigliaDiGioco)) < 1)
+      printf("Impossibile comunicare con il server\n"), exit(-1);
+    printGrid(grigliaDiGioco);
+  }
+}
 int tryLogin() {
+  int msg = 1;
+  write(socketDesc, &msg, sizeof(int));
   system("clear");
   printf("Inserisci i dati per il Login\n");
 

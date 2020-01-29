@@ -188,3 +188,11 @@ void inserisciPlayerNellaGrigliaInPosizioneCasuale(
   posizione[0] = y;
   posizione[1] = x;
 }
+void inizializzaGiocoSenzaPlayer(char grigliaDiGioco[ROWS][COLUMNS],
+                                 char grigliaConOstacoli[ROWS][COLUMNS]) {
+
+  inizializzaGrigliaVuota(grigliaDiGioco);
+  riempiGrigliaConPacchiInPosizioniGenerateCasualmente(grigliaDiGioco);
+  generaPosizioneOstacoli(grigliaDiGioco, grigliaConOstacoli);
+  return;
+}

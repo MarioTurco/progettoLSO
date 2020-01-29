@@ -103,6 +103,7 @@ int gestisci() {
     }
   }
 }
+
 void play() {
   int exitFlag = 0;
   while (!exitFlag) {

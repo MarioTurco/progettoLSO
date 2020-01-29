@@ -124,7 +124,6 @@ void *gestisci(void *descriptor) {
     if (bufferReceive[0] == 2) {
       int ret = registraClient(client_sd);
       char risposta;
-      printf("ret: %d", ret);
       if (!ret) {
         risposta = 'n';
         write(client_sd, &risposta, sizeof(char));

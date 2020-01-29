@@ -179,7 +179,8 @@ void clientCrashHandler(int signalNum) {
   signal(SIGPIPE, SIG_IGN);
 }
 void disconnettiClient(int clientDescriptor, int *threadDescriptor) {
-  numeroClient--;
+  if (numeroClient > 0)
+    numeroClient--;
   int msg = 1;
   printf("Client disconnesso (client attuali: %d)\n", numeroClient);
   write(clientDescriptor, &msg, sizeof(msg));

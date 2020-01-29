@@ -136,7 +136,8 @@ void *gestisci(void *descriptor) {
             posizione);
         write(client_sd, grigliaDiGiocoConPacchiSenzaOstacoli,
               sizeof(grigliaDiGiocoConPacchiSenzaOstacoli));
-        while (1) {
+        int true = 1;
+        while (true) {
           if (timerCount == TIME_LIMIT_IN_SECONDS) {
             inserisciPlayerNellaGrigliaInPosizioneCasuale(
                 grigliaDiGiocoConPacchiSenzaOstacoli,
@@ -148,9 +149,8 @@ void *gestisci(void *descriptor) {
                     // client (tramite read che è bloccante) modificare la
                     // griglia in base all'input dell utente e reinviarla
                     // Poi lo faccio domani, ora non ho tempo per farlo
-          if ((write(client_sd, grigliaDiGiocoConPacchiSenzaOstacoli,
-                     sizeof(grigliaDiGiocoConPacchiSenzaOstacoli))) < 1)
-            disconnettiClient(client_sd, descriptor);
+          write(client_sd, grigliaDiGiocoConPacchiSenzaOstacoli,
+                sizeof(grigliaDiGiocoConPacchiSenzaOstacoli));
         }
 
         // userMovement();

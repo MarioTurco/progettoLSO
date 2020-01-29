@@ -31,6 +31,7 @@ int main(int argc, char **argv) {
   signal(SIGINT, clientCrashHandler);
   signal(SIGHUP, clientCrashHandler);
   signal(SIGQUIT, clientCrashHandler);
+  signal(SIGTSTP, clientCrashHandler);
   signal(SIGTERM, clientCrashHandler);
   signal(SIGPIPE, serverCrashed);
   char *indirizzoServer;

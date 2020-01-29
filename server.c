@@ -22,7 +22,7 @@ void clientCrashHandler(int signalNum);
 void startTimer();
 void configuraSocket(struct sockaddr_in mio_indirizzo);
 struct sockaddr_in configuraIndirizzo();
-
+void startListening();
 /*//////////////////////////////////*/
 char grigliaDiGiocoConPacchiSenzaOstacoli[ROWS][COLUMNS];
 char grigliaOstacoliSenzaPacchi[ROWS][COLUMNS];
@@ -35,10 +35,8 @@ char *users;
 /*///////////////////////////////*/
 
 int main(int argc, char **argv) {
-  int clientDesc;
-  int *thread_desc;
-  pthread_t tid;
 
+  users = argv[1];
   struct sockaddr_in mio_indirizzo = configuraIndirizzo();
   configuraSocket(mio_indirizzo);
 
@@ -50,11 +48,15 @@ int main(int argc, char **argv) {
     printf("Wrong parameters number(Usage: ./server usersFile)\n");
     exit(-1);
   }
-  users = argv[1];
-
   inizializzaGiocoSenzaPlayer(grigliaDiGiocoConPacchiSenzaOstacoli,
                               grigliaOstacoliSenzaPacchi);
-
+  startListening();
+  return 0;
+}
+void startListening() {
+  pthread_t tid;
+  int clientDesc;
+  int *thread_desc;
   while (1 == 1) {
     if (listen(socketDesc, 10) < 0)
       perror("Impossibile mettersi in ascolto"), exit(-1);
@@ -72,7 +74,6 @@ int main(int argc, char **argv) {
   }
   close(clientDesc);
   quitServer();
-  return 0;
 }
 struct sockaddr_in configuraIndirizzo() {
   struct sockaddr_in mio_indirizzo;

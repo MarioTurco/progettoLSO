@@ -12,9 +12,6 @@
 #include <unistd.h>
 #define MAX_BUF 100
 
-List onLineUsers = NULL;
-char *users;
-
 int tryLogin(int clientDescriptor);
 void disconnettiClient();
 int registraClient(int);
@@ -25,6 +22,7 @@ void clientCrashHandler(int signalNum);
 void startTimer();
 void configuraSocket(struct sockaddr_in mio_indirizzo);
 struct sockaddr_in configuraIndirizzo();
+
 /*//////////////////////////////////*/
 char grigliaDiGiocoConPacchiSenzaOstacoli[ROWS][COLUMNS];
 char grigliaOstacoliSenzaPacchi[ROWS][COLUMNS];
@@ -32,22 +30,27 @@ int numeroClient = 0;
 time_t timerCount = TIME_LIMIT_IN_SECONDS;
 pthread_t tidTimer;
 int socketDesc;
+List onLineUsers = NULL;
+char *users;
 /*///////////////////////////////*/
 
 int main(int argc, char **argv) {
+  int clientDesc;
+  int *thread_desc;
+  pthread_t tid;
+
+  struct sockaddr_in mio_indirizzo = configuraIndirizzo();
+  configuraSocket(mio_indirizzo);
+
   signal(SIGPIPE, clientCrashHandler);
   signal(SIGINT, quitServer);
   signal(SIGHUP, quitServer);
+
   if (argc != 2) {
     printf("Wrong parameters number(Usage: ./server usersFile)\n");
     exit(-1);
   }
-  struct sockaddr_in mio_indirizzo = configuraIndirizzo();
-  configuraSocket(mio_indirizzo);
   users = argv[1];
-  int clientDesc;
-  int *thread_desc;
-  pthread_t tid;
 
   inizializzaGiocoSenzaPlayer(grigliaDiGiocoConPacchiSenzaOstacoli,
                               grigliaOstacoliSenzaPacchi);

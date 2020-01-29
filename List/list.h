@@ -1,7 +1,6 @@
 #include <pthread.h>
 
 struct TList {
-    pthread_t tid;
     char* name;
     struct TList* next;
     int sockDes;
@@ -10,16 +9,16 @@ struct TList {
 typedef struct TList* List;
 
 // Inizializza un nuovo nodo
-List initNodeList(pthread_t tid, char* name,int sockDes);
+List initNodeList(char* name,int sockDes);
 
 // Aggiunge un nodo in testa alla lista
 // La funzione ritorna sempre la testa della lista
-List addNodeHead(List L, pthread_t tid, char* name,int sockDes);
+List addPlayer(List L, char* name,int sockDes);
 
 // Rimuove solo un occorrenza di un nodo con il tid specificato
 // dalla lista
 // La funzione ritorna sempre la testa della lista
-List removeNodeList(List L, pthread_t tid);
+List removePlayer(List L, int sockDes);
 
 // Dealloca la lista interamente
 void freeList(List L);

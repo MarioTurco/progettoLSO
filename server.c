@@ -12,6 +12,7 @@
 #include <unistd.h>
 #define MAX_BUF 100
 
+List onLineUsers=NULL;
 char *users;
 
 int tryLogin(int clientDescriptor);
@@ -21,6 +22,7 @@ void *timer(void *args);
 void *gestisci(void *descriptor);
 void quitServer();
 void clientCrashHandler(int signalNum);
+
 /*//////////////////////////////////*/
 char grigliaDiGiocoConPacchiSenzaOstacoli[ROWS][COLUMNS];
 char grigliaOstacoliSenzaPacchi[ROWS][COLUMNS];
@@ -28,6 +30,7 @@ int numeroClient = 0;
 time_t timerCount = TIME_LIMIT_IN_SECONDS;
 pthread_t tidTimer;
 /*///////////////////////////////*/
+
 int main(int argc, char **argv) {
   signal(SIGPIPE, clientCrashHandler);
   signal(SIGINT, quitServer);
@@ -62,6 +65,7 @@ int main(int argc, char **argv) {
   generaPosizioneOstacoli(grigliaDiGiocoConPacchiSenzaOstacoli,
                           grigliaOstacoliSenzaPacchi);
   pthread_create(&tidTimer, NULL, timer, NULL);
+
   while (1 == 1) {
     if (listen(socketDesc, 10) < 0)
       perror("Impossibile mettersi in ascolto"), exit(-1);
@@ -93,10 +97,12 @@ int tryLogin(int clientDesc) {
   read(clientDesc, password, dimPwd);
 
   int ret = 0;
-  if (validateLogin(userName, password, users)) {
+  if (validateLogin(userName, password, users) && !isAlreadyLogged(onLineUsers,userName)) {
     ret = 1;
     numeroClient++;
     printf("Nuovo client loggato, client loggati : %d\n", numeroClient);
+    //TODO: proteggere con un mutex
+    onLineUsers=addPlayer(onLineUsers,userName,clientDesc);
   }
 
   return ret;
@@ -132,6 +138,7 @@ void *gestisci(void *descriptor) {
       if (grantAccess) {
         int n;
         write(client_sd, &grantAccess, sizeof(grantAccess));
+        
         inserisciPlayerNellaGrigliaInPosizioneCasuale(
             grigliaDiGiocoConPacchiSenzaOstacoli, grigliaOstacoliSenzaPacchi,
             posizione);
@@ -168,8 +175,7 @@ void *gestisci(void *descriptor) {
 
     else {
       printf("Input invalido, uscita...\n");
-      close(client_sd);
-      free(descriptor);
+      disconnettiClient(client_sd, descriptor);
       break;
     }
   }
@@ -184,6 +190,8 @@ void clientCrashHandler(int signalNum) {
 void disconnettiClient(int clientDescriptor, int *threadDescriptor) {
   if (numeroClient > 0)
     numeroClient--;
+  //TODO proteggere con un mutex
+  onLineUsers=removePlayer(onLineUsers,clientDescriptor);
   int msg = 1;
   printf("Client disconnesso (client attuali: %d)\n", numeroClient);
   write(clientDescriptor, &msg, sizeof(msg));

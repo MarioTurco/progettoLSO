@@ -150,7 +150,7 @@ void *gestisci(void *descriptor) {
                     // griglia in base all'input dell utente e reinviarla
                     // Poi lo faccio domani, ora non ho tempo per farlo
           if ((write(client_sd, grigliaDiGiocoConPacchiSenzaOstacoli,
-                     sizeof(grigliaDiGiocoConPacchiSenzaOstacoli))) < 0)
+                     sizeof(grigliaDiGiocoConPacchiSenzaOstacoli))) < 1)
             disconnettiClient(client_sd, descriptor);
         }
 

@@ -47,6 +47,10 @@ int main(int argc, char **argv) {
 
   if ((socketDesc = socket(PF_INET, SOCK_STREAM, 0)) < 0)
     perror("Impossibile creare socket"), exit(-1);
+  if (setsockopt(socketDesc, SOL_SOCKET, SO_REUSEADDR, &(int){1}, sizeof(int)) <
+      0)
+    perror("Impossibile impostare il riutilizzo dell'indirizzo ip e della "
+           "porta\n");
   if ((bind(socketDesc, (struct sockaddr *)&mio_indirizzo,
             sizeof(mio_indirizzo))) < 0)
     perror("Impossibile effettuare bind"), exit(-1);

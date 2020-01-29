@@ -15,7 +15,7 @@
 #include <unistd.h>
 int tryLogin();
 void printMenu();
-int connettiAlServer(char **argv, char *indirizzoServer);
+int connettiAlServer(char **argv);
 char *ipResolver(char **argv);
 int registrati();
 int gestisci();
@@ -34,14 +34,13 @@ int main(int argc, char **argv) {
   signal(SIGTSTP, clientCrashHandler); /* CTRL-Z*/
   signal(SIGTERM, clientCrashHandler); /* generato da 'kill' */
   signal(SIGPIPE, serverCrashed);
-  char *indirizzoServer;
 
   char bufferReceive[2];
   if (argc != 3)
     perror("Inserire indirizzo ip/url e porta (./client 127.0.0.1 5200)"),
         exit(-1);
 
-  if ((socketDesc = connettiAlServer(argv, indirizzoServer)) < 0)
+  if ((socketDesc = connettiAlServer(argv)) < 0)
     exit(-1);
 
   signal(SIGSTOP, clientCrashHandler);
@@ -50,7 +49,8 @@ int main(int argc, char **argv) {
   exit(0);
 }
 
-int connettiAlServer(char **argv, char *indirizzoServer) {
+int connettiAlServer(char **argv) {
+  char *indirizzoServer;
   uint16_t porta = strtoul(argv[2], NULL, 10);
   indirizzoServer = ipResolver(argv);
   struct sockaddr_in mio_indirizzo;
@@ -87,6 +87,7 @@ int gestisci() {
       printf("Uscita in corso\n");
       msg = 3;
       write(socketDesc, &msg, sizeof(int));
+      close(socketDesc);
       return (0);
     }
 
@@ -219,10 +220,17 @@ char *ipResolver(char **argv) {
 
 void clientCrashHandler() {
   int msg = 3;
-  write(socketDesc, &msg, sizeof(int));
+  int rec = 0;
+  printf("\nChiusura client...\n");
+  do {
+    write(socketDesc, &msg, sizeof(int));
+    read(socketDesc, &rec, sizeof(int));
+  } while (rec == 0);
+  close(socketDesc);
   signal(SIGINT, SIG_IGN);
   signal(SIGQUIT, SIG_IGN);
   signal(SIGTERM, SIG_IGN);
+  signal(SIGTSTP, SIG_IGN);
   exit(0);
 }
 void serverCrashed() {

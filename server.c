@@ -69,7 +69,6 @@ int main(int argc, char **argv) {
       perror("Impossibile effettuare connessione\n");
       exit(-1);
     }
-    printf("%d", clientDesc);
     printf("Connessione effettuata (totale client connessi: %d)\n",
            numeroClient);
     // creo un puntatore per il socket del client e lo passo al thread
@@ -181,7 +180,9 @@ void clientCrashHandler(int signalNum) {
 }
 void disconnettiClient(int clientDescriptor, int *threadDescriptor) {
   numeroClient--;
+  int msg = 1;
   printf("Client disconnesso (client attuali: %d)\n", numeroClient);
+  write(clientDescriptor, &msg, sizeof(msg));
   close(clientDescriptor);
   free(threadDescriptor);
 }

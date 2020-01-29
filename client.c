@@ -93,23 +93,9 @@ int gestisci() {
       esciDalServer();
       return (0);
     } else if (choice == '2') {
-      if (!registrati()){
-        printf("Impossibile registrare Utente, riprovare");
-        sleep(2);
-      }
-      else{
-        printf("Utente registrato con successo\n");
-        sleep(2);
-      }
+      registrati();
     } else if (choice == '1') {
-      if (!tryLogin()){
-        printf("Credenziali Errate o Login già effettuato\n");
-        sleep(2);
-      }
-      else {
-        printf("Accesso effettuato\n");
-        sleep(2);
-        system("clear");
+      if (tryLogin()) {
         play();
       }
     } else {
@@ -157,8 +143,15 @@ int tryLogin() {
   char validate;
   int ret;
   read(socketDesc, &validate, 1);
-  if(validate=='y') ret=1;
-  if(validate=='n') ret=0;
+  if (validate == 'y') {
+    ret = 1;
+    printf("Accesso effettuato\n");
+    sleep(2);
+  } else if (validate == 'n') {
+    printf("Credenziali Errate o Login già effettuato\n");
+    ret = 0;
+    sleep(2);
+  }
 
   return ret;
 }
@@ -195,12 +188,17 @@ int registrati() {
 
   char validate;
   int ret;
-  read(socketDesc, &validate, 1);
-  printf("REGISTRATO?: %c",validate);
-  if(validate=='y') ret=1;
-  if(validate=='n') ret=0;
-  
-
+  read(socketDesc, &validate, sizeof(char));
+  /*printf("REGISTRATO?: %c\n", validate);*/
+  if (validate == 'y') {
+    ret = 1;
+    printf("Registrato con successo\n");
+  }
+  if (validate == 'n') {
+    ret = 0;
+    printf("Registrazione fallita\n");
+  }
+  sleep(2);
   return ret;
 }
 

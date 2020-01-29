@@ -100,8 +100,8 @@ int tryLogin(int clientDesc) {
     ret = 1;
     numeroClient++;
     printf("Nuovo client loggato, client loggati : %d\n", numeroClient);
-    //TODO: proteggere con un mutex
-    onLineUsers=addPlayer(onLineUsers,userName,clientDesc);
+    // TODO: proteggere con un mutex
+    onLineUsers = addPlayer(onLineUsers, userName, clientDesc);
     printList(onLineUsers);
     printf("\n");
   }
@@ -123,11 +123,16 @@ void *gestisci(void *descriptor) {
 
     if (bufferReceive[0] == 2) {
       int ret = registraClient(client_sd);
+      char risposta;
+      printf("ret: %d", ret);
       if (!ret) {
-        write(client_sd, "n", 1);
+        risposta = 'n';
+        write(client_sd, &risposta, sizeof(char));
         printf("Impossibile registrare utente, riprovare\n");
       } else {
-        write(client_sd, "y", 1);
+
+        risposta = 'y';
+        write(client_sd, &risposta, sizeof(char));
         printf("Utente registrato con successo\n");
       }
     }
@@ -212,7 +217,6 @@ int registraClient(int clientDesc) {
   // printf("%s:%d\n%s:%d\n", userName, dimName, password, dimPwd);
   // TODO proteggere con un mutex
   int ret = appendPlayer(userName, password, users);
-
   return ret;
 }
 

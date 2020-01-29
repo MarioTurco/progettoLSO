@@ -26,6 +26,7 @@ char grigliaOstacoliSenzaPacchi[ROWS][COLUMNS];
 int numeroClient = 0;
 time_t timerCount = TIME_LIMIT_IN_SECONDS;
 pthread_t tidTimer;
+int socketDesc;
 /*///////////////////////////////*/
 int main(int argc, char **argv) {
   signal(SIGPIPE, clientCrashHandler);
@@ -37,7 +38,7 @@ int main(int argc, char **argv) {
   }
 
   users = argv[1];
-  int socketDesc, clientDesc;
+  int clientDesc;
   int *thread_desc;
   pthread_t tid;
   struct sockaddr_in mio_indirizzo;
@@ -77,7 +78,7 @@ int main(int argc, char **argv) {
     pthread_create(&tid, NULL, gestisci, (void *)thread_desc);
   }
   close(clientDesc);
-  close(socketDesc);
+  quitServer();
   return 0;
 }
 
@@ -206,9 +207,8 @@ int registraClient(int clientDesc) {
 }
 
 void quitServer() {
-  int msg = -1;
   printf("Chiusura server in corso..\n");
-
+  close(socketDesc);
   exit(-1);
 }
 void *timer(void *args) {

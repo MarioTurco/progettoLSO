@@ -1,5 +1,5 @@
-server: server.o boardUtility.o  parser.o client.o
-	gcc server.o boardUtility.o  parser.o -o server -lpthread
+server: server.o boardUtility.o list.o parser.o client.o
+	gcc server.o boardUtility.o  list.o parser.o -o server -lpthread
 	gcc client.o boardUtility.o parser.o -o client -lpthread
 
 
@@ -7,6 +7,8 @@ server: server.o boardUtility.o  parser.o client.o
 #file da compilare singolarmente
 #esegue queste regole quanto c'è un cambiamento al file server.c
 #oppure boardUtility.c/.h etcc
+list.o: list.c
+	gcc -c list.c
 server.o: server.c 
 	gcc -c server.c boardUtility.c parser.c -lpthread
 # -c -> non creare un eseguibile ma solo il file oggetto (.o)

@@ -28,11 +28,11 @@ int socketDesc;
 char grigliaDiGioco[ROWS][COLUMNS];
 /*//////////////////////////////*/
 int main(int argc, char **argv) {
-  signal(SIGINT, clientCrashHandler);
-  signal(SIGHUP, clientCrashHandler);
+  signal(SIGINT, clientCrashHandler); /* CTRL-C */
+  signal(SIGHUP, clientCrashHandler); /* Chiusura della console */
   signal(SIGQUIT, clientCrashHandler);
-  signal(SIGTSTP, clientCrashHandler);
-  signal(SIGTERM, clientCrashHandler);
+  signal(SIGTSTP, clientCrashHandler); /* CTRL-Z*/
+  signal(SIGTERM, clientCrashHandler); /* generato da 'kill' */
   signal(SIGPIPE, serverCrashed);
   char *indirizzoServer;
 

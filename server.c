@@ -149,8 +149,9 @@ void *gestisci(void *descriptor) {
                     // client (tramite read che è bloccante) modificare la
                     // griglia in base all'input dell utente e reinviarla
                     // Poi lo faccio domani, ora non ho tempo per farlo
-          write(client_sd, grigliaDiGiocoConPacchiSenzaOstacoli,
-                sizeof(grigliaDiGiocoConPacchiSenzaOstacoli));
+          if ((write(client_sd, grigliaDiGiocoConPacchiSenzaOstacoli,
+                     sizeof(grigliaDiGiocoConPacchiSenzaOstacoli))) < 0)
+            disconnettiClient(client_sd, descriptor);
         }
 
         // userMovement();

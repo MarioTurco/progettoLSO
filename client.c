@@ -112,7 +112,7 @@ int gestisci() {
         sleep(2);
         system("clear");
         while (1) {
-          system("clear");
+
           if (read(socketDesc, grigliaDiGioco, sizeof(grigliaDiGioco)) < 1)
             printf("Impossibile comunicare con il server\n"), exit(-1);
           printGrid(grigliaDiGioco);

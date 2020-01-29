@@ -6,7 +6,7 @@
 #include "list.h"
 #define MAX_BUF 200
 
-List initNodeList(pthread_t tid, char* name) {
+List initNodeList(pthread_t tid, char* name, int sockDes) {
     List L = (List)malloc(sizeof(struct TList));
     L->tid = tid;
     L->name = (char*)malloc(MAX_BUF);
@@ -15,8 +15,19 @@ List initNodeList(pthread_t tid, char* name) {
     return L;
 }
 
-List addNodeHead(List L, pthread_t tid, char* name) {
-    List tmp=initNodeList(tid, name);
+int isAlreadyLogged(List L,char* name){
+    ret=0;
+    if(L != NULL){
+        if(strcmp(L->name,name)==0)
+            ret=1;
+        else  ret=0;
+        ret=isInList(L->next,name);
+    }
+    return ret;
+}
+
+List addNodeHead(List L, pthread_t tid, char* name,int sockDes) {
+    List tmp=initNodeList(tid, name,sockDes);
     if (L != NULL) {
         tmp->next = L;     
     }

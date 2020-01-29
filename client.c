@@ -52,8 +52,6 @@ int main(int argc, char **argv) {
   close(socketDesc);
   exit(0);
 }
-void inizializzaGiocoSenzaPlayer(char grigliaDiGioco[ROWS][COLUMNS],
-                                 char grigliaConOstacoli[ROWS][COLUMNS]) {}
 void esciDalServer() {
   int msg = 3;
   printf("Uscita in corso\n");

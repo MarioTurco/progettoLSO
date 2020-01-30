@@ -29,6 +29,7 @@ void play(int clientDesc, pthread_t tid);
 char grigliaDiGiocoConPacchiSenzaOstacoli[ROWS][COLUMNS];
 char grigliaOstacoliSenzaPacchi[ROWS][COLUMNS];
 int numeroClient = 0;
+int playerGenerati = 0;
 time_t timerCount = TIME_LIMIT_IN_SECONDS;
 pthread_t tidTimer;
 int socketDesc;
@@ -166,25 +167,27 @@ void *gestisci(void *descriptor) {
 }
 
 void play(int clientDesc, pthread_t tid) {
-  int posizioneGenerata = 0;
   int true = 1;
   int posizione[2];
-  inserisciPlayerNellaGrigliaInPosizioneCasuale(
-      grigliaDiGiocoConPacchiSenzaOstacoli, grigliaOstacoliSenzaPacchi,
-      posizione);
-  posizioneGenerata = 1;
+  if (timer != 0) {
+    inserisciPlayerNellaGrigliaInPosizioneCasuale(
+        grigliaDiGiocoConPacchiSenzaOstacoli, grigliaOstacoliSenzaPacchi,
+        posizione);
+  }
   while (true) {
     if (clientDisconnesso(clientDesc)) {
       disconnettiClient(clientDesc, tid);
       return;
     }
-    if (timerCount == TIME_LIMIT_IN_SECONDS && posizioneGenerata == 0) {
+    if (timerCount == TIME_LIMIT_IN_SECONDS + 1) {
       inserisciPlayerNellaGrigliaInPosizioneCasuale(
           grigliaDiGiocoConPacchiSenzaOstacoli, grigliaOstacoliSenzaPacchi,
           posizione);
-      posizioneGenerata = 1;
-    } else {
-      posizioneGenerata = 0;
+      playerGenerati++;
+      if (playerGenerati == numeroClient) {
+        playerGenerati = 0;
+        timerCount = TIME_LIMIT_IN_SECONDS;
+      }
     }
     sleep(2);
     write(clientDesc, grigliaDiGiocoConPacchiSenzaOstacoli,
@@ -243,8 +246,10 @@ void quitServer() {
 }
 void *timer(void *args) {
   int cambiato = 1;
+
   while (1) {
-    if (numeroClient > 0 && timerCount > 0) {
+    if (numeroClient > 0 && timerCount > 0 &&
+        timerCount <= TIME_LIMIT_IN_SECONDS) {
       cambiato = 1;
       sleep(1);
       timerCount--;
@@ -263,7 +268,7 @@ void *timer(void *args) {
           grigliaDiGiocoConPacchiSenzaOstacoli);
       generaPosizioneOstacoli(grigliaDiGiocoConPacchiSenzaOstacoli,
                               grigliaOstacoliSenzaPacchi);
-      timerCount = TIME_LIMIT_IN_SECONDS;
+      timerCount = TIME_LIMIT_IN_SECONDS + 1;
     }
   }
 }

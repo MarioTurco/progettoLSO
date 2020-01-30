@@ -3,7 +3,13 @@
 #include <stdlib.h>
 #include <time.h>
 #include <unistd.h>
-
+#define ROWS 20
+#define COLUMNS 60
+#define numberOfObstacles 100
+#define numberOfPackages 30
+#define TIME_LIMIT_IN_SECONDS 10
+#define packageLimitNumber 8
+#define MATRIX_DIMENSION sizeof(char) * ROWS *COLUMNS
 void inserisciPlayerNellaGrigliaInPosizioneCasuale(
     char grigliaDiGioco[ROWS][COLUMNS], char grigliaOstacoli[ROWS][COLUMNS],
     int posizione[2]);

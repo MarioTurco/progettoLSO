@@ -52,7 +52,7 @@ int gestisciW(char grigliaDiGioco[ROWS][COLUMNS],
       grigliaDiGioco[nuovaRiga][colonna] = 'P';
       punteggio += 10;
     } else {
-      printf("Incontrato ostacolo o player\n");
+      fprintf(stdout, "Incontrato ostacolo o player\n");
       nuovaRiga += 1;
     }
     posizioneUtente[0] = riga;

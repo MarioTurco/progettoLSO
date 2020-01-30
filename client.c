@@ -92,16 +92,22 @@ int gestisci() {
     if (choice == '3') {
       esciDalServer();
       return (0);
-    } else if (choice == '2') {
+    }else if (choice == '2') {
       registrati();
-    } else if (choice == '1') {
+    }else if (choice == '1') {
       if (tryLogin()) {
         play();
-      }
-    } else {
+      } 
+    }else {
       printf("Wrong input\n");
+      //sleep(1);
     }
   }
+}
+
+char getInput(){
+  char input;
+
 }
 
 int serverCaduto() {

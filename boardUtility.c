@@ -44,9 +44,16 @@ int gestisciW(char grigliaDiGioco[ROWS][COLUMNS],
     } else if (grigliaDiGioco[nuovaRiga][colonna] == '$') {
       generaPosizioneRaccolta(grigliaDiGioco, grigliaOstacoli, destinazione,
                               posizioneUtente[0], posizioneUtente[1]);
+      grigliaDiGioco[riga][colonna] = '-';
+      grigliaDiGioco[nuovaRiga][colonna] = 'P';
     } else if (nuovaRiga == destinazione[0] &&
                nuovaColonna == destinazione[1]) {
+      grigliaDiGioco[riga][colonna] = '-';
+      grigliaDiGioco[nuovaRiga][colonna] = 'P';
       punteggio += 10;
+    } else {
+      printf("Incontrato ostacolo o player\n");
+      nuovaRiga += 1;
     }
     posizioneUtente[0] = riga;
 

@@ -98,7 +98,7 @@ void start(char grigliaDiGioco[ROWS][COLUMNS],
     printGrid(grigliaDiGioco);
   }
 }
-
+/*Svuota la griglia di gioco e la riempe solo di '-' */
 void inizializzaGrigliaVuota(char griglia[ROWS][COLUMNS]) {
   int i = 0, j = 0;
   for (i = 0; i < ROWS; i++) {
@@ -107,6 +107,7 @@ void inizializzaGrigliaVuota(char griglia[ROWS][COLUMNS]) {
     }
   }
 }
+/* stampa a schermo la griglia passata in input */
 void printGrid(char grigliaDaStampare[ROWS][COLUMNS]) {
   system("clear");
   int i = 0, j = 0;
@@ -118,9 +119,10 @@ void printGrid(char grigliaDaStampare[ROWS][COLUMNS]) {
     printf("\n");
   }
 }
+/* Stampa schermata di fine gioco */
 void gameOver() {
   char c;
-  // system("clear");
+
   printf("____________Game over_______________\n");
   fflush(stdin);
   scanf("%c", &c);
@@ -129,6 +131,8 @@ void gameOver() {
 
 // TODO: bisogna aggiungere una matrice che mantiene la posizione degli
 // ostacoli
+
+/* Genera la posizione degli ostacoli */
 void generaPosizioneOstacoli(char grigliaDiGioco[ROWS][COLUMNS],
                              char grigliaOstacoli[ROWS][COLUMNS]) {
 
@@ -144,7 +148,7 @@ void generaPosizioneOstacoli(char grigliaDiGioco[ROWS][COLUMNS],
       i--;
   }
 }
-
+/*Inserisci dei pacchi nella griglia di gioco nella posizione casuale */
 void riempiGrigliaConPacchiInPosizioniGenerateCasualmente(
     char grigliaDiGioco[ROWS][COLUMNS]) {
   int x, y, i;
@@ -158,6 +162,7 @@ void riempiGrigliaConPacchiInPosizioniGenerateCasualmente(
       i--;
   }
 }
+/*Stampa a schermo la griglia degli ostacoli */
 void printObs(char grigliaOstacoli[ROWS][COLUMNS]) {
   int i = 0, j = 0;
   for (i = 0; i < 50; i++) {
@@ -169,7 +174,7 @@ void printObs(char grigliaOstacoli[ROWS][COLUMNS]) {
   }
   printf("\n");
 }
-
+/*Inserisci gli ostacoli nella griglia di gioco */
 void riempiGrigliaConGliOstacoli(char grigliaDiGioco[ROWS][COLUMNS],
                                  char grigliaOstacoli[ROWS][COLUMNS]) {
   int i, j = 0;
@@ -180,7 +185,7 @@ void riempiGrigliaConGliOstacoli(char grigliaDiGioco[ROWS][COLUMNS],
     }
   }
 }
-
+/*Inserisci il player in una posizione casuale*/
 void inserisciPlayerNellaGrigliaInPosizioneCasuale(
     char grigliaDiGioco[ROWS][COLUMNS], char grigliaOstacoli[ROWS][COLUMNS],
     int posizione[2]) {
@@ -195,6 +200,8 @@ void inserisciPlayerNellaGrigliaInPosizioneCasuale(
   posizione[0] = y;
   posizione[1] = x;
 }
+
+/*Genera sia la griglia con i pacchi che la griglia con gli ostacoli*/
 void inizializzaGiocoSenzaPlayer(char grigliaDiGioco[ROWS][COLUMNS],
                                  char grigliaConOstacoli[ROWS][COLUMNS]) {
 

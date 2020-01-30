@@ -5,7 +5,7 @@
 #include <unistd.h>
 #define ROWS 20
 #define COLUMNS 60
-#define numberOfObstacles 100
+#define numberOfObstacles 50
 #define numberOfPackages 30
 #define TIME_LIMIT_IN_SECONDS 10
 #define packageLimitNumber 8

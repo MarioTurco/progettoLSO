@@ -28,6 +28,8 @@ void clientCrashHandler();
 void serverCrashHandler();
 int serverCaduto();
 void esciDalServer();
+char getInput();
+int isCorrect(char);
 /*/////////////////////////////*/
 int socketDesc;
 char grigliaDiGioco[ROWS][COLUMNS];
@@ -105,7 +107,24 @@ int gestisci() {
   }
 }
 
-char getInput() { char input; }
+char getInput() {
+  char input;
+  int done = 0;
+  printf("Inserisci comando: ");
+  while (!done) {
+    scanf("%c", &input);
+    if (isCorrect(input))
+      done = 1;
+  }
+  return input;
+}
+
+int isCorrect(char input) {
+  if (input != 'w' && input != 'a' && input != 's' && input != 'd')
+    return 0;
+  else
+    return 1;
+}
 
 int serverCaduto() {
   char msg = 'y';
@@ -122,10 +141,12 @@ void play() {
   while (!exitFlag) {
     if (serverCaduto())
       serverCrashHandler();
+
     if (read(socketDesc, grigliaDiGioco, sizeof(grigliaDiGioco)) < 1)
       printf("Impossibile comunicare con il server\n"), exit(-1);
     printGrid(grigliaDiGioco);
-    write(socketDesc, "w", sizeof(char));
+    char send = getInput();
+    write(socketDesc, &send, 1);
   }
 }
 

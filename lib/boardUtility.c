@@ -145,6 +145,21 @@ void generaPosizioneOstacoli(char grigliaDiGioco[ROWS][COLUMNS],
   }
 }
 
+void generaPosizioneRaccolta(char grigliaDiGioco[ROWS][COLUMNS],
+                             char grigliaOstacoli[ROWS][COLUMNS],int* coord,int xPlayer,int yPlayer) {
+  int x, y, done=0;
+  srand(time(0));
+  while (!done) {
+    x = rand() % COLUMNS;
+    y = rand() % ROWS;
+    if (grigliaDiGioco[y][x] == '-' && grigliaOstacoli[y][x] == '-' && (y!=xPlayer || yPlayer!=x)) {
+      coord[0]=y;
+      coord[1]=x;
+      done=1;
+    }    
+  }
+}
+
 void riempiGrigliaConPacchiInPosizioniGenerateCasualmente(
     char grigliaDiGioco[ROWS][COLUMNS]) {
   int x, y, i;

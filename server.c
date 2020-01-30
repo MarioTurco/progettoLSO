@@ -244,6 +244,7 @@ void quitServer() {
   close(socketDesc);
   exit(-1);
 }
+
 void *timer(void *args) {
   int cambiato = 1;
 

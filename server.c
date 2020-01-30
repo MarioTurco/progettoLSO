@@ -185,8 +185,8 @@ void play(int clientDesc, pthread_t tid) {
           posizione);
       playerGenerati++;
       if (playerGenerati == numeroClient) {
-        playerGenerati = 0;
         timerCount = TIME_LIMIT_IN_SECONDS;
+        playerGenerati = 0;
       }
     }
     sleep(2);
@@ -246,7 +246,6 @@ void quitServer() {
 }
 void *timer(void *args) {
   int cambiato = 1;
-
   while (1) {
     if (numeroClient > 0 && timerCount > 0 &&
         timerCount <= TIME_LIMIT_IN_SECONDS) {

@@ -10,21 +10,6 @@
 #define TIME_LIMIT_IN_SECONDS 10
 #define packageLimitNumber 8
 #define MATRIX_DIMENSION sizeof(char) * ROWS *COLUMNS
-void inserisciPlayerNellaGrigliaInPosizioneCasuale(
-    char grigliaDiGioco[ROWS][COLUMNS], char grigliaOstacoli[ROWS][COLUMNS],
-    int posizione[2]);
-void inizializzaGrigliaVuota(char grigliaDiGioco[ROWS][COLUMNS]);
-void generaPosizioneOstacoli(char grigliaDiGioco[ROWS][COLUMNS],
-                             char grigliaOstacoli[ROWS][COLUMNS]);
-void riempiGrigliaConPacchiInPosizioniGenerateCasualmente(
-    char grigliaDiGioco[ROWS][COLUMNS]);
-void printGrid(char grigliaDaStampare[ROWS][COLUMNS]);
-void start(char grigliaDiGioco[ROWS][COLUMNS],
-           char grigliaOstacoli[ROWS][COLUMNS]);
-void gameOver();
-void printObs(char grigliaOstacoli[ROWS][COLUMNS]);
-void riempiGrigliaConGliOstacoli(char grigliaDiGioco[ROWS][COLUMNS],
-                                 char grigliaOstacoli[ROWS][COLUMNS]);
 
 void printMenu();
 /*int main(int argc, char *argv[]) {
@@ -40,6 +25,56 @@ void printMenu() {
   printf("\t1 Gioca\n");
   printf("\t2 Registrati\n");
   printf("\t3 Esci\n");
+}
+void gestisciInput(char grigliaDiGioco[ROWS][COLUMNS],
+                   char grigliaOstacoli[ROWS][COLUMNS], int posizioneUtente[2],
+                   int destinazione[2], char input, int *punteggio) {
+  int riga = posizioneUtente[0];
+  int colonna = posizioneUtente[1];
+  int nuovaRiga = riga;
+  int nuovaColonna = colonna;
+  if (input == 'w') {
+    if (nuovaRiga > 0) {
+      // la casella è vuota
+      if (grigliaDiGioco[nuovaRiga][colonna] == '-' &&
+          grigliaOstacoli[nuovaRiga][nuovaColonna] == '-') {
+        grigliaDiGioco[riga][colonna] = '-';
+        grigliaDiGioco[nuovaRiga][colonna] = 'P';
+        nuovaRiga = riga - 1;
+      } else if (grigliaDiGioco[nuovaRiga][colonna] == '$') {
+        generaPosizioneRaccolta(grigliaDiGioco, grigliaOstacoli, destinazione,
+                                posizioneUtente[0], posizioneUtente[1]);
+        nuovaRiga = riga - 1;
+      } else if (nuovaRiga == destinazione[0] &&
+                 nuovaColonna == destinazione[1]) {
+        punteggio += 10;
+      }
+    }
+
+  } else if (input == 's') {
+    if (riga - 1 > 0) {
+      grigliaDiGioco[riga][colonna] = '-';
+      riga--;
+      grigliaDiGioco[riga][colonna] = 'P';
+    }
+  } else if (input == 'a') {
+    if (colonna - 1 > 0) {
+      grigliaDiGioco[riga][colonna] = '-';
+      colonna--;
+      grigliaDiGioco[riga][colonna] = 'P';
+    }
+  } else if (input == 'd') {
+    if (colonna + 1 < COLUMNS) {
+      grigliaDiGioco[riga][colonna] = '-';
+      colonna++;
+      grigliaDiGioco[riga][colonna] = 'P';
+    }
+  }
+
+  // aggiorna la posizione dell'utente
+  posizioneUtente[0] = nuovaRiga;
+  posizioneUtente[1] = nuovaColonna;
+  return;
 }
 void start(char grigliaDiGioco[ROWS][COLUMNS],
            char grigliaOstacoli[ROWS][COLUMNS]) {
@@ -151,20 +186,21 @@ void generaPosizioneOstacoli(char grigliaDiGioco[ROWS][COLUMNS],
 
 /*genera posizione di raccolta di un pacco*/
 void generaPosizioneRaccolta(char grigliaDiGioco[ROWS][COLUMNS],
-                             char grigliaOstacoli[ROWS][COLUMNS],int* coord,int xPlayer,int yPlayer) {
-  int x, y, done=0;
+                             char grigliaOstacoli[ROWS][COLUMNS], int *coord,
+                             int xPlayer, int yPlayer) {
+  int x, y, done = 0;
   srand(time(0));
   while (!done) {
     x = rand() % COLUMNS;
     y = rand() % ROWS;
-    if (grigliaDiGioco[y][x] == '-' && grigliaOstacoli[y][x] == '-' && (y!=xPlayer || yPlayer!=x)) {
-      coord[0]=y;
-      coord[1]=x;
-      done=1;
-    }    
+    if (grigliaDiGioco[y][x] == '-' && grigliaOstacoli[y][x] == '-' &&
+        (y != xPlayer || yPlayer != x)) {
+      coord[0] = y;
+      coord[1] = x;
+      done = 1;
+    }
   }
 }
-
 
 /*Inserisci dei pacchi nella griglia di gioco nella posizione casuale */
 void riempiGrigliaConPacchiInPosizioniGenerateCasualmente(

@@ -169,7 +169,11 @@ void *gestisci(void *descriptor) {
 void play(int clientDesc, pthread_t tid) {
   int true = 1;
   int posizione[2];
-  if (timer != 0) {
+  int destinazione[2] = {-1, -1};
+  char inputFromClient = 'n';
+  int punteggio = 0;
+  if (timer != 0)
+  {
     inserisciPlayerNellaGrigliaInPosizioneCasuale(
         grigliaDiGiocoConPacchiSenzaOstacoli, grigliaOstacoliSenzaPacchi,
         posizione);
@@ -189,9 +193,12 @@ void play(int clientDesc, pthread_t tid) {
         playerGenerati = 0;
       }
     }
-    sleep(2);
     write(clientDesc, grigliaDiGiocoConPacchiSenzaOstacoli,
           sizeof(grigliaDiGiocoConPacchiSenzaOstacoli));
+    read(clientDesc, &inputFromClient, sizeof(char));
+    gestisciInput(grigliaDiGiocoConPacchiSenzaOstacoli,
+                  grigliaOstacoliSenzaPacchi, posizione, destinazione,
+                  inputFromClient, &punteggio);
   }
 }
 void clientCrashHandler(int signalNum) {

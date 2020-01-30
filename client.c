@@ -166,6 +166,7 @@ char getUserInput() {
   }
   return c;
 }
+
 int login() { return 0; }
 
 int registrati() {

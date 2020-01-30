@@ -1,5 +1,5 @@
-#include "lib/boardUtility.h"
-#include "lib/parser.h"
+#include "boardUtility.h"
+#include "parser.h"
 #include <arpa/inet.h>
 #include <fcntl.h>
 #include <netdb.h>

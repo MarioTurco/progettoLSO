@@ -1,6 +1,6 @@
-#include "lib/boardUtility.h"
-#include "lib/list.h"
-#include "lib/parser.h"
+#include "boardUtility.h"
+#include "list.h"
+#include "parser.h"
 #include <netinet/in.h> //conversioni
 #include <netinet/ip.h> //struttura
 #include <pthread.h>
@@ -172,8 +172,7 @@ void play(int clientDesc, pthread_t tid) {
   int destinazione[2] = {-1, -1};
   char inputFromClient = 'n';
   int punteggio = 0;
-  if (timer != 0)
-  {
+  if (timer != 0) {
     inserisciPlayerNellaGrigliaInPosizioneCasuale(
         grigliaDiGiocoConPacchiSenzaOstacoli, grigliaOstacoliSenzaPacchi,
         posizione);

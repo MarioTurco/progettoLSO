@@ -185,8 +185,8 @@ void play(int clientDesc, pthread_t tid) {
           posizione);
       playerGenerati++;
       if (playerGenerati == numeroClient) {
-        playerGenerati = 0;
         timerCount = TIME_LIMIT_IN_SECONDS;
+        playerGenerati = 0;
       }
     }
     sleep(2);
@@ -195,8 +195,10 @@ void play(int clientDesc, pthread_t tid) {
   }
 }
 void clientCrashHandler(int signalNum) {
-  numeroClient--;
-  printf("Client disconnesso (client attuali: %d)\n", numeroClient);
+  if (numeroClient > 0) {
+    numeroClient--;
+    printf("Client disconnesso (client attuali: %d)\n", numeroClient);
+  }
   // TODO proteggere con un mutex
   // onLineUsers = removePlayer(onLineUsers, clientDescriptor); //trovare il
   // modo per cancellare il player giusto printList(onLineUsers); printf("\n");
@@ -247,7 +249,6 @@ void quitServer() {
 
 void *timer(void *args) {
   int cambiato = 1;
-
   while (1) {
     if (numeroClient > 0 && timerCount > 0 &&
         timerCount <= TIME_LIMIT_IN_SECONDS) {

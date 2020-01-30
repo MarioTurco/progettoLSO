@@ -146,7 +146,7 @@ void play() {
       printf("Impossibile comunicare con il server\n"), exit(-1);
     printGrid(grigliaDiGioco);
     char send = getInput();
-    write(socketDesc, &send, 1);
+    write(socketDesc, &send, sizeof(char));
   }
 }
 

@@ -48,7 +48,7 @@ int gestisciW(char grigliaDiGioco[ROWS][COLUMNS],
                nuovaColonna == destinazione[1]) {
       punteggio += 10;
     }
-    posizioneUtente = riga;
+    posizioneUtente[0] = riga;
 
     return 1;
   }

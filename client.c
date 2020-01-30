@@ -1,5 +1,5 @@
-#include "boardUtility.h"
-#include "parser.h"
+#include "lib/boardUtility.h"
+#include "lib/parser.h"
 #include <arpa/inet.h>
 #include <fcntl.h>
 #include <netdb.h>
@@ -25,8 +25,8 @@ int gestisci();
 char getUserInput();
 int login();
 void clientCrashHandler();
-void serverCrashed();
-
+void serverCrashHandler();
+int serverCaduto();
 void esciDalServer();
 /*/////////////////////////////*/
 int socketDesc;
@@ -38,7 +38,7 @@ int main(int argc, char **argv) {
   signal(SIGQUIT, clientCrashHandler);
   signal(SIGTSTP, clientCrashHandler); /* CTRL-Z*/
   signal(SIGTERM, clientCrashHandler); /* generato da 'kill' */
-  signal(SIGPIPE, serverCrashed);
+  signal(SIGPIPE, serverCrashHandler);
 
   char bufferReceive[2];
   if (argc != 3)
@@ -48,7 +48,6 @@ int main(int argc, char **argv) {
   if ((socketDesc = connettiAlServer(argv)) < 0)
     exit(-1);
 
-  signal(SIGSTOP, clientCrashHandler);
   gestisci(socketDesc);
   close(socketDesc);
   exit(0);
@@ -105,9 +104,22 @@ int gestisci() {
   }
 }
 
+int serverCaduto() {
+  char msg = 'y';
+  if (read(socketDesc, &msg, sizeof(char)) == 0)
+    return 1;
+  else {
+    msg = 'y';
+    write(socketDesc, &msg, sizeof(msg));
+  }
+  return 0;
+}
 void play() {
   int exitFlag = 0;
   while (!exitFlag) {
+    if (serverCaduto())
+      serverCrashHandler();
+
     if (read(socketDesc, grigliaDiGioco, sizeof(grigliaDiGioco)) < 1)
       printf("Impossibile comunicare con il server\n"), exit(-1);
     printGrid(grigliaDiGioco);
@@ -192,16 +204,17 @@ int registrati() {
   char validate;
   int ret;
   read(socketDesc, &validate, sizeof(char));
-  /*printf("REGISTRATO?: %c\n", validate);*/
   if (validate == 'y') {
     ret = 1;
     printf("Registrato con successo\n");
+    premiEnterPerContinuare();
   }
   if (validate == 'n') {
     ret = 0;
     printf("Registrazione fallita\n");
+    premiEnterPerContinuare();
   }
-  premiEnterPerContinuare();
+
   return ret;
 }
 
@@ -232,7 +245,7 @@ void clientCrashHandler() {
   signal(SIGTSTP, SIG_IGN);
   exit(0);
 }
-void serverCrashed() {
+void serverCrashHandler() {
   system("clear");
   printf("Il server è crashato o è irraggiungibile\n");
   close(socketDesc);

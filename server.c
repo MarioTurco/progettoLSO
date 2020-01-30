@@ -1,6 +1,6 @@
-#include "boardUtility.h"
-#include "list.h"
-#include "parser.h"
+#include "lib/boardUtility.h"
+#include "lib/list.h"
+#include "lib/parser.h"
 #include <netinet/in.h> //conversioni
 #include <netinet/ip.h> //struttura
 #include <pthread.h>
@@ -12,9 +12,6 @@
 #include <unistd.h>
 #define MAX_BUF 100
 
-List onLineUsers = NULL;
-char *users;
-
 int tryLogin(int clientDescriptor);
 void disconnettiClient();
 int registraClient(int);
@@ -22,48 +19,48 @@ void *timer(void *args);
 void *gestisci(void *descriptor);
 void quitServer();
 void clientCrashHandler(int signalNum);
-
+void startTimer();
+void configuraSocket(struct sockaddr_in mio_indirizzo);
+struct sockaddr_in configuraIndirizzo();
+void startListening();
+int clientDisconnesso(int clientSocket);
+void play(int clientDesc, pthread_t tid);
 /*//////////////////////////////////*/
 char grigliaDiGiocoConPacchiSenzaOstacoli[ROWS][COLUMNS];
 char grigliaOstacoliSenzaPacchi[ROWS][COLUMNS];
 int numeroClient = 0;
+int playerGenerati = 0;
 time_t timerCount = TIME_LIMIT_IN_SECONDS;
 pthread_t tidTimer;
 int socketDesc;
+List onLineUsers = NULL;
+char *users;
 /*///////////////////////////////*/
 
 int main(int argc, char **argv) {
+
+  users = argv[1];
+  struct sockaddr_in mio_indirizzo = configuraIndirizzo();
+  configuraSocket(mio_indirizzo);
+
   signal(SIGPIPE, clientCrashHandler);
   signal(SIGINT, quitServer);
   signal(SIGHUP, quitServer);
+
   if (argc != 2) {
     printf("Wrong parameters number(Usage: ./server usersFile)\n");
     exit(-1);
   }
-
-  users = argv[1];
-  int clientDesc;
-  int *thread_desc;
-  pthread_t tid;
-  struct sockaddr_in mio_indirizzo;
-  mio_indirizzo.sin_family = AF_INET;
-  mio_indirizzo.sin_port = htons(5200);
-  mio_indirizzo.sin_addr.s_addr = htonl(INADDR_ANY);
-
-  if ((socketDesc = socket(PF_INET, SOCK_STREAM, 0)) < 0)
-    perror("Impossibile creare socket"), exit(-1);
-  if (setsockopt(socketDesc, SOL_SOCKET, SO_REUSEADDR, &(int){1}, sizeof(int)) <
-      0)
-    perror("Impossibile impostare il riutilizzo dell'indirizzo ip e della "
-           "porta\n");
-  if ((bind(socketDesc, (struct sockaddr *)&mio_indirizzo,
-            sizeof(mio_indirizzo))) < 0)
-    perror("Impossibile effettuare bind"), exit(-1);
-
+  startTimer();
   inizializzaGiocoSenzaPlayer(grigliaDiGiocoConPacchiSenzaOstacoli,
                               grigliaOstacoliSenzaPacchi);
-  pthread_create(&tidTimer, NULL, timer, NULL);
-
+  startListening();
+  return 0;
+}
+void startListening() {
+  pthread_t tid;
+  int clientDesc;
+  int *thread_desc;
   while (1 == 1) {
     if (listen(socketDesc, 10) < 0)
       perror("Impossibile mettersi in ascolto"), exit(-1);
@@ -81,9 +78,19 @@ int main(int argc, char **argv) {
   }
   close(clientDesc);
   quitServer();
-  return 0;
 }
-
+struct sockaddr_in configuraIndirizzo() {
+  struct sockaddr_in mio_indirizzo;
+  mio_indirizzo.sin_family = AF_INET;
+  mio_indirizzo.sin_port = htons(5200);
+  mio_indirizzo.sin_addr.s_addr = htonl(INADDR_ANY);
+  printf("Indirizzo socket configurato\n");
+  return mio_indirizzo;
+}
+void startTimer() {
+  printf("Thread timer avviato\n");
+  pthread_create(&tidTimer, NULL, timer, NULL);
+}
 int tryLogin(int clientDesc) {
   // TODO proteggere con un mutex
   char *userName = (char *)calloc(MAX_BUF, 1);
@@ -105,7 +112,6 @@ int tryLogin(int clientDesc) {
     printList(onLineUsers);
     printf("\n");
   }
-
   return ret;
 }
 
@@ -114,13 +120,12 @@ void *gestisci(void *descriptor) {
   int bufferReceive[2] = {1};
   int client_sd;
   int ret = 1;
-  int posizione[2];
+  int true = 1;
   client_sd = *(int *)descriptor;
   pthread_t tid = pthread_self();
 
-  while (1) {
+  while (true) {
     read(client_sd, bufferReceive, sizeof(bufferReceive));
-
     if (bufferReceive[0] == 2) {
       int ret = registraClient(client_sd);
       char risposta;
@@ -140,33 +145,9 @@ void *gestisci(void *descriptor) {
       int grantAccess = tryLogin(client_sd);
 
       if (grantAccess) {
-        int n;
         write(client_sd, "y", 1);
-
-        inserisciPlayerNellaGrigliaInPosizioneCasuale(
-            grigliaDiGiocoConPacchiSenzaOstacoli, grigliaOstacoliSenzaPacchi,
-            posizione);
-        n = write(client_sd, grigliaDiGiocoConPacchiSenzaOstacoli,
-                  sizeof(grigliaDiGiocoConPacchiSenzaOstacoli));
-        printf("Size: %ld, sent %d\n", MATRIX_DIMENSION, n);
-        int true = 1;
-        while (true) {
-          if (timerCount == TIME_LIMIT_IN_SECONDS) {
-            inserisciPlayerNellaGrigliaInPosizioneCasuale(
-                grigliaDiGiocoConPacchiSenzaOstacoli,
-                grigliaOstacoliSenzaPacchi, posizione);
-          }
-          sleep(2); // al posto di questo sleep va messo un read
-                    // così il server non invia continuamente ed il cliente non
-                    // stampa continuamente il server deve aspettare l'input del
-                    // client (tramite read che è bloccante) modificare la
-                    // griglia in base all'input dell utente e reinviarla
-                    // Poi lo faccio domani, ora non ho tempo per farlo
-          write(client_sd, grigliaDiGiocoConPacchiSenzaOstacoli,
-                sizeof(grigliaDiGiocoConPacchiSenzaOstacoli));
-        }
-
-        // userMovement();
+        play(client_sd, tid);
+        true = 0;
       } else {
         write(client_sd, "n", 1);
       }
@@ -183,16 +164,42 @@ void *gestisci(void *descriptor) {
       break;
     }
   }
-  printf("uscita thread\n");
-  pthread_exit(NULL);
+}
+
+void play(int clientDesc, pthread_t tid) {
+  int true = 1;
+  int posizione[2];
+  if (timer != 0) {
+    inserisciPlayerNellaGrigliaInPosizioneCasuale(
+        grigliaDiGiocoConPacchiSenzaOstacoli, grigliaOstacoliSenzaPacchi,
+        posizione);
+  }
+  while (true) {
+    if (clientDisconnesso(clientDesc)) {
+      disconnettiClient(clientDesc, tid);
+      return;
+    }
+    if (timerCount == TIME_LIMIT_IN_SECONDS + 1) {
+      inserisciPlayerNellaGrigliaInPosizioneCasuale(
+          grigliaDiGiocoConPacchiSenzaOstacoli, grigliaOstacoliSenzaPacchi,
+          posizione);
+      playerGenerati++;
+      if (playerGenerati == numeroClient) {
+        playerGenerati = 0;
+        timerCount = TIME_LIMIT_IN_SECONDS;
+      }
+    }
+    sleep(2);
+    write(clientDesc, grigliaDiGiocoConPacchiSenzaOstacoli,
+          sizeof(grigliaDiGiocoConPacchiSenzaOstacoli));
+  }
 }
 void clientCrashHandler(int signalNum) {
   numeroClient--;
   printf("Client disconnesso (client attuali: %d)\n", numeroClient);
-  //TODO proteggere con un mutex
-  //onLineUsers = removePlayer(onLineUsers, clientDescriptor); //trovare il modo per cancellare il player giusto
-  //printList(onLineUsers);
-  //printf("\n");
+  // TODO proteggere con un mutex
+  // onLineUsers = removePlayer(onLineUsers, clientDescriptor); //trovare il
+  // modo per cancellare il player giusto printList(onLineUsers); printf("\n");
   signal(SIGPIPE, SIG_IGN);
 }
 void disconnettiClient(int clientDescriptor, int *threadDescriptor) {
@@ -206,9 +213,18 @@ void disconnettiClient(int clientDescriptor, int *threadDescriptor) {
   printf("Client disconnesso (client attuali: %d)\n", numeroClient);
   write(clientDescriptor, &msg, sizeof(msg));
   close(clientDescriptor);
-  free(threadDescriptor);
 }
 
+int clientDisconnesso(int clientSocket) {
+  char msg[1] = {'u'}; // UP?
+  if (write(clientSocket, msg, sizeof(msg)) < 0) {
+    return 1;
+  }
+  if (read(clientSocket, msg, sizeof(char)) < 0) {
+    return 1;
+  } else
+    return 0;
+}
 int registraClient(int clientDesc) {
   char *userName = (char *)calloc(MAX_BUF, 1);
   char *password = (char *)calloc(MAX_BUF, 1);
@@ -230,8 +246,10 @@ void quitServer() {
 }
 void *timer(void *args) {
   int cambiato = 1;
+
   while (1) {
-    if (numeroClient > 0 && timerCount > 0) {
+    if (numeroClient > 0 && timerCount > 0 &&
+        timerCount <= TIME_LIMIT_IN_SECONDS) {
       cambiato = 1;
       sleep(1);
       timerCount--;
@@ -250,8 +268,23 @@ void *timer(void *args) {
           grigliaDiGiocoConPacchiSenzaOstacoli);
       generaPosizioneOstacoli(grigliaDiGiocoConPacchiSenzaOstacoli,
                               grigliaOstacoliSenzaPacchi);
-      timerCount = TIME_LIMIT_IN_SECONDS;
-      sleep(2);
+      timerCount = TIME_LIMIT_IN_SECONDS + 1;
     }
+  }
+}
+
+void configuraSocket(struct sockaddr_in mio_indirizzo) {
+  if ((socketDesc = socket(PF_INET, SOCK_STREAM, 0)) < 0) {
+    perror("Impossibile creare socket");
+    exit(-1);
+  }
+  if (setsockopt(socketDesc, SOL_SOCKET, SO_REUSEADDR, &(int){1}, sizeof(int)) <
+      0)
+    perror("Impossibile impostare il riutilizzo dell'indirizzo ip e della "
+           "porta\n");
+  if ((bind(socketDesc, (struct sockaddr *)&mio_indirizzo,
+            sizeof(mio_indirizzo))) < 0) {
+    perror("Impossibile effettuare bind");
+    exit(-1);
   }
 }

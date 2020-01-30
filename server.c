@@ -195,8 +195,10 @@ void play(int clientDesc, pthread_t tid) {
   }
 }
 void clientCrashHandler(int signalNum) {
-  numeroClient--;
-  printf("Client disconnesso (client attuali: %d)\n", numeroClient);
+  if (numeroClient > 0) {
+    numeroClient--;
+    printf("Client disconnesso (client attuali: %d)\n", numeroClient);
+  }
   // TODO proteggere con un mutex
   // onLineUsers = removePlayer(onLineUsers, clientDescriptor); //trovare il
   // modo per cancellare il player giusto printList(onLineUsers); printf("\n");

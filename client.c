@@ -92,23 +92,20 @@ int gestisci() {
     if (choice == '3') {
       esciDalServer();
       return (0);
-    }else if (choice == '2') {
+    } else if (choice == '2') {
       registrati();
-    }else if (choice == '1') {
+    } else if (choice == '1') {
       if (tryLogin()) {
         play();
-      } 
-    }else {
+      }
+    } else {
       printf("Wrong input\n");
-      //sleep(1);
+      // sleep(1);
     }
   }
 }
 
-char getInput(){
-  char input;
-
-}
+char getInput() { char input; }
 
 int serverCaduto() {
   char msg = 'y';
@@ -128,7 +125,7 @@ void play() {
     if (read(socketDesc, grigliaDiGioco, sizeof(grigliaDiGioco)) < 1)
       printf("Impossibile comunicare con il server\n"), exit(-1);
     printGrid(grigliaDiGioco);
-    
+    write(socketDesc, "w", sizeof(char));
   }
 }
 

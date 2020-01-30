@@ -33,3 +33,6 @@ void gestisciInput(char grigliaDiGioco[ROWS][COLUMNS],
 void generaPosizioneRaccolta(char grigliaDiGioco[ROWS][COLUMNS],
                              char grigliaOstacoli[ROWS][COLUMNS], int *coord,
                              int xPlayer, int yPlayer);
+int gestisciW(char grigliaDiGioco[ROWS][COLUMNS],
+              char grigliaOstacoli[ROWS][COLUMNS], int posizioneUtente[2],
+              int destinazione[2], char input, int *punteggio);

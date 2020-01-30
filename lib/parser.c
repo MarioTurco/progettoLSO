@@ -93,6 +93,4 @@ int validateLogin(char *name, char *pwd, char *file) {
   return ret;
 }
 
-void premiEnterPerContinuare() {
-  sleep(2);
-}
+void premiEnterPerContinuare() { sleep(1); }

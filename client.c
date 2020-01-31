@@ -150,6 +150,7 @@ int serverCaduto() {
   return 0;
 }
 void play() {
+  PlayerStats giocatore = NULL;
   int exitFlag = 0;
   while (!exitFlag) {
     if (serverCaduto())
@@ -157,8 +158,11 @@ void play() {
 
     if (read(socketDesc, grigliaDiGioco, sizeof(grigliaDiGioco)) < 1)
       printf("Impossibile comunicare con il server\n"), exit(-1);
-    //TODO aggiungere la struttura di stats a printGrid nella chiamata
-    printGrid(grigliaDiGioco); //per ora da errore
+    if (read(socketDesc, &giocatore, sizeof(PlayerStats)) < 1) {
+      printf("Impossibile comunicare con il server\n"), exit(-1);
+    }
+    // TODO aggiungere la struttura di stats a printGrid nella chiamata
+    printGrid(grigliaDiGioco, giocatore); // per ora da errore
     char send = getInput();
     write(socketDesc, &send, sizeof(char));
   }
@@ -208,7 +212,7 @@ int tryLogin() {
   return ret;
 }
 
-//TODO da modificare/cancellare
+// TODO da modificare/cancellare
 char getUserInput() {
   char c;
   c = getchar();

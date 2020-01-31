@@ -37,9 +37,11 @@ int colpitoPacco(char grigliaDiGioco[ROWS][COLUMNS], int posizione[2]) {
     return 1;
   return 0;
 }
-int spostamentoValid(char grigliaDiGioco[ROWS][COLUMNS], int posizione[2]) {
-  if (grigliaDiGioco[posizione[0]][posizione[1]] == '$')
-    return 1;
+int spostamentoValido(char grigliaDiGioco[ROWS][COLUMNS],
+                      char grigliaOstacoli[ROWS][COLUMNS], int posizione[2]) {
+  if (grigliaDiGioco[posizione[0]][posizione[1]] == '-')
+    if (grigliaOstacoli[posizione[0]][posizione[1]] == '-')
+      return 1;
   return 0;
 }
 int colpitoPlayer(char grigliaDiGioco[ROWS][COLUMNS], int posizione[2]) {

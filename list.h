@@ -4,19 +4,19 @@ struct TList {
   char *name;
   struct TList *next;
   int sockDes;
-};
+} TList;
 
 struct Data {
   int deploy[2];
   int score;
   int position[2];
-};
+} Data;
 
 struct TList2 {
   int x;
   int y;
   struct TList2 *next;
-};
+} TList2;
 
 typedef struct Data *PlayerStats;
 typedef struct TList *Players;

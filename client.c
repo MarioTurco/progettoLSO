@@ -208,6 +208,7 @@ int tryLogin() {
   return ret;
 }
 
+//TODO da modificare/cancellare
 char getUserInput() {
   char c;
   c = getchar();

@@ -217,7 +217,7 @@ void disconnettiClient(int clientDescriptor, int *threadDescriptor) {
     numeroClient--;
   // TODO proteggere con un mutex
   onLineUsers = removePlayer(onLineUsers, clientDescriptor);
-  printList(onLineUsers);
+  printPlayers(onLineUsers);
   printf("\n");
   int msg = 1;
   printf("Client disconnesso (client attuali: %d)\n", numeroClient);

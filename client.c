@@ -156,10 +156,11 @@ void play() {
     if (serverCaduto())
       serverCrashHandler();
 
-    if (read(socketDesc, grigliaDiGioco, sizeof(grigliaDiGioco)) < 1)
-      printf("Impossibile comunicare con il server\n"), exit(-1);
-    if (read(socketDesc, &giocatore, sizeof(PlayerStats)) < 1) {
-      printf("Impossibile comunicare con il server\n"), exit(-1);
+    if (read(socketDesc, grigliaDiGioco, sizeof(grigliaDiGioco)) < 1) {
+      // printf("Impossibile comunicare con il server\n"), exit(-1);
+    }
+    if (read(socketDesc, giocatore, sizeof(PlayerStats)) < 1) {
+      // printf("Impossibile comunicare con il server\n"), exit(-1);
     }
     printGrid(grigliaDiGioco, giocatore);
     char send = getInput();

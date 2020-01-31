@@ -44,7 +44,7 @@ int colpitoPlayer(char grigliaDiGioco[ROWS][COLUMNS], int posizione[2]) {
 
 PlayerStats gestisciInput(char grigliaDiGioco[ROWS][COLUMNS],
                           char grigliaOstacoli[ROWS][COLUMNS], char input,
-                          PlayerStats giocatore, Obstacles listaOstacoli) {
+                          PlayerStats giocatore, Obstacles *listaOstacoli) {
   PlayerStats nuoveStatistiche;
   if (input == 'w') {
     nuoveStatistiche =

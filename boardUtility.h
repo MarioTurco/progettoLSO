@@ -32,7 +32,7 @@ void riempiGrigliaConGliOstacoli(char grigliaDiGioco[ROWS][COLUMNS],
                                  char grigliaOstacoli[ROWS][COLUMNS]);
 PlayerStats gestisciInput(char grigliaDiGioco[ROWS][COLUMNS],
                           char grigliaOstacoli[ROWS][COLUMNS], char input,
-                          PlayerStats giocatore, Obstacles listaOstacoli);
+                          PlayerStats giocatore, Obstacles *listaOstacoli);
 void generaPosizioneRaccolta(char grigliaDiGioco[ROWS][COLUMNS],
                              char grigliaOstacoli[ROWS][COLUMNS], int *coord,
                              int xPlayer, int yPlayer);

@@ -198,7 +198,7 @@ void play(int clientDesc, pthread_t tid) {
     read(clientDesc, &inputFromClient, sizeof(char));
     gestisciInput(grigliaDiGiocoConPacchiSenzaOstacoli,
                   grigliaOstacoliSenzaPacchi, inputFromClient, giocatore,
-                  listaOstacoli);
+                  &listaOstacoli);
   }
 }
 void clientCrashHandler(int signalNum) {

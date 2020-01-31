@@ -120,10 +120,23 @@ char getInput() {
 }
 
 int isCorrect(char input) {
-  if (input != 'w' && input != 'a' && input != 's' && input != 'd')
-    return 0;
-  else
+  switch (input) {
+  case 'w':
+  case 'W':
+  case 'a':
+  case 'A':
+  case 's':
+  case 'S':
+  case 'd':
+  case 'D':
+  case 'e':
+  case 'E':
     return 1;
+    break;
+  default:
+    return 0;
+    break;
+  }
 }
 
 int serverCaduto() {

@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#define MAX_BUF 200
 
 Players initPlayerNode(char *name, int sockDes) {
   Players L = (Players)malloc(sizeof(struct TList));

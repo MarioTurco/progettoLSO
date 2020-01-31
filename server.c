@@ -10,7 +10,6 @@
 #include <string.h>
 #include <sys/socket.h>
 #include <unistd.h>
-#define MAX_BUF 100
 
 int tryLogin(int clientDescriptor);
 void disconnettiClient();

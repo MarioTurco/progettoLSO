@@ -1,3 +1,4 @@
+#define MAX_BUF 200
 
 // players
 struct TList {

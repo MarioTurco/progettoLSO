@@ -14,6 +14,9 @@
 #define RED_COLOR "\x1b[31m"
 #define RESET_COLOR "\x1b[0m"
 void printMenu();
+PlayerStats gestisciS(char grigliaDiGioco[ROWS][COLUMNS],
+                      char grigliaOstacoli[ROWS][COLUMNS],
+                      PlayerStats giocatore, Obstacles *listaOstacoli);
 void inizializzaGiocoSenzaPlayer(char grigliaDiGioco[ROWS][COLUMNS],
                                  char grigliaConOstacoli[ROWS][COLUMNS]);
 void inserisciPlayerNellaGrigliaInPosizioneCasuale(
@@ -45,6 +48,6 @@ int colpitoPacco(char grigliaDiGioco[ROWS][COLUMNS], int posizione[2]);
 int colpitoPlayer(char grigliaDiGioco[ROWS][COLUMNS], int posizione[2]);
 int casellaVuota(char grigliaDiGioco[ROWS][COLUMNS],
                  char grigliaOstacoli[ROWS][COLUMNS], int posizione[2]);
-void aggiornaGrigliaW(char griglia[ROWS][COLUMNS], int vecchiaPosizione[2],
-                      int nuovaPosizione[2]);
+void spostaPlayer(char griglia[ROWS][COLUMNS], int vecchiaPosizione[2],
+                  int nuovaPosizione[2]);
 int arrivatoADestinazione(int posizione[2], int destinazione[2]);

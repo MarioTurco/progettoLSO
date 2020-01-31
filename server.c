@@ -109,7 +109,7 @@ int tryLogin(int clientDesc) {
     printf("Nuovo client loggato, client loggati : %d\n", numeroClient);
     // TODO: proteggere con un mutex
     onLineUsers = addPlayer(onLineUsers, userName, clientDesc);
-    printList(onLineUsers);
+    printPlayers(onLineUsers);
     printf("\n");
   }
   return ret;

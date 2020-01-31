@@ -28,10 +28,22 @@ Players addPlayer(Players L, char* name,int sockDes);
 Players removePlayer(Players L, int sockDes);
 
 // Dealloca la lista interamente
-void freeList(Players L);
+void freePlayers(Players L);
 
 // Stampa la lista
-void printList(Players L);
+void printPlayers(Players L);
 
 //Controlla se un utente è già loggato
 int isAlreadyLogged(Players L,char* name);
+
+//Dealloca la lista degli ostacoli
+void freeObstacles(Obstacles L);
+
+//Stampa la lista degli ostacoli
+void printObstacles(Obstacles L);
+
+//Aggiunge un ostacolo in testa
+Obstacles addObstacle(Obstacles L, int x ,int y);
+
+//Inizializza un nuovo nodo ostacolo
+Obstacles initObstacleNode(int x, int y);

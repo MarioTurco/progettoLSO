@@ -4,13 +4,29 @@
 #include "list.h"
 #define MAX_BUF 200
 
-Players initNodeList(char* name, int sockDes) {
+Players initPlayerNode(char* name, int sockDes) {
     Players L = (Players)malloc(sizeof(struct TList));
     L->name = (char*)malloc(MAX_BUF);
     strcpy(L->name,name);
     L->sockDes=sockDes;
     L->next = NULL;
     return L;
+}
+
+Obstacles initObstacleNode(int x, int y) {
+    Obstacles L = (Obstacles)malloc(sizeof(struct TList2));
+    L->x = x;
+    L->y = y;
+    L->next = NULL;
+    return L;
+}
+
+Obstacles addObstacle(Obstacles L, int x ,int y) {
+    Obstacles tmp=initObstacleNode(x,y);
+    if (L != NULL) {
+        tmp->next = L;     
+    }
+    return tmp;
 }
 
 int isAlreadyLogged(Players L,char* name){
@@ -24,7 +40,7 @@ int isAlreadyLogged(Players L,char* name){
 }
 
 Players addPlayer(Players L, char* name,int sockDes) {
-    Players tmp=initNodeList(name,sockDes);
+    Players tmp=initPlayerNode(name,sockDes);
     if (L != NULL) {
         tmp->next = L;     
     }
@@ -44,17 +60,30 @@ Players removePlayer(Players L, int sockDes) {
 }
 
 
-void freeList(Players L) {
+void freePlayers(Players L) {
     if (L != NULL) {
-        freeList(L->next);
+        freePlayers(L->next);
         free(L);
     }
 }
 
+void freeObstacles(Obstacles L) {
+    if (L != NULL) {
+        freeObstacles(L->next);
+        free(L);
+    }
+}
 
-void printList(Players L) {
+void printPlayers(Players L) {
     if (L != NULL) {
         printf("%s ->", L->name);
-        printList(L->next);
+        printPlayers(L->next);
+    }
+}
+
+void printObstacles(Obstacles L) {
+    if (L != NULL) {
+        printf("X:%d Y:%d ->", L->x,L->y);
+        printObstacles(L->next);
     }
 }

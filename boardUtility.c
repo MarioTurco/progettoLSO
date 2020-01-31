@@ -1,4 +1,5 @@
 #include "boardUtility.h"
+#include "list.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -26,9 +27,14 @@ void printMenu() {
   printf("\t2 Registrati\n");
   printf("\t3 Esci\n");
 }
+int colpitoOstacolo(char grigliaOstacoli[ROWS][COLUMNS], int posizione[2]) {
+  if (grigliaOstacoli[posizione[0]][posizione[1]] == 'O')
+    return 1;
+  return 0;
+}
 int gestisciW(char grigliaDiGioco[ROWS][COLUMNS],
               char grigliaOstacoli[ROWS][COLUMNS], int posizioneUtente[2],
-              int destinazione[2], char input, int *punteggio) {
+              int destinazione[2], char input, int punteggio) {
   int riga = posizioneUtente[0];
   int colonna = posizioneUtente[1];
   int nuovaRiga = riga;

@@ -7,22 +7,22 @@ struct TList {
 };
 
 struct Data {
-    int deploy[2];
-    int score;
-    int position[2];
+  int deploy[2];
+  int score;
+  int position[2];
 };
 
-struct TList2 { 
-    int x;
-    int y;
-    struct TList2* next;
+struct TList2 {
+  int x;
+  int y;
+  struct TList2 *next;
 };
 
-typedef struct Data* PlayerStats;
-typedef struct TList* Players;
-typedef struct TList2* Obstacles;
+typedef struct Data *PlayerStats;
+typedef struct TList *Players;
+typedef struct TList2 *Obstacles;
 
-//Crea un nodo di Stats da mandare a un client
+// Crea un nodo di Stats da mandare a un client
 PlayerStats initStats(int deploy[], int score, int position[]);
 
 // Inizializza un nuovo nodo

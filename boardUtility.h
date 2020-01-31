@@ -23,16 +23,17 @@ void riempiGrigliaConPacchiInPosizioniGenerateCasualmente(
 void printGrid(char grigliaDaStampare[ROWS][COLUMNS]);
 void start(char grigliaDiGioco[ROWS][COLUMNS],
            char grigliaOstacoli[ROWS][COLUMNS]);
-void gameOver();
 void printObs(char grigliaOstacoli[ROWS][COLUMNS]);
 void riempiGrigliaConGliOstacoli(char grigliaDiGioco[ROWS][COLUMNS],
                                  char grigliaOstacoli[ROWS][COLUMNS]);
 void gestisciInput(char grigliaDiGioco[ROWS][COLUMNS],
                    char grigliaOstacoli[ROWS][COLUMNS], int posizioneUtente[2],
-                   int destinazione[2], char input, int *punteggio);
+                   int destinazione[2], char input, *int punteggio);
 void generaPosizioneRaccolta(char grigliaDiGioco[ROWS][COLUMNS],
                              char grigliaOstacoli[ROWS][COLUMNS], int *coord,
                              int xPlayer, int yPlayer);
 int gestisciW(char grigliaDiGioco[ROWS][COLUMNS],
               char grigliaOstacoli[ROWS][COLUMNS], int posizioneUtente[2],
-              int destinazione[2], char input, int *punteggio);
+              int destinazione[2], char input, int punteggio);
+void mergeGridAndList(char grid[ROWS][COLUMNS], Obstacles top);
+int colpitoOstacolo(char grigliaOstacoli[ROWS][COLUMNS], int posizione[2]);

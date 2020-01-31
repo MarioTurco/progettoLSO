@@ -27,9 +27,14 @@ void printMenu() {
   printf("\t2 Registrati\n");
   printf("\t3 Esci\n");
 }
+int colpitoOstacolo(char grigliaOstacoli[ROWS][COLUMNS], int posizione[2]) {
+  if (grigliaOstacoli[posizione[0]][posizione[1]] == 'O')
+    return 1;
+  return 0;
+}
 int gestisciW(char grigliaDiGioco[ROWS][COLUMNS],
               char grigliaOstacoli[ROWS][COLUMNS], int posizioneUtente[2],
-              int destinazione[2], char input, int *punteggio) {
+              int destinazione[2], char input, int punteggio) {
   int riga = posizioneUtente[0];
   int colonna = posizioneUtente[1];
   int nuovaRiga = riga;
@@ -175,24 +180,13 @@ void printGrid(char grigliaDaStampare[ROWS][COLUMNS]) {
   }
 }
 
-//aggiunge alla griglia gli ostacoli visti fino ad ora dal client
-void mergeGridAndList(char grid[ROWS][COLUMNS], Obstacles top){
-  while(top){
-    grid[top->x][top->y]='O';
-    top=top->next;
+// aggiunge alla griglia gli ostacoli visti fino ad ora dal client
+void mergeGridAndList(char grid[ROWS][COLUMNS], Obstacles top) {
+  while (top) {
+    grid[top->x][top->y] = 'O';
+    top = top->next;
   }
 }
-
-/* Stampa schermata di fine gioco */
-void gameOver() {
-  char c;
-
-  printf("____________Game over_______________\n");
-  fflush(stdin);
-  scanf("%c", &c);
-  return;
-}
-
 
 /* Genera la posizione degli ostacoli */
 void generaPosizioneOstacoli(char grigliaDiGioco[ROWS][COLUMNS],

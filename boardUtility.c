@@ -89,6 +89,7 @@ void gestisciInput(char grigliaDiGioco[ROWS][COLUMNS],
 }
 
 // TODO da cancellare
+/*
 void start(char grigliaDiGioco[ROWS][COLUMNS],
            char grigliaOstacoli[ROWS][COLUMNS]) {
   int movement;
@@ -146,6 +147,7 @@ void start(char grigliaDiGioco[ROWS][COLUMNS],
     printGrid(grigliaDiGioco);
   }
 }
+*/
 /*Svuota la griglia di gioco e la riempe solo di '-' */
 void inizializzaGrigliaVuota(char griglia[ROWS][COLUMNS]) {
   int i = 0, j = 0;

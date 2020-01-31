@@ -199,9 +199,7 @@ void play(int clientDesc, pthread_t tid) {
           sizeof(grigliaDiGiocoConPacchiSenzaOstacoli));
     // invia la struttura del player
     write(clientDesc, giocatore->deploy, sizeof(giocatore->deploy));
-    //write(clientDesc, &giocatore->deploy[1], sizeof(giocatore->deploy[1]));
     write(clientDesc, giocatore->position, sizeof(giocatore->position));
-    //write(clientDesc, &giocatore->position[1], sizeof(giocatore->position[1]));
     write(clientDesc, &giocatore->score, sizeof(giocatore->score));
     //printf("Player stats: %d %d %d %d %d", giocatore->deploy[0],giocatore->deploy[1],giocatore->position[0],giocatore->position[1],giocatore->score);
     // legge l'input

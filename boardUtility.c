@@ -188,19 +188,6 @@ void mergeGridAndList(char grid[ROWS][COLUMNS], Obstacles top) {
   }
 }
 
-/* Stampa schermata di fine gioco */
-void gameOver() {
-  char c;
-
-  printf("____________Game over_______________\n");
-  fflush(stdin);
-  scanf("%c", &c);
-  return;
-}
-
-// TODO: bisogna aggiungere una matrice che mantiene la posizione degli
-// ostacoli
-
 /* Genera la posizione degli ostacoli */
 void generaPosizioneOstacoli(char grigliaDiGioco[ROWS][COLUMNS],
                              char grigliaOstacoli[ROWS][COLUMNS]) {

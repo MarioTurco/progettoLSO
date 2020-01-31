@@ -14,6 +14,12 @@
 #define RED_COLOR "\x1b[31m"
 #define RESET_COLOR "\x1b[0m"
 void printMenu();
+PlayerStats gestisciA(char grigliaDiGioco[ROWS][COLUMNS],
+                      char grigliaOstacoli[ROWS][COLUMNS],
+                      PlayerStats giocatore, Obstacles *listaOstacoli);
+PlayerStats gestisciD(char grigliaDiGioco[ROWS][COLUMNS],
+                      char grigliaOstacoli[ROWS][COLUMNS],
+                      PlayerStats giocatore, Obstacles *listaOstacoli);
 PlayerStats gestisciS(char grigliaDiGioco[ROWS][COLUMNS],
                       char grigliaOstacoli[ROWS][COLUMNS],
                       PlayerStats giocatore, Obstacles *listaOstacoli);

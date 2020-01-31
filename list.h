@@ -5,6 +5,7 @@ struct TList {
   struct TList *next;
   int sockDes;
 };
+<<<<<<< HEAD
 // Obstacles
 struct TList2 {
   int x;
@@ -16,6 +17,26 @@ typedef struct TList *Players;
 typedef struct TList2 *Obstacles;
 
 // Crea un nodo di Stats da mandare a un client
+=======
+
+struct Data {
+    int deploy[2];
+    int score;
+    int position[2];
+};
+
+struct TList2 { 
+    int x;
+    int y;
+    struct TList2* next;
+};
+
+typedef struct Data* PlayerStats;
+typedef struct TList* Players;
+typedef struct TList2* Obstacles;
+
+//Crea un nodo di Stats da mandare a un client
+>>>>>>> f605ebba6636a57b2572a9d9c70478a1833e787b
 PlayerStats initStats(int deploy[], int score, int position[]);
 
 // Inizializza un nuovo nodo

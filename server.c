@@ -170,12 +170,14 @@ void play(int clientDesc, pthread_t tid) {
   int true = 1;
   int posizione[2];
   int destinazione[2] = {-1, -1};
-  char inputFromClient = 'n';
+  PlayerStats giocatore = initStats(destinazione, 0, posizione);
+  Obstacles listaOstacoli = NULL;
+  char inputFromClient;
   int punteggio = 0;
   if (timer != 0) {
     inserisciPlayerNellaGrigliaInPosizioneCasuale(
         grigliaDiGiocoConPacchiSenzaOstacoli, grigliaOstacoliSenzaPacchi,
-        posizione);
+        giocatore->position);
   }
   while (true) {
     if (clientDisconnesso(clientDesc)) {
@@ -185,7 +187,7 @@ void play(int clientDesc, pthread_t tid) {
     if (timerCount == TIME_LIMIT_IN_SECONDS + 1) {
       inserisciPlayerNellaGrigliaInPosizioneCasuale(
           grigliaDiGiocoConPacchiSenzaOstacoli, grigliaOstacoliSenzaPacchi,
-          posizione);
+          giocatore->position);
       playerGenerati++;
       if (playerGenerati == numeroClient) {
         timerCount = TIME_LIMIT_IN_SECONDS;
@@ -196,8 +198,8 @@ void play(int clientDesc, pthread_t tid) {
           sizeof(grigliaDiGiocoConPacchiSenzaOstacoli));
     read(clientDesc, &inputFromClient, sizeof(char));
     gestisciInput(grigliaDiGiocoConPacchiSenzaOstacoli,
-                  grigliaOstacoliSenzaPacchi, posizione, destinazione,
-                  inputFromClient, &punteggio);
+                  grigliaOstacoliSenzaPacchi, inputFromClient, giocatore,
+                  listaOstacoli);
   }
 }
 void clientCrashHandler(int signalNum) {

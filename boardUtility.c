@@ -295,7 +295,7 @@ PlayerStats gestisciW(char grigliaDiGioco[ROWS][COLUMNS],
       nuovoDeploy[0] = -1;
       nuovoDeploy[1] = -1;
     } else if (colpitoOstacolo(grigliaOstacoli, giocatore->position)) {
-      *listaOstacoli =
+      listaOstacoli =
           addObstacle(listaOstacoli, nuovaPosizione[0], nuovaPosizione[1]);
       nuovaPosizione[0] = giocatore->position[0];
       nuovaPosizione[1] = giocatore->position[1];

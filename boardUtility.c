@@ -32,6 +32,16 @@ int colpitoOstacolo(char grigliaOstacoli[ROWS][COLUMNS], int posizione[2]) {
     return 1;
   return 0;
 }
+int colpitoPacco(char grigliaDiGioco[ROWS][COLUMNS], int posizione[2]) {
+  if (grigliaDiGioco[posizione[0]][posizione[1]] == '$')
+    return 1;
+  return 0;
+}
+int colpitoPlayer(char grigliaDiGioco[ROWS][COLUMNS], int posizione[2]) {
+  if (grigliaDiGioco[posizione[0]][posizione[1]] == 'P')
+    return 1;
+  return 0;
+}
 int gestisciW(char grigliaDiGioco[ROWS][COLUMNS],
               char grigliaOstacoli[ROWS][COLUMNS], int posizioneUtente[2],
               int destinazione[2], char input, int punteggio) {

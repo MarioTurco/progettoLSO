@@ -266,7 +266,7 @@ void inizializzaGiocoSenzaPlayer(char grigliaDiGioco[ROWS][COLUMNS],
 
 PlayerStats gestisciW(char grigliaDiGioco[ROWS][COLUMNS],
                       char grigliaOstacoli[ROWS][COLUMNS],
-                      PlayerStats giocatore, Obstacles listaOstacoli) {
+                      PlayerStats giocatore, Obstacles *listaOstacoli) {
   PlayerStats nuoveStatistiche = NULL;
   int nuovaPosizione[2];
   nuovaPosizione[1] = giocatore->position[1];
@@ -295,8 +295,8 @@ PlayerStats gestisciW(char grigliaDiGioco[ROWS][COLUMNS],
       nuovoDeploy[0] = -1;
       nuovoDeploy[1] = -1;
     } else if (colpitoOstacolo(grigliaOstacoli, giocatore->position)) {
-      listaOstacoli =
-          addObstacle(listaOstacoli, nuovaPosizione[0], nuovaPosizione[1]);
+      *listaOstacoli =
+          addObstacle(*listaOstacoli, nuovaPosizione[0], nuovaPosizione[1]);
       nuovaPosizione[0] = giocatore->position[0];
       nuovaPosizione[1] = giocatore->position[1];
     } else if (colpitoPlayer(grigliaDiGioco, giocatore->position)) {

@@ -33,7 +33,7 @@ int playerGenerati = 0;
 time_t timerCount = TIME_LIMIT_IN_SECONDS;
 pthread_t tidTimer;
 int socketDesc;
-List onLineUsers = NULL;
+Players onLineUsers = NULL;
 char *users;
 /*///////////////////////////////*/
 

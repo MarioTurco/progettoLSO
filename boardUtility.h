@@ -12,6 +12,7 @@
 #define MATRIX_DIMENSION sizeof(char) * ROWS *COLUMNS
 #define RED_COLOR "\x1b[31m"
 #define RESET_COLOR "\x1b[0m"
+void printMenu();
 void inizializzaGiocoSenzaPlayer(char grigliaDiGioco[ROWS][COLUMNS],
                                  char grigliaConOstacoli[ROWS][COLUMNS]);
 void inserisciPlayerNellaGrigliaInPosizioneCasuale(

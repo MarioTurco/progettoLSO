@@ -6,7 +6,7 @@
 #include <unistd.h>
 
 
-void printMenu();
+
 /*int main(int argc, char *argv[]) {
       char grigliaDiGioco[ROWS][COLUMNS];
       char grigliaOstacoli[ROWS][COLUMNS];

@@ -1,8 +1,8 @@
+#include "list.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 #include <unistd.h>
-
 #define ROWS 20
 #define COLUMNS 60
 #define numberOfObstacles 50
@@ -32,12 +32,15 @@ void gestisciInput(char grigliaDiGioco[ROWS][COLUMNS],
 void generaPosizioneRaccolta(char grigliaDiGioco[ROWS][COLUMNS],
                              char grigliaOstacoli[ROWS][COLUMNS], int *coord,
                              int xPlayer, int yPlayer);
-int gestisciW(char grigliaDiGioco[ROWS][COLUMNS],
-              char grigliaOstacoli[ROWS][COLUMNS], int posizioneUtente[2],
-              int destinazione[2], char input, int punteggio);
+PlayerStats gestisciW(char grigliaDiGioco[ROWS][COLUMNS],
+                      char grigliaOstacoli[ROWS][COLUMNS],
+                      PlayerStats giocatore, Obstacles *listaOstacoli);
 void mergeGridAndList(char grid[ROWS][COLUMNS], Obstacles top);
 int colpitoOstacolo(char grigliaOstacoli[ROWS][COLUMNS], int posizione[2]);
 int colpitoPacco(char grigliaDiGioco[ROWS][COLUMNS], int posizione[2]);
 int colpitoPlayer(char grigliaDiGioco[ROWS][COLUMNS], int posizione[2]);
-int spostamentoValido(char grigliaDiGioco[ROWS][COLUMNS],
-                      char grigliaOstacoli[ROWS][COLUMNS], int posizione[2]);
+int casellaVuota(char grigliaDiGioco[ROWS][COLUMNS],
+                 char grigliaOstacoli[ROWS][COLUMNS], int posizione[2]);
+void aggiornaGrigliaW(char griglia[ROWS][COLUMNS], int vecchiaPosizione[2],
+                      int nuovaPosizione[2]);
+int arrivatoADestinazione(int posizione[2], int destinazione[2]);

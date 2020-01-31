@@ -37,8 +37,8 @@ int colpitoPacco(char grigliaDiGioco[ROWS][COLUMNS], int posizione[2]) {
     return 1;
   return 0;
 }
-int spostamentoValido(char grigliaDiGioco[ROWS][COLUMNS],
-                      char grigliaOstacoli[ROWS][COLUMNS], int posizione[2]) {
+int casellaVuota(char grigliaDiGioco[ROWS][COLUMNS],
+                 char grigliaOstacoli[ROWS][COLUMNS], int posizione[2]) {
   if (grigliaDiGioco[posizione[0]][posizione[1]] == '-')
     if (grigliaOstacoli[posizione[0]][posizione[1]] == '-')
       return 1;
@@ -49,40 +49,7 @@ int colpitoPlayer(char grigliaDiGioco[ROWS][COLUMNS], int posizione[2]) {
     return 1;
   return 0;
 }
-int gestisciW(char grigliaDiGioco[ROWS][COLUMNS],
-              char grigliaOstacoli[ROWS][COLUMNS], int posizioneUtente[2],
-              int destinazione[2], char input, int punteggio) {
-  int riga = posizioneUtente[0];
-  int colonna = posizioneUtente[1];
-  int nuovaRiga = riga;
-  int nuovaColonna = colonna;
-  if (nuovaRiga - 1 > 0) {
-    nuovaRiga -= 1;
-    // la casella è vuota
-    if (grigliaDiGioco[nuovaRiga][colonna] == '-' &&
-        grigliaOstacoli[nuovaRiga][nuovaColonna] == '-') {
-      grigliaDiGioco[riga][colonna] = '-';
-      grigliaDiGioco[nuovaRiga][colonna] = 'P';
-      riga = nuovaRiga;
-    } else if (grigliaDiGioco[nuovaRiga][colonna] == '$') {
-      generaPosizioneRaccolta(grigliaDiGioco, grigliaOstacoli, destinazione,
-                              posizioneUtente[0], posizioneUtente[1]);
-      grigliaDiGioco[riga][colonna] = '-';
-      grigliaDiGioco[nuovaRiga][colonna] = 'P';
-    } else if (nuovaRiga == destinazione[0] &&
-               nuovaColonna == destinazione[1]) {
-      grigliaDiGioco[riga][colonna] = '-';
-      grigliaDiGioco[nuovaRiga][colonna] = 'P';
-      punteggio += 10;
-    } else {
-      fprintf(stdout, "Incontrato ostacolo o player\n");
-      nuovaRiga += 1;
-    }
-    posizioneUtente[0] = riga;
 
-    return 1;
-  }
-}
 void gestisciInput(char grigliaDiGioco[ROWS][COLUMNS],
                    char grigliaOstacoli[ROWS][COLUMNS], int posizioneUtente[2],
                    int destinazione[2], char input, int *punteggio) {
@@ -301,4 +268,58 @@ void inizializzaGiocoSenzaPlayer(char grigliaDiGioco[ROWS][COLUMNS],
   riempiGrigliaConPacchiInPosizioniGenerateCasualmente(grigliaDiGioco);
   generaPosizioneOstacoli(grigliaDiGioco, grigliaConOstacoli);
   return;
+}
+
+PlayerStats gestisciW(char grigliaDiGioco[ROWS][COLUMNS],
+                      char grigliaOstacoli[ROWS][COLUMNS],
+                      PlayerStats giocatore, Obstacles *listaOstacoli) {
+  PlayerStats nuoveStatistiche = NULL;
+  int nuovaPosizione[2];
+  nuovaPosizione[1] = giocatore->position[1];
+
+  // Aggiorna la posizione vecchia spostando il player avanti di 1
+  nuovaPosizione[0] = (giocatore->position[0]) - 1;
+  int nuovoScore = giocatore->score;
+  int nuovoDeploy[2] = giocatore->deploy;
+
+  int riga = giocatore->position[0];
+  int colonna = giocatore->position[1];
+  int nuovaRiga = riga;
+  int nuovaColonna = colonna;
+  if (nuovaRiga - 1 > 0) {
+    nuovaRiga -= 1;
+    if (casellaVuota(grigliaDiGioco, grigliaOstacoli, nuovaPosizione)) {
+      aggiornaGrigliaW(grigliaDiGioco, giocatore->position, nuovaPosizione);
+    } else if (colpitoPacco(grigliaDiGioco, giocatore->position)) {
+      generaPosizioneRaccolta(grigliaDiGioco, grigliaOstacoli,
+                              giocatore->deploy, giocatore->position[0],
+                              giocatore->position[1]);
+      aggiornaGrigliaW(grigliaDiGioco, giocatore->position, nuovaPosizione);
+    } else if (arrivatoADestinazione(nuovaPosizione, giocatore->deploy)) {
+      aggiornaGrigliaW(grigliaDiGioco, giocatore->position, nuovaPosizione);
+      nuovoScore += 10;
+      nuovoDeploy[0] = -1;
+      nuovoDeploy[1] = -1;
+    } else if (colpitoOstacolo(grigliaOstacoli, giocatore->position)) {
+      *listaOstacoli =
+          addObstacle(listaOstacoli, nuovaPosizione[0], nuovaPosizione[1]);
+      nuovaPosizione[0] = giocatore->position[0];
+      nuovaPosizione[1] = giocatore->position[1];
+    } else if (colpitoPlayer(grigliaDiGioco, giocatore->position)) {
+      nuovaPosizione[0] = giocatore->position[0];
+      nuovaPosizione[1] = giocatore->position[1];
+    }
+    nuoveStatistiche = initStats(nuovoDeploy, nuovoScore, nuovaPosizione);
+    return nuoveStatistiche;
+  }
+}
+void aggiornaGrigliaW(char griglia[ROWS][COLUMNS], int vecchiaPosizione[2],
+                      int nuovaPosizione[2]) {
+  griglia[vecchiaPosizione[0]][vecchiaPosizione[1]] = '-';
+  griglia[nuovaPosizione[0]][nuovaPosizione[1]] = 'P';
+}
+int arrivatoADestinazione(int posizione[2], int destinazione[2]) {
+  if (posizione[0] == destinazione[0] && posizione[1] == destinazione[1])
+    return 1;
+  return 0;
 }

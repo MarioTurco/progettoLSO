@@ -15,7 +15,7 @@ Players initPlayerNode(char *name, int sockDes) {
 
 PlayerStats initStats(int deploy[], int score, int position[]) {
   PlayerStats L = (PlayerStats)malloc(sizeof(struct Data));
-  L->deploy[0] = deplosy[0];
+  L->deploy[0] = deploy[0];
   L->deploy[1] = deploy[1];
   L->score = score;
   L->position[0] = position[0];

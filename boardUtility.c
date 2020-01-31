@@ -281,7 +281,7 @@ void inizializzaGiocoSenzaPlayer(char grigliaDiGioco[ROWS][COLUMNS],
 
 PlayerStats gestisciW(char grigliaDiGioco[ROWS][COLUMNS],
                       char grigliaOstacoli[ROWS][COLUMNS],
-                      PlayerStats giocatore, Obstacles *listaOstacoli) {
+                      PlayerStats giocatore, Obstacles listaOstacoli) {
   PlayerStats nuoveStatistiche = NULL;
   int nuovaPosizione[2];
   nuovaPosizione[1] = giocatore->position[1];

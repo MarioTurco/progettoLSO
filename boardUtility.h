@@ -20,7 +20,7 @@ void generaPosizioneOstacoli(char grigliaDiGioco[ROWS][COLUMNS],
                              char grigliaOstacoli[ROWS][COLUMNS]);
 void riempiGrigliaConPacchiInPosizioniGenerateCasualmente(
     char grigliaDiGioco[ROWS][COLUMNS]);
-void printGrid(char grigliaDaStampare[ROWS][COLUMNS],PlayerStats stats);
+void printGrid(char grigliaDaStampare[ROWS][COLUMNS], PlayerStats stats);
 void start(char grigliaDiGioco[ROWS][COLUMNS],
            char grigliaOstacoli[ROWS][COLUMNS]);
 void printObs(char grigliaOstacoli[ROWS][COLUMNS]);
@@ -34,7 +34,7 @@ void generaPosizioneRaccolta(char grigliaDiGioco[ROWS][COLUMNS],
                              int xPlayer, int yPlayer);
 PlayerStats gestisciW(char grigliaDiGioco[ROWS][COLUMNS],
                       char grigliaOstacoli[ROWS][COLUMNS],
-                      PlayerStats giocatore, Obstacles *listaOstacoli);
+                      PlayerStats giocatore, Obstacles listaOstacoli);
 void mergeGridAndList(char grid[ROWS][COLUMNS], Obstacles top);
 int colpitoOstacolo(char grigliaOstacoli[ROWS][COLUMNS], int posizione[2]);
 int colpitoPacco(char grigliaDiGioco[ROWS][COLUMNS], int posizione[2]);

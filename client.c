@@ -157,7 +157,8 @@ void play() {
 
     if (read(socketDesc, grigliaDiGioco, sizeof(grigliaDiGioco)) < 1)
       printf("Impossibile comunicare con il server\n"), exit(-1);
-    printGrid(grigliaDiGioco);
+    //TODO aggiungere la struttura di stats a printGrid nella chiamata
+    printGrid(grigliaDiGioco); //per ora da errore
     char send = getInput();
     write(socketDesc, &send, sizeof(char));
   }

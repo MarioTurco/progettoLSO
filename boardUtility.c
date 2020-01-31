@@ -11,6 +11,8 @@
 #define TIME_LIMIT_IN_SECONDS 10
 #define packageLimitNumber 8
 #define MATRIX_DIMENSION sizeof(char) * ROWS *COLUMNS
+#define RED_COLOR "\x1b[31m"
+#define RESET_COLOR "\x1b[0m"
 
 void printMenu();
 /*int main(int argc, char *argv[]) {
@@ -101,6 +103,8 @@ void gestisciInput(char grigliaDiGioco[ROWS][COLUMNS],
   posizioneUtente[1] = nuovaColonna;
   return;
 }
+
+//TODO da cancellare
 void start(char grigliaDiGioco[ROWS][COLUMNS],
            char grigliaOstacoli[ROWS][COLUMNS]) {
   int movement;
@@ -168,13 +172,16 @@ void inizializzaGrigliaVuota(char griglia[ROWS][COLUMNS]) {
   }
 }
 /* stampa a schermo la griglia passata in input */
-void printGrid(char grigliaDaStampare[ROWS][COLUMNS]) {
+void printGrid(char grigliaDaStampare[ROWS][COLUMNS],PlayerStats stats) {
   system("clear");
   int i = 0, j = 0;
   for (i = 0; i < ROWS; i++) {
     printf("\t");
     for (j = 0; j < COLUMNS; j++) {
-      printf("%c", grigliaDaStampare[i][j]);
+      if(i==stats->deploy[0] && j==stats->deploy[1])
+        printf(RED_COLOR"%c"RESET_COLOR, grigliaDaStampare[i][j]);
+      else  
+        printf("%c", grigliaDaStampare[i][j]);
     }
     printf("\n");
   }

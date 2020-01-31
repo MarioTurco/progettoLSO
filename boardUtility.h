@@ -20,7 +20,7 @@ void generaPosizioneOstacoli(char grigliaDiGioco[ROWS][COLUMNS],
                              char grigliaOstacoli[ROWS][COLUMNS]);
 void riempiGrigliaConPacchiInPosizioniGenerateCasualmente(
     char grigliaDiGioco[ROWS][COLUMNS]);
-void printGrid(char grigliaDaStampare[ROWS][COLUMNS]);
+vvoid printGrid(char grigliaDaStampare[ROWS][COLUMNS],PlayerStats stats);
 void start(char grigliaDiGioco[ROWS][COLUMNS],
            char grigliaOstacoli[ROWS][COLUMNS]);
 void printObs(char grigliaOstacoli[ROWS][COLUMNS]);

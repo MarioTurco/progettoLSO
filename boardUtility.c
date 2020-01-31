@@ -1,4 +1,5 @@
 #include "boardUtility.h"
+#include "list.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -173,6 +174,15 @@ void printGrid(char grigliaDaStampare[ROWS][COLUMNS]) {
     printf("\n");
   }
 }
+
+//aggiunge alla griglia gli ostacoli visti fino ad ora dal client
+void mergeGridAndList(char grid[ROWS][COLUMNS], Obstacles top){
+  while(top){
+    grid[top->x][top->y]='O';
+    top=top->next;
+  }
+}
+
 /* Stampa schermata di fine gioco */
 void gameOver() {
   char c;

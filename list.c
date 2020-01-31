@@ -13,6 +13,16 @@ Players initPlayerNode(char* name, int sockDes) {
     return L;
 }
 
+PlayerStats initStats(int deploy[], int score, int position[]){
+    PlayerStats L = (PlayerStats)malloc(sizeof(struct Data));
+    L->deploy[0]=deplosy[0];
+    L->deploy[1]=deploy[1];
+    L->score=score;
+    L->position[0]=position[0];
+    L->position[1]=position[1];
+    return L;
+}
+
 Obstacles initObstacleNode(int x, int y) {
     Obstacles L = (Obstacles)malloc(sizeof(struct TList2));
     L->x = x;

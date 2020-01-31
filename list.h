@@ -1,3 +1,5 @@
+#ifndef DEF_LIST_H
+#define DEF_LIST_H
 #define MAX_BUF 200
 
 // players
@@ -58,3 +60,4 @@ Obstacles addObstacle(Obstacles L, int x, int y);
 
 // Inizializza un nuovo nodo ostacolo
 Obstacles initObstacleNode(int x, int y);
+#endif

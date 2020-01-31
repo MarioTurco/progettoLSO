@@ -193,8 +193,6 @@ void gameOver() {
   return;
 }
 
-// TODO: bisogna aggiungere una matrice che mantiene la posizione degli
-// ostacoli
 
 /* Genera la posizione degli ostacoli */
 void generaPosizioneOstacoli(char grigliaDiGioco[ROWS][COLUMNS],

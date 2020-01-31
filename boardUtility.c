@@ -149,10 +149,13 @@ void printGrid(char grigliaDaStampare[ROWS][COLUMNS], PlayerStats stats) {
   for (i = 0; i < ROWS; i++) {
     printf("\t");
     for (j = 0; j < COLUMNS; j++) {
-      if (i == stats->deploy[0] && j == stats->deploy[1])
+      if(stats!=NULL){
+       if (i == stats->deploy[0] && j == stats->deploy[1])
         printf(RED_COLOR "%c" RESET_COLOR, grigliaDaStampare[i][j]);
-      else
+       else
         printf("%c", grigliaDaStampare[i][j]);
+      }
+      else printf("%c", grigliaDaStampare[i][j]);
     }
     printf("\n");
   }

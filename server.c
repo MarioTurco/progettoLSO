@@ -78,6 +78,7 @@ void startListening() {
   close(clientDesc);
   quitServer();
 }
+
 struct sockaddr_in configuraIndirizzo() {
   struct sockaddr_in mio_indirizzo;
   mio_indirizzo.sin_family = AF_INET;
@@ -197,7 +198,12 @@ void play(int clientDesc, pthread_t tid) {
     write(clientDesc, grigliaDiGiocoConPacchiSenzaOstacoli,
           sizeof(grigliaDiGiocoConPacchiSenzaOstacoli));
     // invia la struttura del player
-    write(clientDesc, giocatore, sizeof(giocatore));
+    write(clientDesc, giocatore->deploy, sizeof(giocatore->deploy));
+    //write(clientDesc, &giocatore->deploy[1], sizeof(giocatore->deploy[1]));
+    write(clientDesc, giocatore->position, sizeof(giocatore->position));
+    //write(clientDesc, &giocatore->position[1], sizeof(giocatore->position[1]));
+    write(clientDesc, &giocatore->score, sizeof(giocatore->score));
+    //printf("Player stats: %d %d %d %d %d", giocatore->deploy[0],giocatore->deploy[1],giocatore->position[0],giocatore->position[1],giocatore->score);
     // legge l'input
     read(clientDesc, &inputFromClient, sizeof(char));
     gestisciInput(grigliaDiGiocoConPacchiSenzaOstacoli,

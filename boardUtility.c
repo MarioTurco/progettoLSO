@@ -52,17 +52,14 @@ int colpitoPlayer(char grigliaDiGioco[ROWS][COLUMNS], int posizione[2]) {
   return 0;
 }
 
-void gestisciInput(char grigliaDiGioco[ROWS][COLUMNS],
-                   char grigliaOstacoli[ROWS][COLUMNS], int posizioneUtente[2],
-                   int destinazione[2], char input, int *punteggio) {
-  int riga = posizioneUtente[0];
-  int colonna = posizioneUtente[1];
-  int nuovaRiga = riga;
-  int nuovaColonna = colonna;
+PlayerStats gestisciInput(char grigliaDiGioco[ROWS][COLUMNS],
+                          char grigliaOstacoli[ROWS][COLUMNS], char input,
+                          PlayerStats giocatore, Obstacles listaOstacoli) {
+  PlayerStats nuoveStatistiche;
   if (input == 'w') {
-    gestisciW(grigliaDiGioco, grigliaOstacoli, posizioneUtente, destinazione,
-              input, punteggio);
-  } else if (input == 's') {
+    nuoveStatistiche =
+        gestisciW(grigliaDiGioco, grigliaOstacoli, giocatore, listaOstacoli);
+  } /*else if (input == 's') {
     if (riga - 1 > 0) {
       grigliaDiGioco[riga][colonna] = '-';
       riga--;
@@ -80,12 +77,10 @@ void gestisciInput(char grigliaDiGioco[ROWS][COLUMNS],
       colonna++;
       grigliaDiGioco[riga][colonna] = 'P';
     }
-  }
+  }*/
 
   // aggiorna la posizione dell'utente
-  posizioneUtente[0] = nuovaRiga;
-  posizioneUtente[1] = nuovaColonna;
-  return;
+  return nuoveStatistiche;
 }
 
 // TODO da cancellare

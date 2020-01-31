@@ -26,9 +26,9 @@ void start(char grigliaDiGioco[ROWS][COLUMNS],
 void printObs(char grigliaOstacoli[ROWS][COLUMNS]);
 void riempiGrigliaConGliOstacoli(char grigliaDiGioco[ROWS][COLUMNS],
                                  char grigliaOstacoli[ROWS][COLUMNS]);
-void gestisciInput(char grigliaDiGioco[ROWS][COLUMNS],
-                   char grigliaOstacoli[ROWS][COLUMNS], int posizioneUtente[2],
-                   int destinazione[2], char input, int *punteggio);
+PlayerStats gestisciInput(char grigliaDiGioco[ROWS][COLUMNS],
+                          char grigliaOstacoli[ROWS][COLUMNS], char input,
+                          PlayerStats giocatore, Obstacles listaOstacoli);
 void generaPosizioneRaccolta(char grigliaDiGioco[ROWS][COLUMNS],
                              char grigliaOstacoli[ROWS][COLUMNS], int *coord,
                              int xPlayer, int yPlayer);

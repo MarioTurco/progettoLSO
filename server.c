@@ -193,8 +193,12 @@ void play(int clientDesc, pthread_t tid) {
         playerGenerati = 0;
       }
     }
+    // invia la griglia
     write(clientDesc, grigliaDiGiocoConPacchiSenzaOstacoli,
           sizeof(grigliaDiGiocoConPacchiSenzaOstacoli));
+    // invia la struttura del player
+    write(clientDesc, giocatore, sizeof(giocatore));
+    // legge l'input
     read(clientDesc, &inputFromClient, sizeof(char));
     gestisciInput(grigliaDiGiocoConPacchiSenzaOstacoli,
                   grigliaOstacoliSenzaPacchi, inputFromClient, giocatore,

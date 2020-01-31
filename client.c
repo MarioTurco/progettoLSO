@@ -156,13 +156,16 @@ void play() {
     if (serverCaduto())
       serverCrashHandler();
 
-    if (read(socketDesc, grigliaDiGioco, sizeof(grigliaDiGioco)) < 1)
-      printf("Impossibile comunicare con il server\n"), exit(-1);
-    if (read(socketDesc, &giocatore, sizeof(PlayerStats)) < 1) {
-      printf("Impossibile comunicare con il server\n"), exit(-1);
+    if (read(socketDesc, grigliaDiGioco, sizeof(grigliaDiGioco)) < 1) {
+      // anche questo fa crashare
+      // printf("Impossibile comunicare con il server\n"), exit(-1);
     }
-    // TODO aggiungere la struttura di stats a printGrid nella chiamata
-    printGrid(grigliaDiGioco, giocatore); // per ora da errore
+    if (read(socketDesc, giocatore, sizeof(PlayerStats)) < 1) {
+      // printf("Impossibile comunicare con il server\n"), exit(-1);
+    }
+
+    // fa andare in segmentazione
+    // printGrid(grigliaDiGioco, giocatore);
     char send = getInput();
     write(socketDesc, &send, sizeof(char));
   }

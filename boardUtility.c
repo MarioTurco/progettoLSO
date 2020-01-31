@@ -5,8 +5,6 @@
 #include <time.h>
 #include <unistd.h>
 
-
-
 /*int main(int argc, char *argv[]) {
       char grigliaDiGioco[ROWS][COLUMNS];
       char grigliaOstacoli[ROWS][COLUMNS];
@@ -276,7 +274,7 @@ PlayerStats gestisciW(char grigliaDiGioco[ROWS][COLUMNS],
   // Aggiorna la posizione vecchia spostando il player avanti di 1
   nuovaPosizione[0] = (giocatore->position[0]) - 1;
   int nuovoScore = giocatore->score;
-  int nuovoDeploy[2] = giocatore->deploy;
+  int nuovoDeploy[2] = {giocatore->deploy[0], giocatore->deploy[1]};
 
   int riga = giocatore->position[0];
   int colonna = giocatore->position[1];

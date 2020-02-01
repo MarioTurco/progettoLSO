@@ -409,7 +409,7 @@ PlayerStats gestisciA(char grigliaDiGioco[ROWS][COLUMNS],
   nuovaPosizione[1] = giocatore->position[1];
 
   // Aggiorna la posizione vecchia spostando il player avanti di 1
-  nuovaPosizione[0] = (giocatore->position[0]) - 1;
+  nuovaPosizione[0] = (giocatore->position[1]) - 1;
   int nuovoScore = giocatore->score;
   int nuovoDeploy[2] = {giocatore->deploy[0], giocatore->deploy[1]};
 
@@ -417,8 +417,8 @@ PlayerStats gestisciA(char grigliaDiGioco[ROWS][COLUMNS],
   int colonna = giocatore->position[1];
   int nuovaRiga = riga;
   int nuovaColonna = colonna;
-  if (nuovaRiga - 1 > 0) {
-    nuovaRiga -= 1;
+  if (nuovaColonna - 1 > 0) {
+    nuovaColonna -= 1;
     if (casellaVuota(grigliaDiGioco, grigliaOstacoli, nuovaPosizione)) {
       spostaPlayer(grigliaDiGioco, giocatore->position, nuovaPosizione);
     } else if (colpitoPacco(grigliaDiGioco, giocatore->position)) {
@@ -451,15 +451,15 @@ PlayerStats gestisciS(char grigliaDiGioco[ROWS][COLUMNS],
   int nuovaPosizione[2];
   nuovaPosizione[1] = giocatore->position[1];
   // Aggiorna la posizione vecchia spostando il player avanti di 1
-  nuovaPosizione[0] = (giocatore->position[0]) + 1;
+  nuovaPosizione[0] = (giocatore->position[1]) + 1;
   int nuovoScore = giocatore->score;
   int nuovoDeploy[2] = {giocatore->deploy[0], giocatore->deploy[1]};
   int riga = giocatore->position[0];
   int colonna = giocatore->position[1];
   int nuovaRiga = riga;
   int nuovaColonna = colonna;
-  if (nuovaRiga + 1 > 0) {
-    nuovaRiga += 1;
+  if (nuovaColonna + 1 > 0) {
+    nuovaColonna += 1;
     if (casellaVuota(grigliaDiGioco, grigliaOstacoli, nuovaPosizione)) {
       spostaPlayer(grigliaDiGioco, giocatore->position, nuovaPosizione);
     } else if (colpitoPacco(grigliaDiGioco, giocatore->position)) {

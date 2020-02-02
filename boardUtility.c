@@ -311,6 +311,7 @@ void spostaPlayer(char griglia[ROWS][COLUMNS], int vecchiaPosizione[2],
 PlayerStats gestisciW(char grigliaDiGioco[ROWS][COLUMNS],
                       char grigliaOstacoli[ROWS][COLUMNS],
                       PlayerStats giocatore, Obstacles *listaOstacoli) {
+  printf("Avviato GestisciW\n");
   PlayerStats nuoveStatistiche =
       initStats(giocatore->deploy, giocatore->score, giocatore->position);
   int nuovaPosizione[2];
@@ -319,7 +320,9 @@ PlayerStats gestisciW(char grigliaDiGioco[ROWS][COLUMNS],
   // Aggiorna la posizione vecchia spostando il player avanti di 1
   nuovaPosizione[0] = (giocatore->position[0]) - 1;
   int nuovoScore = giocatore->score;
-  int nuovoDeploy[2] = {giocatore->deploy[0], giocatore->deploy[1]};
+  int nuovoDeploy[2];
+  nuovoDeploy[0] = giocatore->deploy[0];
+  nuovoDeploy[1] = giocatore->deploy[1];
   if (giocatore->position[0] >= 0) {
     if (casellaVuota(grigliaDiGioco, grigliaOstacoli, nuovaPosizione)) {
       spostaPlayer(grigliaDiGioco, giocatore->position, nuovaPosizione);
@@ -349,6 +352,7 @@ PlayerStats gestisciW(char grigliaDiGioco[ROWS][COLUMNS],
 PlayerStats gestisciD(char grigliaDiGioco[ROWS][COLUMNS],
                       char grigliaOstacoli[ROWS][COLUMNS],
                       PlayerStats giocatore, Obstacles *listaOstacoli) {
+  printf("Avviato GestisciD\n");
   PlayerStats nuoveStatistiche =
       initStats(giocatore->deploy, giocatore->score, giocatore->position);
   int nuovaPosizione[2];
@@ -356,7 +360,9 @@ PlayerStats gestisciD(char grigliaDiGioco[ROWS][COLUMNS],
   nuovaPosizione[0] = giocatore->position[0];
 
   int nuovoScore = giocatore->score;
-  int nuovoDeploy[2] = {giocatore->deploy[0], giocatore->deploy[1]};
+  int nuovoDeploy[2];
+  nuovoDeploy[0] = giocatore->deploy[0];
+  nuovoDeploy[1] = giocatore->deploy[1];
   if (nuovaPosizione[1] >= 0) {
     if (casellaVuota(grigliaDiGioco, grigliaOstacoli, nuovaPosizione)) {
       spostaPlayer(grigliaDiGioco, giocatore->position, nuovaPosizione);
@@ -386,6 +392,7 @@ PlayerStats gestisciD(char grigliaDiGioco[ROWS][COLUMNS],
 PlayerStats gestisciA(char grigliaDiGioco[ROWS][COLUMNS],
                       char grigliaOstacoli[ROWS][COLUMNS],
                       PlayerStats giocatore, Obstacles *listaOstacoli) {
+  printf("Avviato GestisciA\n");
   PlayerStats nuoveStatistiche =
       initStats(giocatore->deploy, giocatore->score, giocatore->position);
   int nuovaPosizione[2];
@@ -394,7 +401,9 @@ PlayerStats gestisciA(char grigliaDiGioco[ROWS][COLUMNS],
   // Aggiorna la posizione vecchia spostando il player avanti di 1
   nuovaPosizione[0] = (giocatore->position[1]) - 1;
   int nuovoScore = giocatore->score;
-  int nuovoDeploy[2] = {giocatore->deploy[0], giocatore->deploy[1]};
+  int nuovoDeploy[2];
+  nuovoDeploy[0] = giocatore->deploy[0];
+  nuovoDeploy[1] = giocatore->deploy[1];
   if (nuovaPosizione[1] >= 0) {
     if (casellaVuota(grigliaDiGioco, grigliaOstacoli, nuovaPosizione)) {
       spostaPlayer(grigliaDiGioco, giocatore->position, nuovaPosizione);
@@ -424,6 +433,7 @@ PlayerStats gestisciA(char grigliaDiGioco[ROWS][COLUMNS],
 PlayerStats gestisciS(char grigliaDiGioco[ROWS][COLUMNS],
                       char grigliaOstacoli[ROWS][COLUMNS],
                       PlayerStats giocatore, Obstacles *listaOstacoli) {
+  printf("Avviato GestisciS\n");
   // inizializza le statistiche con i valori attuali
   PlayerStats nuoveStatistiche =
       initStats(giocatore->deploy, giocatore->score, giocatore->position);
@@ -433,7 +443,9 @@ PlayerStats gestisciS(char grigliaDiGioco[ROWS][COLUMNS],
   nuovaPosizione[1] = giocatore->position[1];
   nuovaPosizione[0] = (giocatore->position[1]) + 1;
   int nuovoScore = giocatore->score;
-  int nuovoDeploy[2] = {giocatore->deploy[0], giocatore->deploy[1]};
+  int nuovoDeploy[2];
+  nuovoDeploy[0] = giocatore->deploy[0];
+  nuovoDeploy[1] = giocatore->deploy[1];
 
   // controlla che le nuove statistiche siano corrette
   if (nuovaPosizione[0] >= 0) {

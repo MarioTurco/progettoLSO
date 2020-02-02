@@ -97,20 +97,13 @@ PlayerStats gestisciInput(char grigliaDiGioco[ROWS][COLUMNS],
   } else if (input == 's' || input == 'S') {
     nuoveStatistiche =
         gestisciS(grigliaDiGioco, grigliaOstacoli, giocatore, listaOstacoli);
-  } /*
-  } else if (input == 'a') {
-    if (colonna - 1 > 0) {
-      grigliaDiGioco[riga][colonna] = '-';
-      colonna--;
-      grigliaDiGioco[riga][colonna] = 'P';
-    }
-  } else if (input == 'd') {
-    if (colonna + 1 < COLUMNS) {
-      grigliaDiGioco[riga][colonna] = '-';
-      colonna++;
-      grigliaDiGioco[riga][colonna] = 'P';
-    }
-  }*/
+  } else if (input == 'a' || input == 'A') {
+    nuoveStatistiche =
+        gestisciA(grigliaDiGioco, grigliaOstacoli, giocatore, listaOstacoli);
+  } else if (input == 'd' || input == 'D') {
+    nuoveStatistiche =
+        gestisciD(grigliaDiGioco, grigliaOstacoli, giocatore, listaOstacoli);
+  }
 
   // aggiorna la posizione dell'utente
   return nuoveStatistiche;

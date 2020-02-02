@@ -22,3 +22,4 @@ server.o: server.c list.c list.h parser.c parser.h boardUtility.c boardUtility.h
 #comando per rimuovere tutti i .o (make clean)
 clean:
 	rm *.o
+	rm *.gch

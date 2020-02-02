@@ -6,10 +6,10 @@ server: server.o list.o boardUtility.o parser.o client.o
 #esegue queste regole quanto c'è un cambiamento al file server.c
 #oppure boardUtility.c/.h etcc
 list.o: list.c list.h
-	gcc -c list.c list.h
+	gcc -c list.c list.h -lpthread
 # -c -> non creare un eseguibile ma solo il file oggetto (.o)
 boardUtility.o: boardUtility.c boardUtility.h list.c list.h
-	gcc -c boardUtility.c boardUtility.h
+	gcc -c boardUtility.c boardUtility.h list.c -lpthread
 
 parser.o: parser.c parser.h
 	gcc -c parser.c

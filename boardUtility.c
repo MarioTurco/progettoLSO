@@ -359,7 +359,6 @@ PlayerStats gestisciW(char grigliaDiGioco[ROWS][COLUMNS],
   }
    
   nuoveStatistiche = initStats(nuovoDeploy, nuovoScore, nuovaPosizione);
-  printf("Player stats: %d %d\n", nuoveStatistiche->deploy[0],nuoveStatistiche->deploy[1]);
   return nuoveStatistiche;
 }
 PlayerStats gestisciD(char grigliaDiGioco[ROWS][COLUMNS],

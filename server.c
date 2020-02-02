@@ -210,14 +210,12 @@ void play(int clientDesc, pthread_t tid) {
     write(clientDesc, grigliaDiGiocoConPacchiSenzaOstacoli,
           sizeof(grigliaDiGiocoConPacchiSenzaOstacoli));
     // invia la struttura del player
-    printf("Player stats: %d %d\n", giocatore->deploy[0],giocatore->deploy[1]);
     write(clientDesc, giocatore->deploy, sizeof(giocatore->deploy));
     write(clientDesc, giocatore->position, sizeof(giocatore->position));
     write(clientDesc, &giocatore->score, sizeof(giocatore->score));
 
     // legge l'input
     read(clientDesc, &inputFromClient, sizeof(char));
-    printf("Inserito: %c", inputFromClient);
     if (inputFromClient == 'e' || inputFromClient == 'E') {
       //TODO svuotare la lista obstacles quando si disconnette un client
       disconnettiClient(clientDesc, tid);

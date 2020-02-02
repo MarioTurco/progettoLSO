@@ -226,10 +226,6 @@ void play(int clientDesc, pthread_t tid) {
   }
 }
 void clientCrashHandler(int signalNum) {
-  if (numeroClient > 0) {
-    numeroClient--;
-    printf("Client disconnesso (client attuali: %d)\n", numeroClient);
-  }
   pthread_t tidDelServerCrashato;
   char msg[1] = {'U'};
   int socketClientCrashato;
@@ -240,8 +236,8 @@ void clientCrashHandler(int signalNum) {
     while (top != NULL) {
       if (write(top->sockDes, msg, sizeof(msg)) < 0) {
         socketClientCrashato = top->sockDes;
-        close(socketClientCrashato);
         onLineUsers = removePlayer(onLineUsers, socketClientCrashato);
+        disconnettiClient(socketClientCrashato, tidDelServerCrashato);
         break;
       }
     }

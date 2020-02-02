@@ -11,6 +11,8 @@
 #include <sys/socket.h>
 #include <unistd.h>
 
+void startProceduraGenrazioneMappa();
+void *threadGenerazioneMappa(void *args);
 int tryLogin(int clientDescriptor);
 void disconnettiClient();
 int registraClient(int);
@@ -31,6 +33,7 @@ int numeroClient = 0;
 int playerGenerati = 0;
 time_t timerCount = TIME_LIMIT_IN_SECONDS;
 pthread_t tidTimer;
+pthread_t tidGeneratoreMappa;
 int socketDesc;
 Players onLineUsers = NULL;
 char *users;
@@ -87,6 +90,13 @@ struct sockaddr_in configuraIndirizzo() {
   printf("Indirizzo socket configurato\n");
   return mio_indirizzo;
 }
+
+/* Genera una nuova mappa appena il timer arriva a 0*/
+void startProceduraGenrazioneMappa(){
+  printf("Inizio procedura generazione mappa\n");
+  pthread_create(&tidGeneratoreMappa, NULL, threadGenerazioneMappa, NULL);
+}
+/* Inizia un count down*/
 void startTimer() {
   printf("Thread timer avviato\n");
   pthread_create(&tidTimer, NULL, timer, NULL);
@@ -262,6 +272,17 @@ void quitServer() {
   exit(-1);
 }
 
+void *threadGenerazioneMappa(void *args){
+      fprintf(stdout, "Rigenerazione mappa\n");
+      inizializzaGrigliaVuota(grigliaDiGiocoConPacchiSenzaOstacoli);
+        riempiGrigliaConPacchiInPosizioniGenerateCasualmente(
+            grigliaDiGiocoConPacchiSenzaOstacoli);
+        generaPosizioneOstacoli(grigliaDiGiocoConPacchiSenzaOstacoli,
+                                grigliaOstacoliSenzaPacchi);
+                                timerCount=TIME_LIMIT_IN_SECONDS;
+                                pthread_exit(NULL);
+  
+}
 void *timer(void *args) {
   int cambiato = 1;
   while (1) {
@@ -280,11 +301,8 @@ void *timer(void *args) {
     }
     if (timerCount == 0) {
       printf("Reset timer e generazione nuova mappa..\n");
-      inizializzaGrigliaVuota(grigliaDiGiocoConPacchiSenzaOstacoli);
-      riempiGrigliaConPacchiInPosizioniGenerateCasualmente(
-          grigliaDiGiocoConPacchiSenzaOstacoli);
-      generaPosizioneOstacoli(grigliaDiGiocoConPacchiSenzaOstacoli,
-                              grigliaOstacoliSenzaPacchi);
+      startProceduraGenrazioneMappa();
+      pthread_join(tidGeneratoreMappa, NULL);
       timerCount = TIME_LIMIT_IN_SECONDS + 1;
     }
   }

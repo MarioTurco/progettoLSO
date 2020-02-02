@@ -26,6 +26,8 @@ typedef struct Data *PlayerStats;
 typedef struct TList *Players;
 typedef struct TList2 *Obstacles;
 
+Players initPlayerNode(char *name, int sockDes, pthread_t tid);
+
 // Crea un nodo di Stats da mandare a un client
 PlayerStats initStats(int deploy[], int score, int position[]);
 
@@ -34,7 +36,7 @@ Players initNodeList(char *name, int sockDes);
 
 // Aggiunge un nodo in testa alla lista
 // La funzione ritorna sempre la testa della lista
-Players addPlayer(Players L, char *name, int sockDes);
+Players addPlayer(Players L, char *name, int sockDes, pthread_t tid);
 
 // Rimuove solo un occorrenza di un nodo con il socket Descriptor
 //  specificato dalla lista

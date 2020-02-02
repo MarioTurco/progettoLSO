@@ -13,7 +13,7 @@
 
 void startProceduraGenrazioneMappa();
 void *threadGenerazioneMappa(void *args);
-int tryLogin(int clientDescriptor);
+int tryLogin(int clientDesc, pthread_t tid);
 void disconnettiClient();
 int registraClient(int);
 void *timer(void *args);
@@ -101,7 +101,7 @@ void startTimer() {
   printf("Thread timer avviato\n");
   pthread_create(&tidTimer, NULL, timer, NULL);
 }
-int tryLogin(int clientDesc) {
+int tryLogin(int clientDesc, pthread_t tid) {
   // TODO proteggere con un mutex
   char *userName = (char *)calloc(MAX_BUF, 1);
   char *password = (char *)calloc(MAX_BUF, 1);
@@ -118,7 +118,7 @@ int tryLogin(int clientDesc) {
     numeroClient++;
     printf("Nuovo client loggato, client loggati : %d\n", numeroClient);
     // TODO: proteggere con un mutex
-    onLineUsers = addPlayer(onLineUsers, userName, clientDesc);
+    onLineUsers = addPlayer(onLineUsers, userName, clientDesc, tid);
     printPlayers(onLineUsers);
     printf("\n");
   }
@@ -152,7 +152,7 @@ void *gestisci(void *descriptor) {
     }
 
     else if (bufferReceive[0] == 1) {
-      int grantAccess = tryLogin(client_sd);
+      int grantAccess = tryLogin(client_sd, tid);
 
       if (grantAccess) {
         write(client_sd, "y", 1);

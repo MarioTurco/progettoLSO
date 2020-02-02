@@ -311,7 +311,8 @@ void spostaPlayer(char griglia[ROWS][COLUMNS], int vecchiaPosizione[2],
 PlayerStats gestisciW(char grigliaDiGioco[ROWS][COLUMNS],
                       char grigliaOstacoli[ROWS][COLUMNS],
                       PlayerStats giocatore, Obstacles *listaOstacoli) {
-  PlayerStats nuoveStatistiche = NULL;
+  PlayerStats nuoveStatistiche =
+      initStats(giocatore->deploy, giocatore->score, giocatore->position);
   int nuovaPosizione[2];
   nuovaPosizione[1] = giocatore->position[1];
 
@@ -348,13 +349,14 @@ PlayerStats gestisciW(char grigliaDiGioco[ROWS][COLUMNS],
       nuovaPosizione[1] = giocatore->position[1];
     }
     nuoveStatistiche = initStats(nuovoDeploy, nuovoScore, nuovaPosizione);
-    return nuoveStatistiche;
   }
+  return nuoveStatistiche;
 }
 PlayerStats gestisciD(char grigliaDiGioco[ROWS][COLUMNS],
                       char grigliaOstacoli[ROWS][COLUMNS],
                       PlayerStats giocatore, Obstacles *listaOstacoli) {
-  PlayerStats nuoveStatistiche = NULL;
+  PlayerStats nuoveStatistiche =
+      initStats(giocatore->deploy, giocatore->score, giocatore->position);
   int nuovaPosizione[2];
   nuovaPosizione[1] = giocatore->position[1];
 
@@ -391,13 +393,14 @@ PlayerStats gestisciD(char grigliaDiGioco[ROWS][COLUMNS],
       nuovaPosizione[1] = giocatore->position[1];
     }
     nuoveStatistiche = initStats(nuovoDeploy, nuovoScore, nuovaPosizione);
-    return nuoveStatistiche;
   }
+  return nuoveStatistiche;
 }
 PlayerStats gestisciA(char grigliaDiGioco[ROWS][COLUMNS],
                       char grigliaOstacoli[ROWS][COLUMNS],
                       PlayerStats giocatore, Obstacles *listaOstacoli) {
-  PlayerStats nuoveStatistiche = NULL;
+  PlayerStats nuoveStatistiche =
+      initStats(giocatore->deploy, giocatore->score, giocatore->position);
   int nuovaPosizione[2];
   nuovaPosizione[1] = giocatore->position[1];
 
@@ -434,13 +437,14 @@ PlayerStats gestisciA(char grigliaDiGioco[ROWS][COLUMNS],
       nuovaPosizione[1] = giocatore->position[1];
     }
     nuoveStatistiche = initStats(nuovoDeploy, nuovoScore, nuovaPosizione);
-    return nuoveStatistiche;
   }
+  return nuoveStatistiche;
 }
 PlayerStats gestisciS(char grigliaDiGioco[ROWS][COLUMNS],
                       char grigliaOstacoli[ROWS][COLUMNS],
                       PlayerStats giocatore, Obstacles *listaOstacoli) {
-  PlayerStats nuoveStatistiche = NULL;
+  PlayerStats nuoveStatistiche =
+      initStats(giocatore->deploy, giocatore->score, giocatore->position);
   int nuovaPosizione[2];
   nuovaPosizione[1] = giocatore->position[1];
   // Aggiorna la posizione vecchia spostando il player avanti di 1
@@ -475,8 +479,8 @@ PlayerStats gestisciS(char grigliaDiGioco[ROWS][COLUMNS],
       nuovaPosizione[1] = giocatore->position[1];
     }
     nuoveStatistiche = initStats(nuovoDeploy, nuovoScore, nuovaPosizione);
-    return nuoveStatistiche;
   }
+  return nuoveStatistiche;
 }
 int arrivatoADestinazione(int posizione[2], int destinazione[2]) {
   if (posizione[0] == destinazione[0] && posizione[1] == destinazione[1])

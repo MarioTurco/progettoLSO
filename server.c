@@ -204,7 +204,8 @@ void play(int clientDesc, pthread_t tid) {
         playerGenerati = 0;
       }
     }
-    printObstacles(listaOstacoli);
+    //printObstacles(listaOstacoli);
+    mergeGridAndList(grigliaDiGiocoConPacchiSenzaOstacoli,listaOstacoli);
     // invia la griglia
     write(clientDesc, grigliaDiGiocoConPacchiSenzaOstacoli,
           sizeof(grigliaDiGiocoConPacchiSenzaOstacoli));

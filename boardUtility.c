@@ -320,13 +320,7 @@ PlayerStats gestisciW(char grigliaDiGioco[ROWS][COLUMNS],
   nuovaPosizione[0] = (giocatore->position[0]) - 1;
   int nuovoScore = giocatore->score;
   int nuovoDeploy[2] = {giocatore->deploy[0], giocatore->deploy[1]};
-
-  int riga = giocatore->position[0];
-  int colonna = giocatore->position[1];
-  int nuovaRiga = riga;
-  int nuovaColonna = colonna;
-  if (nuovaRiga - 1 >= 0) {
-    nuovaRiga -= 1;
+  if (giocatore->position[0] >= 0) {
     if (casellaVuota(grigliaDiGioco, grigliaOstacoli, nuovaPosizione)) {
       spostaPlayer(grigliaDiGioco, giocatore->position, nuovaPosizione);
     } else if (colpitoPacco(grigliaDiGioco, giocatore->position)) {
@@ -358,19 +352,12 @@ PlayerStats gestisciD(char grigliaDiGioco[ROWS][COLUMNS],
   PlayerStats nuoveStatistiche =
       initStats(giocatore->deploy, giocatore->score, giocatore->position);
   int nuovaPosizione[2];
-  nuovaPosizione[1] = giocatore->position[1];
+  nuovaPosizione[1] = giocatore->position[1] + 1;
+  nuovaPosizione[0] = giocatore->position[0];
 
-  // Aggiorna la posizione vecchia spostando il player avanti di 1
-  nuovaPosizione[0] = (giocatore->position[0]) - 1;
   int nuovoScore = giocatore->score;
   int nuovoDeploy[2] = {giocatore->deploy[0], giocatore->deploy[1]};
-
-  int riga = giocatore->position[0];
-  int colonna = giocatore->position[1];
-  int nuovaRiga = riga;
-  int nuovaColonna = colonna;
-  if (nuovaRiga - 1 >= 0) {
-    nuovaRiga -= 1;
+  if (nuovaPosizione[1] >= 0) {
     if (casellaVuota(grigliaDiGioco, grigliaOstacoli, nuovaPosizione)) {
       spostaPlayer(grigliaDiGioco, giocatore->position, nuovaPosizione);
     } else if (colpitoPacco(grigliaDiGioco, giocatore->position)) {
@@ -408,13 +395,7 @@ PlayerStats gestisciA(char grigliaDiGioco[ROWS][COLUMNS],
   nuovaPosizione[0] = (giocatore->position[1]) - 1;
   int nuovoScore = giocatore->score;
   int nuovoDeploy[2] = {giocatore->deploy[0], giocatore->deploy[1]};
-
-  int riga = giocatore->position[0];
-  int colonna = giocatore->position[1];
-  int nuovaRiga = riga;
-  int nuovaColonna = colonna;
-  if (nuovaColonna - 1 >= 0) {
-    nuovaColonna -= 1;
+  if (nuovaPosizione[1] >= 0) {
     if (casellaVuota(grigliaDiGioco, grigliaOstacoli, nuovaPosizione)) {
       spostaPlayer(grigliaDiGioco, giocatore->position, nuovaPosizione);
     } else if (colpitoPacco(grigliaDiGioco, giocatore->position)) {
@@ -443,20 +424,19 @@ PlayerStats gestisciA(char grigliaDiGioco[ROWS][COLUMNS],
 PlayerStats gestisciS(char grigliaDiGioco[ROWS][COLUMNS],
                       char grigliaOstacoli[ROWS][COLUMNS],
                       PlayerStats giocatore, Obstacles *listaOstacoli) {
+  // inizializza le statistiche con i valori attuali
   PlayerStats nuoveStatistiche =
       initStats(giocatore->deploy, giocatore->score, giocatore->position);
+
+  // crea le nuove statistiche
   int nuovaPosizione[2];
   nuovaPosizione[1] = giocatore->position[1];
-  // Aggiorna la posizione vecchia spostando il player avanti di 1
   nuovaPosizione[0] = (giocatore->position[1]) + 1;
   int nuovoScore = giocatore->score;
   int nuovoDeploy[2] = {giocatore->deploy[0], giocatore->deploy[1]};
-  int riga = giocatore->position[0];
-  int colonna = giocatore->position[1];
-  int nuovaRiga = riga;
-  int nuovaColonna = colonna;
-  if (nuovaColonna + 1 >= 0) {
-    nuovaColonna += 1;
+
+  // controlla che le nuove statistiche siano corrette
+  if (nuovaPosizione[0] >= 0) {
     if (casellaVuota(grigliaDiGioco, grigliaOstacoli, nuovaPosizione)) {
       spostaPlayer(grigliaDiGioco, giocatore->position, nuovaPosizione);
     } else if (colpitoPacco(grigliaDiGioco, giocatore->position)) {
@@ -480,6 +460,7 @@ PlayerStats gestisciS(char grigliaDiGioco[ROWS][COLUMNS],
     }
     nuoveStatistiche = initStats(nuovoDeploy, nuovoScore, nuovaPosizione);
   }
+  // ritorna le statistiche
   return nuoveStatistiche;
 }
 int arrivatoADestinazione(int posizione[2], int destinazione[2]) {

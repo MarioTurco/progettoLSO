@@ -323,7 +323,7 @@ PlayerStats gestisciW(char grigliaDiGioco[ROWS][COLUMNS],
   int nuovoDeploy[2];
   nuovoDeploy[0] = giocatore->deploy[0];
   nuovoDeploy[1] = giocatore->deploy[1];
-  if (giocatore->position[0] >= 0) {
+  if (giocatore->position[0] >= 0 && nuovaPosizione[0] < ROWS) {
     if (casellaVuota(grigliaDiGioco, grigliaOstacoli, nuovaPosizione)) {
       spostaPlayer(grigliaDiGioco, giocatore->position, nuovaPosizione);
     } else if (colpitoPacco(grigliaDiGioco, giocatore->position)) {
@@ -365,7 +365,7 @@ PlayerStats gestisciD(char grigliaDiGioco[ROWS][COLUMNS],
   int nuovoDeploy[2];
   nuovoDeploy[0] = giocatore->deploy[0];
   nuovoDeploy[1] = giocatore->deploy[1];
-  if (nuovaPosizione[1] >= 0) {
+  if (nuovaPosizione[1] >= 0 && nuovaPosizione[1] < COLUMNS) {
     if (casellaVuota(grigliaDiGioco, grigliaOstacoli, nuovaPosizione)) {
       spostaPlayer(grigliaDiGioco, giocatore->position, nuovaPosizione);
     } else if (colpitoPacco(grigliaDiGioco, giocatore->position)) {
@@ -408,7 +408,7 @@ PlayerStats gestisciA(char grigliaDiGioco[ROWS][COLUMNS],
   int nuovoDeploy[2];
   nuovoDeploy[0] = giocatore->deploy[0];
   nuovoDeploy[1] = giocatore->deploy[1];
-  if (nuovaPosizione[1] >= 0) {
+  if (nuovaPosizione[1] >= 0 && nuovaPosizione[1] < COLUMNS) {
     if (casellaVuota(grigliaDiGioco, grigliaOstacoli, nuovaPosizione)) {
       spostaPlayer(grigliaDiGioco, giocatore->position, nuovaPosizione);
     } else if (colpitoPacco(grigliaDiGioco, giocatore->position)) {
@@ -454,7 +454,7 @@ PlayerStats gestisciS(char grigliaDiGioco[ROWS][COLUMNS],
   nuovoDeploy[1] = giocatore->deploy[1];
 
   // controlla che le nuove statistiche siano corrette
-  if (nuovaPosizione[0] >= 0) {
+  if (nuovaPosizione[0] >= 0 && nuovaPosizione[0] < ROWS) {
     if (casellaVuota(grigliaDiGioco, grigliaOstacoli, nuovaPosizione)) {
       spostaPlayer(grigliaDiGioco, giocatore->position, nuovaPosizione);
     } else if (colpitoPacco(grigliaDiGioco, giocatore->position)) {

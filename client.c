@@ -1,6 +1,6 @@
 #include "boardUtility.h"
-#include "parser.h"
 #include "list.h"
+#include "parser.h"
 #include <arpa/inet.h>
 #include <fcntl.h>
 #include <netdb.h>
@@ -152,7 +152,7 @@ int serverCaduto() {
 }
 void play() {
   PlayerStats giocatore = NULL;
-  int score,deploy[2],position[2];
+  int score, deploy[2], position[2];
   int exitFlag = 0;
   while (!exitFlag) {
     if (serverCaduto())
@@ -160,25 +160,30 @@ void play() {
 
     if (read(socketDesc, grigliaDiGioco, sizeof(grigliaDiGioco)) < 1) {
       // anche questo fa crashare
-       printf("Impossibile comunicare con il server\n"), exit(-1);
+      printf("Impossibile comunicare con il server\n"), exit(-1);
     }
     if (read(socketDesc, deploy, sizeof(deploy)) < 1) {
-       printf("Impossibile comunicare con il server\n"), exit(-1);
+      printf("Impossibile comunicare con il server\n"), exit(-1);
     }
 
     if (read(socketDesc, position, sizeof(position)) < 1) {
-       printf("Impossibile comunicare con il server\n"), exit(-1);
+      printf("Impossibile comunicare con il server\n"), exit(-1);
     }
-    
-    if (read(socketDesc, &score, sizeof(score)) < 1) {
-       printf("Impossibile comunicare con il server\n"), exit(-1);
-    }
-    giocatore=initStats(deploy,score,position);
 
-    //printf("Player stats: %d %d %d %d %d", giocatore->deploy[0],giocatore->deploy[1],giocatore->position[0],giocatore->position[1],giocatore->score);
+    if (read(socketDesc, &score, sizeof(score)) < 1) {
+      printf("Impossibile comunicare con il server\n"), exit(-1);
+    }
+    giocatore = initStats(deploy, score, position);
+
+    // printf("Player stats: %d %d %d %d %d",
+    // giocatore->deploy[0],giocatore->deploy[1],giocatore->position[0],giocatore->position[1],giocatore->score);
     printGrid(grigliaDiGioco, giocatore);
     char send = getInput();
     write(socketDesc, &send, sizeof(char));
+    if (send == 'e' || send == 'E') {
+      printf("Disconnessione in corso...\n");
+      exit(0);
+    }
   }
 }
 

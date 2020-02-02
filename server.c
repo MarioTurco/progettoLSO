@@ -92,7 +92,7 @@ struct sockaddr_in configuraIndirizzo() {
 }
 
 /* Genera una nuova mappa appena il timer arriva a 0*/
-void startProceduraGenrazioneMappa(){
+void startProceduraGenrazioneMappa() {
   printf("Inizio procedura generazione mappa\n");
   pthread_create(&tidGeneratoreMappa, NULL, threadGenerazioneMappa, NULL);
 }
@@ -211,13 +211,17 @@ void play(int clientDesc, pthread_t tid) {
     write(clientDesc, giocatore->deploy, sizeof(giocatore->deploy));
     write(clientDesc, giocatore->position, sizeof(giocatore->position));
     write(clientDesc, &giocatore->score, sizeof(giocatore->score));
-    //printf("Player stats: %d %d %d %d %d", giocatore->deploy[0],giocatore->deploy[1],giocatore->position[0],giocatore->position[1],giocatore->score);
+    // printf("Player stats: %d %d %d %d %d",
+    // giocatore->deploy[0],giocatore->deploy[1],giocatore->position[0],giocatore->position[1],giocatore->score);
     // legge l'input
     read(clientDesc, &inputFromClient, sizeof(char));
     printf("Inserito: %c", inputFromClient);
-    giocatore=gestisciInput(grigliaDiGiocoConPacchiSenzaOstacoli,
-                  grigliaOstacoliSenzaPacchi, inputFromClient, giocatore,
-                  &listaOstacoli);
+    if (inputFromClient == 'e' || inputFromClient == 'E') {
+      disconnettiClient(clientDesc, tid);
+    } else
+      giocatore = gestisciInput(grigliaDiGiocoConPacchiSenzaOstacoli,
+                                grigliaOstacoliSenzaPacchi, inputFromClient,
+                                giocatore, &listaOstacoli);
   }
 }
 void clientCrashHandler(int signalNum) {
@@ -273,16 +277,15 @@ void quitServer() {
   exit(-1);
 }
 
-void *threadGenerazioneMappa(void *args){
-      fprintf(stdout, "Rigenerazione mappa\n");
-      inizializzaGrigliaVuota(grigliaDiGiocoConPacchiSenzaOstacoli);
-        riempiGrigliaConPacchiInPosizioniGenerateCasualmente(
-            grigliaDiGiocoConPacchiSenzaOstacoli);
-        generaPosizioneOstacoli(grigliaDiGiocoConPacchiSenzaOstacoli,
-                                grigliaOstacoliSenzaPacchi);
-                                timerCount=TIME_LIMIT_IN_SECONDS;
-                                pthread_exit(NULL);
-  
+void *threadGenerazioneMappa(void *args) {
+  fprintf(stdout, "Rigenerazione mappa\n");
+  inizializzaGrigliaVuota(grigliaDiGiocoConPacchiSenzaOstacoli);
+  riempiGrigliaConPacchiInPosizioniGenerateCasualmente(
+      grigliaDiGiocoConPacchiSenzaOstacoli);
+  generaPosizioneOstacoli(grigliaDiGiocoConPacchiSenzaOstacoli,
+                          grigliaOstacoliSenzaPacchi);
+  timerCount = TIME_LIMIT_IN_SECONDS;
+  pthread_exit(NULL);
 }
 void *timer(void *args) {
   int cambiato = 1;

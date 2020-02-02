@@ -159,7 +159,7 @@ void play() {
       serverCrashHandler();
 
     if (read(socketDesc, grigliaDiGioco, sizeof(grigliaDiGioco)) < 1) {
-      // anche questo fa crashare
+
       printf("Impossibile comunicare con il server\n"), exit(-1);
     }
     if (read(socketDesc, deploy, sizeof(deploy)) < 1) {
@@ -175,8 +175,7 @@ void play() {
     }
     giocatore = initStats(deploy, score, position);
 
-    // printf("Player stats: %d %d %d %d %d",
-    // giocatore->deploy[0],giocatore->deploy[1],giocatore->position[0],giocatore->position[1],giocatore->score);
+    printf("Player stats: %d %d\n", giocatore->deploy[0],giocatore->deploy[1]);
     printGrid(grigliaDiGioco, giocatore);
     char send = getInput();
     write(socketDesc, &send, sizeof(char));

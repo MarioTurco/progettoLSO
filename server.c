@@ -204,6 +204,7 @@ void play(int clientDesc, pthread_t tid) {
         playerGenerati = 0;
       }
     }
+    printObstacles(listaOstacoli);
     // invia la griglia
     write(clientDesc, grigliaDiGiocoConPacchiSenzaOstacoli,
           sizeof(grigliaDiGiocoConPacchiSenzaOstacoli));
@@ -211,8 +212,7 @@ void play(int clientDesc, pthread_t tid) {
     write(clientDesc, giocatore->deploy, sizeof(giocatore->deploy));
     write(clientDesc, giocatore->position, sizeof(giocatore->position));
     write(clientDesc, &giocatore->score, sizeof(giocatore->score));
-    // printf("Player stats: %d %d %d %d %d",
-    // giocatore->deploy[0],giocatore->deploy[1],giocatore->position[0],giocatore->position[1],giocatore->score);
+
     // legge l'input
     read(clientDesc, &inputFromClient, sizeof(char));
     printf("Inserito: %c", inputFromClient);

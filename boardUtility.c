@@ -317,7 +317,6 @@ void spostaPlayer(char griglia[ROWS][COLUMNS], int vecchiaPosizione[2],
 PlayerStats gestisciW(char grigliaDiGioco[ROWS][COLUMNS],
                       char grigliaOstacoli[ROWS][COLUMNS],
                       PlayerStats giocatore, Obstacles *listaOstacoli) {
-  printf("Avviato GestisciW\n");
   if(giocatore == NULL){
     printf("Giocatore = NULL");
     return NULL;
@@ -364,7 +363,6 @@ PlayerStats gestisciW(char grigliaDiGioco[ROWS][COLUMNS],
 PlayerStats gestisciD(char grigliaDiGioco[ROWS][COLUMNS],
                       char grigliaOstacoli[ROWS][COLUMNS],
                       PlayerStats giocatore, Obstacles *listaOstacoli) {
-  printf("Avviato GestisciD\n");
   if(giocatore == NULL){
     printf("Giocatore = NULL");
     return NULL;
@@ -410,7 +408,6 @@ PlayerStats gestisciD(char grigliaDiGioco[ROWS][COLUMNS],
 PlayerStats gestisciA(char grigliaDiGioco[ROWS][COLUMNS],
                       char grigliaOstacoli[ROWS][COLUMNS],
                       PlayerStats giocatore, Obstacles *listaOstacoli) {
-  printf("Avviato GestisciA\n");
   if(giocatore == NULL){
     printf("Giocatore = NULL");
     return NULL;
@@ -460,7 +457,6 @@ PlayerStats gestisciA(char grigliaDiGioco[ROWS][COLUMNS],
 PlayerStats gestisciS(char grigliaDiGioco[ROWS][COLUMNS],
                       char grigliaOstacoli[ROWS][COLUMNS],
                       PlayerStats giocatore, Obstacles *listaOstacoli) {
-  printf("Avviato GestisciS\n");
   if(giocatore == NULL){
     printf("Giocatore = NULL");
     return NULL;

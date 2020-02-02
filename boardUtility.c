@@ -327,6 +327,7 @@ PlayerStats gestisciW(char grigliaDiGioco[ROWS][COLUMNS],
     if (casellaVuota(grigliaDiGioco, grigliaOstacoli, nuovaPosizione)) {
       spostaPlayer(grigliaDiGioco, giocatore->position, nuovaPosizione);
     } else if (colpitoPacco(grigliaDiGioco, giocatore->position)) {
+      printf("Colpito Pacco\n");
       generaPosizioneRaccolta(grigliaDiGioco, grigliaOstacoli,
                               giocatore->deploy, giocatore->position[0],
                               giocatore->position[1]);
@@ -337,6 +338,7 @@ PlayerStats gestisciW(char grigliaDiGioco[ROWS][COLUMNS],
       nuovoDeploy[0] = -1;
       nuovoDeploy[1] = -1;
     } else if (colpitoOstacolo(grigliaOstacoli, giocatore->position)) {
+      printf("Ostacolo\n");
       *listaOstacoli =
           addObstacle(*listaOstacoli, nuovaPosizione[0], nuovaPosizione[1]);
       nuovaPosizione[0] = giocatore->position[0];
@@ -367,6 +369,7 @@ PlayerStats gestisciD(char grigliaDiGioco[ROWS][COLUMNS],
     if (casellaVuota(grigliaDiGioco, grigliaOstacoli, nuovaPosizione)) {
       spostaPlayer(grigliaDiGioco, giocatore->position, nuovaPosizione);
     } else if (colpitoPacco(grigliaDiGioco, giocatore->position)) {
+      printf("Colpito Pacco\n");
       generaPosizioneRaccolta(grigliaDiGioco, grigliaOstacoli,
                               giocatore->deploy, giocatore->position[0],
                               giocatore->position[1]);
@@ -377,6 +380,7 @@ PlayerStats gestisciD(char grigliaDiGioco[ROWS][COLUMNS],
       nuovoDeploy[0] = -1;
       nuovoDeploy[1] = -1;
     } else if (colpitoOstacolo(grigliaOstacoli, giocatore->position)) {
+      printf("Ostacolo\n");
       *listaOstacoli =
           addObstacle(*listaOstacoli, nuovaPosizione[0], nuovaPosizione[1]);
       nuovaPosizione[0] = giocatore->position[0];
@@ -408,6 +412,7 @@ PlayerStats gestisciA(char grigliaDiGioco[ROWS][COLUMNS],
     if (casellaVuota(grigliaDiGioco, grigliaOstacoli, nuovaPosizione)) {
       spostaPlayer(grigliaDiGioco, giocatore->position, nuovaPosizione);
     } else if (colpitoPacco(grigliaDiGioco, giocatore->position)) {
+      printf("Colpito Pacco\n");
       generaPosizioneRaccolta(grigliaDiGioco, grigliaOstacoli,
                               giocatore->deploy, giocatore->position[0],
                               giocatore->position[1]);
@@ -418,6 +423,7 @@ PlayerStats gestisciA(char grigliaDiGioco[ROWS][COLUMNS],
       nuovoDeploy[0] = -1;
       nuovoDeploy[1] = -1;
     } else if (colpitoOstacolo(grigliaOstacoli, giocatore->position)) {
+      printf("Ostacolo\n");
       *listaOstacoli =
           addObstacle(*listaOstacoli, nuovaPosizione[0], nuovaPosizione[1]);
       nuovaPosizione[0] = giocatore->position[0];
@@ -452,6 +458,7 @@ PlayerStats gestisciS(char grigliaDiGioco[ROWS][COLUMNS],
     if (casellaVuota(grigliaDiGioco, grigliaOstacoli, nuovaPosizione)) {
       spostaPlayer(grigliaDiGioco, giocatore->position, nuovaPosizione);
     } else if (colpitoPacco(grigliaDiGioco, giocatore->position)) {
+      printf("Colpito Pacco\n");
       generaPosizioneRaccolta(grigliaDiGioco, grigliaOstacoli,
                               giocatore->deploy, giocatore->position[0],
                               giocatore->position[1]);
@@ -462,6 +469,7 @@ PlayerStats gestisciS(char grigliaDiGioco[ROWS][COLUMNS],
       nuovoDeploy[0] = -1;
       nuovoDeploy[1] = -1;
     } else if (colpitoOstacolo(grigliaOstacoli, giocatore->position)) {
+      printf("Ostacolo\n");
       *listaOstacoli =
           addObstacle(*listaOstacoli, nuovaPosizione[0], nuovaPosizione[1]);
       nuovaPosizione[0] = giocatore->position[0];

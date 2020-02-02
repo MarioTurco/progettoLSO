@@ -10,7 +10,7 @@
 #include <string.h>
 #include <sys/socket.h>
 #include <unistd.h>
-
+void *threadGenerazioneNuoviPlayer(void *args);
 void startProceduraGenrazioneMappa();
 void *threadGenerazioneMappa(void *args);
 int tryLogin(int clientDesc, pthread_t tid);
@@ -182,6 +182,7 @@ void play(int clientDesc, pthread_t tid) {
   int destinazione[2] = {-1, -1};
   PlayerStats giocatore = initStats(destinazione, 0, posizione);
   Obstacles listaOstacoli = NULL;
+  pthread_t tidGenerazionePlayer;
   char inputFromClient;
   int punteggio = 0;
   if (timer != 0) {
@@ -189,20 +190,12 @@ void play(int clientDesc, pthread_t tid) {
         grigliaDiGiocoConPacchiSenzaOstacoli, grigliaOstacoliSenzaPacchi,
         giocatore->position);
   }
+  pthread_create(&tidGenerazionePlayer, NULL, threadGenerazioneNuoviPlayer,
+                 (void *)giocatore);
   while (true) {
     if (clientDisconnesso(clientDesc)) {
       disconnettiClient(clientDesc, tid);
       return;
-    }
-    if (timerCount == TIME_LIMIT_IN_SECONDS + 1) {
-      inserisciPlayerNellaGrigliaInPosizioneCasuale(
-          grigliaDiGiocoConPacchiSenzaOstacoli, grigliaOstacoliSenzaPacchi,
-          giocatore->position);
-      playerGenerati++;
-      if (playerGenerati == numeroClient) {
-        timerCount = TIME_LIMIT_IN_SECONDS;
-        playerGenerati = 0;
-      }
     }
     // printObstacles(listaOstacoli);
     mergeGridAndList(grigliaDiGiocoConPacchiSenzaOstacoli, listaOstacoli);
@@ -225,6 +218,21 @@ void play(int clientDesc, pthread_t tid) {
                                 giocatore, &listaOstacoli);
   }
 }
+void *threadGenerazioneNuoviPlayer(void *args) {
+  PlayerStats giocatore = (PlayerStats)args;
+  while (1) {
+    if (timerCount == TIME_LIMIT_IN_SECONDS + 1) {
+      inserisciPlayerNellaGrigliaInPosizioneCasuale(
+          grigliaDiGiocoConPacchiSenzaOstacoli, grigliaOstacoliSenzaPacchi,
+          giocatore->position);
+      playerGenerati++;
+      if (playerGenerati == numeroClient) {
+        timerCount = TIME_LIMIT_IN_SECONDS;
+        playerGenerati = 0;
+      }
+    }
+  }
+}
 void clientCrashHandler(int signalNum) {
   pthread_t tidDelServerCrashato;
   char msg[1] = {'U'};
@@ -244,7 +252,8 @@ void clientCrashHandler(int signalNum) {
   }
   // TODO proteggere con un mutex
   // onLineUsers = removePlayer(onLineUsers, clientDescriptor); //trovare il
-  // modo per cancellare il player giusto printList(onLineUsers); printf("\n");
+  // modo per cancellare il player giusto printList(onLineUsers);
+  // printf("\n");
   signal(SIGPIPE, SIG_IGN);
 }
 void disconnettiClient(int clientDescriptor, int *threadDescriptor) {

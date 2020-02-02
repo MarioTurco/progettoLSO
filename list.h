@@ -1,12 +1,13 @@
 #ifndef DEF_LIST_H
 #define DEF_LIST_H
 #define MAX_BUF 200
-
+#include <pthread.h>
 // players
 struct TList {
   char *name;
   struct TList *next;
   int sockDes;
+  pthread_t tid;
 } TList;
 
 struct Data {

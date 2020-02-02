@@ -1,7 +1,7 @@
 server: server.o list.o boardUtility.o parser.o client.o
 	gcc server.o boardUtility.o list.o parser.o  -lpthread -o server
 	gcc client.o boardUtility.o parser.o list.o -o client -lpthread
-
+	make clean
 #file da compilare singolarmente
 #esegue queste regole quanto c'è un cambiamento al file server.c
 #oppure boardUtility.c/.h etcc

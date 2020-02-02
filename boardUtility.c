@@ -19,7 +19,7 @@ void inizializzaGiocoSenzaPlayer(char grigliaDiGioco[ROWS][COLUMNS],
                                  char grigliaConOstacoli[ROWS][COLUMNS]);
 void inserisciPlayerNellaGrigliaInPosizioneCasuale(
     char grigliaDiGioco[ROWS][COLUMNS], char grigliaOstacoli[ROWS][COLUMNS],
-    int posizione[2]);
+    int posizione[2]); //
 void inizializzaGrigliaVuota(char grigliaDiGioco[ROWS][COLUMNS]);
 void generaPosizioneOstacoli(char grigliaDiGioco[ROWS][COLUMNS],
                              char grigliaOstacoli[ROWS][COLUMNS]);

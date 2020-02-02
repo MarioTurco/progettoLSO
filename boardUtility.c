@@ -334,7 +334,7 @@ PlayerStats gestisciW(char grigliaDiGioco[ROWS][COLUMNS],
   int nuovoDeploy[2];
   nuovoDeploy[0] = giocatore->deploy[0];
   nuovoDeploy[1] = giocatore->deploy[1];
-  if (giocatore->position[0] >= 0 && nuovaPosizione[0] < ROWS) {
+  if (nuovaPosizione[0] >= 0 && nuovaPosizione[0] < ROWS) {
     if (casellaVuota(grigliaDiGioco, grigliaOstacoli, nuovaPosizione)) {
       spostaPlayer(grigliaDiGioco, giocatore->position, nuovaPosizione);
     } else if (colpitoPacco(grigliaDiGioco, nuovaPosizione)) {

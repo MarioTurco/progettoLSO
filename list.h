@@ -35,8 +35,8 @@ Players initNodeList(char *name, int sockDes);
 // La funzione ritorna sempre la testa della lista
 Players addPlayer(Players L, char *name, int sockDes);
 
-// Rimuove solo un occorrenza di un nodo con il tid specificato
-// dalla lista
+// Rimuove solo un occorrenza di un nodo con il socket Descriptor
+//  specificato dalla lista
 // La funzione ritorna sempre la testa della lista
 Players removePlayer(Players L, int sockDes);
 

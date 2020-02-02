@@ -230,6 +230,22 @@ void clientCrashHandler(int signalNum) {
     numeroClient--;
     printf("Client disconnesso (client attuali: %d)\n", numeroClient);
   }
+  pthread_t tidDelServerCrashato;
+  char msg[1] = {'U'};
+  int socketClientCrashato;
+  if(onLineUsers != NULL){
+    Players prec = onLineUsers;
+    Players top = prec->next;
+    //controlla se è crashato il top
+     while(top!=NULL){
+      if(write(top->sockDes, msg, sizeof(msg))<0){
+        socketClientCrashato = top->sockDes;
+        close(socketClientCrashato);
+        onLineUsers = removePlayer(onLineUsers, socketClientCrashato);
+        break;
+      }
+    } 
+  }
   // TODO proteggere con un mutex
   // onLineUsers = removePlayer(onLineUsers, clientDescriptor); //trovare il
   // modo per cancellare il player giusto printList(onLineUsers); printf("\n");

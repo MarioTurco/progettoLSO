@@ -418,10 +418,10 @@ PlayerStats gestisciA(char grigliaDiGioco[ROWS][COLUMNS],
   PlayerStats nuoveStatistiche =
       initStats(giocatore->deploy, giocatore->score, giocatore->position);
   int nuovaPosizione[2];
-  nuovaPosizione[1] = giocatore->position[1];
+  nuovaPosizione[0] = giocatore->position[0];
 
   // Aggiorna la posizione vecchia spostando il player avanti di 1
-  nuovaPosizione[0] = (giocatore->position[1]) - 1;
+  nuovaPosizione[1] = (giocatore->position[1]) - 1;
   int nuovoScore = giocatore->score;
   int nuovoDeploy[2];
   nuovoDeploy[0] = giocatore->deploy[0];
@@ -472,7 +472,7 @@ PlayerStats gestisciS(char grigliaDiGioco[ROWS][COLUMNS],
   // crea le nuove statistiche
   int nuovaPosizione[2];
   nuovaPosizione[1] = giocatore->position[1];
-  nuovaPosizione[0] = (giocatore->position[1]) + 1;
+  nuovaPosizione[0] = (giocatore->position[0]) + 1;
   int nuovoScore = giocatore->score;
   int nuovoDeploy[2];
   nuovoDeploy[0] = giocatore->deploy[0];

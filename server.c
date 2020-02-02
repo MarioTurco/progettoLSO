@@ -216,7 +216,6 @@ void play(int clientDesc, pthread_t tid) {
 
     // legge l'input
     read(clientDesc, &inputFromClient, sizeof(char));
-    printf("Inserito: %c", inputFromClient);
     if (inputFromClient == 'e' || inputFromClient == 'E') {
       //TODO svuotare la lista obstacles quando si disconnette un client
       disconnettiClient(clientDesc, tid);

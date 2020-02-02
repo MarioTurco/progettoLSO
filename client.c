@@ -162,15 +162,15 @@ void play() {
       // anche questo fa crashare
        printf("Impossibile comunicare con il server\n"), exit(-1);
     }
-    if (read(socketDesc, &score, sizeof(score)) < 1) {
-       printf("Impossibile comunicare con il server\n"), exit(-1);
-    }
-
     if (read(socketDesc, deploy, sizeof(deploy)) < 1) {
        printf("Impossibile comunicare con il server\n"), exit(-1);
     }
 
     if (read(socketDesc, position, sizeof(position)) < 1) {
+       printf("Impossibile comunicare con il server\n"), exit(-1);
+    }
+    
+    if (read(socketDesc, &score, sizeof(score)) < 1) {
        printf("Impossibile comunicare con il server\n"), exit(-1);
     }
     giocatore=initStats(deploy,score,position);

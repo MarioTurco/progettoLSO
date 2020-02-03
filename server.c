@@ -60,10 +60,6 @@ int main(int argc, char **argv) {
   inizializzaGiocoSenzaPlayer(grigliaDiGiocoConPacchiSenzaOstacoli,
                               grigliaOstacoliSenzaPacchi);
   generaPosizioniRaccolta(grigliaDiGiocoConPacchiSenzaOstacoli,grigliaOstacoliSenzaPacchi,deployCoords);
-  int i=0;
-  for(i=0;i<numberOfPackages;i++){
-    //printf("COORDINATE:%d %d\n",deployCoords[i]->x,deployCoords[i]->y);
-  }
   startListening();
   return 0;
 }

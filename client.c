@@ -136,6 +136,8 @@ int isCorrect(char input) {
   case 'E':
   case 't':
   case 'T':
+  case 'P':
+  case 'p':
     return 1;
     break;
   default:

@@ -14,6 +14,7 @@ struct Data {
   int deploy[2];
   int score;
   int position[2];
+  int hasApack;
 } Data;
 
 struct TList2 {

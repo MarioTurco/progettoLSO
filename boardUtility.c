@@ -5,57 +5,6 @@
 #include <time.h>
 #include <unistd.h>
 
-void printMenu();
-/*PlayerStats gestisciS(char grigliaDiGioco[ROWS][COLUMNS],
-                      char grigliaOstacoli[ROWS][COLUMNS],
-                      PlayerStats giocatore, Obstacles *listaOstacoli,Point deployCoords[]);
-PlayerStats gestisciA(char grigliaDiGioco[ROWS][COLUMNS],
-                      char grigliaOstacoli[ROWS][COLUMNS],
-                      PlayerStats giocatore, Obstacles *listaOstacoli,Point deployCoords[]);
-PlayerStats gestisciD(char grigliaDiGioco[ROWS][COLUMNS],
-                      char grigliaOstacoli[ROWS][COLUMNS],
-                      PlayerStats giocatore, Obstacles *listaOstacoli,Point deployCoords[]);
-void inizializzaGiocoSenzaPlayer(char grigliaDiGioco[ROWS][COLUMNS],
-                                 char grigliaConOstacoli[ROWS][COLUMNS]);
-void inserisciPlayerNellaGrigliaInPosizioneCasuale(
-    char grigliaDiGioco[ROWS][COLUMNS], char grigliaOstacoli[ROWS][COLUMNS],
-    int posizione[2]); //
-void inizializzaGrigliaVuota(char grigliaDiGioco[ROWS][COLUMNS]);
-
-void riempiGrigliaConPacchiInPosizioniGenerateCasualmente(
-    char grigliaDiGioco[ROWS][COLUMNS]);
-void printGrid(char grigliaDaStampare[ROWS][COLUMNS], PlayerStats stats);
-void start(char grigliaDiGioco[ROWS][COLUMNS],
-           char grigliaOstacoli[ROWS][COLUMNS]);
-void printObs(char grigliaOstacoli[ROWS][COLUMNS]);
-void riempiGrigliaConGliOstacoli(char grigliaDiGioco[ROWS][COLUMNS],
-                                 char grigliaOstacoli[ROWS][COLUMNS]);
-PlayerStats gestisciInput(char grigliaDiGioco[ROWS][COLUMNS],
-                          char grigliaOstacoli[ROWS][COLUMNS], char input,
-                          PlayerStats giocatore, Obstacles *listaOstacoli,Point deployCoords[]);
-void generaPosizioneRaccolta(char grigliaDiGioco[ROWS][COLUMNS],
-                             char grigliaOstacoli[ROWS][COLUMNS], int coord[],
-                             int xPlayer, int yPlayer);
-PlayerStats gestisciW(char grigliaDiGioco[ROWS][COLUMNS],
-                      char grigliaOstacoli[ROWS][COLUMNS],
-                      PlayerStats giocatore, Obstacles *listaOstacoli,Point deployCoords[]);
-void mergeGridAndList(char grid[ROWS][COLUMNS], Obstacles top);
-int colpitoOstacolo(char grigliaOstacoli[ROWS][COLUMNS], int posizione[2]);
-int colpitoPacco(char grigliaDiGioco[ROWS][COLUMNS], int posizione[2]);
-int colpitoPlayer(char grigliaDiGioco[ROWS][COLUMNS], int posizione[2]);
-int casellaVuota(char grigliaDiGioco[ROWS][COLUMNS],
-                 char grigliaOstacoli[ROWS][COLUMNS], int posizione[2]);
-void spostaPlayer(char griglia[ROWS][COLUMNS], int vecchiaPosizione[2],
-                  int nuovaPosizione[2]);
-int arrivatoADestinazione(int posizione[2], int destinazione[2]);*/
-
-/*int main(int argc, char *argv[]) {
-      char grigliaDiGioco[ROWS][COLUMNS];
-      char grigliaOstacoli[ROWS][COLUMNS];
-
-      start(grigliaDiGioco, grigliaOstacoli);
-      return 0;
-    }*/
 void printMenu() {
   system("clear");
   printf("\t Cosa vuoi fare?\n");
@@ -110,72 +59,15 @@ PlayerStats gestisciInput(char grigliaDiGioco[ROWS][COLUMNS],
   } else if (input == 'd' || input == 'D') {
     nuoveStatistiche =
         gestisciD(grigliaDiGioco, grigliaOstacoli, giocatore, listaOstacoli,deployCoords);
+  } else if (input == 'p' || input == 'P'){
+
   }
+
 
   // aggiorna la posizione dell'utente
   return nuoveStatistiche;
 }
 
-// TODO da cancellare
-/*
-void start(char grigliaDiGioco[ROWS][COLUMNS],
-           char grigliaOstacoli[ROWS][COLUMNS]) {
-  int movement;
-  int riga = 0, colonna = 0;
-  inizializzaGrigliaVuota(grigliaDiGioco);
-  riempiGrigliaConPacchiInPosizioniGenerateCasualmente(grigliaDiGioco);
-  generaPosizioneOstacoli(grigliaDiGioco, grigliaOstacoli);
-  system("clear");
-  // riempiGrigliaConGliOstacoli(grigliaDiGioco, grigliaOstacoli);
-  printGrid(grigliaDiGioco);
-  while (1) {
-    movement = getchar();
-    if (movement == EOF) {
-      break;
-    }
-    switch (movement) {
-    case 'w':
-      if ((riga - 1) >= 0) {
-        grigliaDiGioco[riga][colonna] = '-';
-        riga = riga - 1;
-      }
-      break;
-    case 's':
-      if ((riga + 1) < ROWS) {
-        grigliaDiGioco[riga][colonna] = '-';
-        riga = riga + 1;
-      }
-      break;
-    case 'a':
-      if ((colonna - 1) >= 0) {
-        grigliaDiGioco[riga][colonna] = '-';
-        colonna = (colonna - 1) % COLUMNS;
-      }
-      break;
-    case 'd':
-      if ((colonna + 1) < COLUMNS) {
-        grigliaDiGioco[riga][colonna] = '-';
-        colonna = (colonna + 1) % COLUMNS;
-      }
-      break;
-    default:
-      break;
-    }
-    if (movement == 'p') {
-      gameOver();
-      break;
-    }
-    int ch;
-    while ((ch = getchar()) != '\n' && ch != EOF) {
-    }
-    if (ch == EOF) {
-      break;
-    }
-    // system("clear");
-    printGrid(grigliaDiGioco);
-  }
-}
-*/
 /*Svuota la griglia di gioco e la riempe solo di '-' */
 void inizializzaGrigliaVuota(char griglia[ROWS][COLUMNS]) {
   int i = 0, j = 0;

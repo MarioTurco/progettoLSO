@@ -252,6 +252,8 @@ void clientCrashHandler(int signalNum) {
   pthread_t tidDelServerCrashato;
   char msg[1] = {'U'};
   int socketClientCrashato;
+
+  // elimina il client dalla lista dei client connessi
   if (onLineUsers != NULL) {
     Players prec = onLineUsers;
     Players top = prec->next;
@@ -260,16 +262,12 @@ void clientCrashHandler(int signalNum) {
       if (write(top->sockDes, msg, sizeof(msg)) < 0) {
         socketClientCrashato = top->sockDes;
         onLineUsers = removePlayer(onLineUsers, socketClientCrashato);
-        onLineUsers = removePlayer(onLineUsers, socketClientCrashato);
         printPlayers(onLineUsers);
         disconnettiClient(socketClientCrashato, tidDelServerCrashato);
       }
       top = top->next;
     }
   }
-
-  // TODO proteggere con un mutex
-  // printf("\n");
   signal(SIGPIPE, SIG_IGN);
 }
 void disconnettiClient(int clientDescriptor, int *threadDescriptor) {

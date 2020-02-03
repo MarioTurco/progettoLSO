@@ -16,7 +16,7 @@ void *threadGenerazioneNuoviPlayer(void *args);
 void startProceduraGenrazioneMappa();
 void *threadGenerazioneMappa(void *args);
 int tryLogin(int clientDesc, pthread_t tid);
-void disconnettiClient();
+void disconnettiClient(int);
 int registraClient(int);
 void *timer(void *args);
 void *gestisci(void *descriptor);
@@ -170,13 +170,13 @@ void *gestisci(void *descriptor) {
     }
 
     else if (bufferReceive[0] == 3) {
-      disconnettiClient(client_sd, descriptor);
+      disconnettiClient(client_sd);
       break;
     }
 
     else {
       printf("Input invalido, uscita...\n");
-      disconnettiClient(client_sd, descriptor);
+      disconnettiClient(client_sd);
       break;
     }
   }
@@ -201,7 +201,8 @@ void play(int clientDesc, pthread_t tid) {
                  (void *)giocatore);
   while (true) {
     if (clientDisconnesso(clientDesc)) {
-      disconnettiClient(clientDesc, tid);
+      freeObstacles(listaOstacoli);
+      clientCrashHandler(clientDesc);
       return;
     }
     // printObstacles(listaOstacoli);
@@ -219,7 +220,8 @@ void play(int clientDesc, pthread_t tid) {
     read(clientDesc, &inputFromClient, sizeof(char));
     if (inputFromClient == 'e' || inputFromClient == 'E') {
       // TODO svuotare la lista obstacles quando si disconnette un client
-      disconnettiClient(clientDesc, tid);
+      freeObstacles(listaOstacoli);
+      disconnettiClient(clientDesc);
     } else if (inputFromClient == 't' || inputFromClient == 'T') {
       sendTimerValue(clientDesc);
     } else
@@ -249,10 +251,9 @@ void *threadGenerazioneNuoviPlayer(void *args) {
   }
 }
 void clientCrashHandler(int signalNum) {
-  pthread_t tidDelServerCrashato;
   char msg[1] = {'U'};
   int socketClientCrashato;
-
+  Obstacles listaOstacoliClientCrashato = NULL;
   // elimina il client dalla lista dei client connessi
   if (onLineUsers != NULL) {
     Players prec = onLineUsers;
@@ -261,16 +262,15 @@ void clientCrashHandler(int signalNum) {
     while (top != NULL) {
       if (write(top->sockDes, msg, sizeof(msg)) < 0) {
         socketClientCrashato = top->sockDes;
-        onLineUsers = removePlayer(onLineUsers, socketClientCrashato);
         printPlayers(onLineUsers);
-        disconnettiClient(socketClientCrashato, tidDelServerCrashato);
+        disconnettiClient(socketClientCrashato);
       }
       top = top->next;
     }
   }
   signal(SIGPIPE, SIG_IGN);
 }
-void disconnettiClient(int clientDescriptor, int *threadDescriptor) {
+void disconnettiClient(int clientDescriptor) {
   if (numeroClient > 0)
     numeroClient--;
   // TODO proteggere con un mutex

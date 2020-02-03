@@ -17,6 +17,7 @@ struct Data {
   int hasApack;
 } Data;
 
+// Obstacles
 struct TList2 {
   int x;
   int y;

@@ -242,11 +242,12 @@ int tryLogin() {
   if (validate == 'y') {
     ret = 1;
     printf("Accesso effettuato\n");
-    premiEnterPerContinuare();
+    sleep(1);
+
   } else if (validate == 'n') {
     printf("Credenziali Errate o Login già effettuato\n");
     ret = 0;
-    premiEnterPerContinuare();
+    sleep(1);
   }
 
   return ret;
@@ -288,12 +289,12 @@ int registrati() {
   if (validate == 'y') {
     ret = 1;
     printf("Registrato con successo\n");
-    premiEnterPerContinuare();
+    sleep(1);
   }
   if (validate == 'n') {
     ret = 0;
     printf("Registrazione fallita\n");
-    premiEnterPerContinuare();
+    sleep(1);
   }
 
   return ret;
@@ -305,6 +306,7 @@ char *ipResolver(char **argv) {
   hp = gethostbyname(argv[1]);
   if (!hp) {
     perror("Impossibile risolvere l'indirizzo ip\n");
+    sleep(1);
     exit(-1);
   }
   printf("Address:\t%s\n", inet_ntoa(*(struct in_addr *)hp->h_addr_list[0]));

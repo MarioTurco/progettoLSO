@@ -93,4 +93,8 @@ int validateLogin(char *name, char *pwd, char *file) {
   return ret;
 }
 
-void premiEnterPerContinuare() { sleep(1); }
+void premiEnterPerContinuare() {
+  fflush(stdin);
+  printf("Premi Invio per continuare\n");
+  char c = getchar();
+}

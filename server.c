@@ -260,14 +260,15 @@ void clientCrashHandler(int signalNum) {
       if (write(top->sockDes, msg, sizeof(msg)) < 0) {
         socketClientCrashato = top->sockDes;
         onLineUsers = removePlayer(onLineUsers, socketClientCrashato);
+        onLineUsers = removePlayer(onLineUsers, socketClientCrashato);
+        printPlayers(onLineUsers);
         disconnettiClient(socketClientCrashato, tidDelServerCrashato);
-        break;
       }
+      top = top->next;
     }
   }
+
   // TODO proteggere con un mutex
-  // onLineUsers = removePlayer(onLineUsers, clientDescriptor); //trovare il
-  // modo per cancellare il player giusto printList(onLineUsers);
   // printf("\n");
   signal(SIGPIPE, SIG_IGN);
 }

@@ -3,15 +3,16 @@
 #include <stdlib.h>
 #include <time.h>
 #include <unistd.h>
-#define ROWS 20
-#define COLUMNS 60
-#define numberOfObstacles 50
-#define numberOfPackages 30
+#define ROWS 10
+#define COLUMNS 30
+#define numberOfObstacles 25
+#define numberOfPackages 15
 #define TIME_LIMIT_IN_SECONDS 60
-#define packageLimitNumber 8
+#define packageLimitNumber 4
 #define MATRIX_DIMENSION sizeof(char) * ROWS *COLUMNS
 #define RED_COLOR "\x1b[31m"
 #define RESET_COLOR "\x1b[0m"
+
 
 struct Coord {
   int x;

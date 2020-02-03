@@ -27,8 +27,10 @@ int colpitoPacco(char grigliaDiGioco[ROWS][COLUMNS], int posizione[2]) {
 }
 int casellaVuota(char grigliaDiGioco[ROWS][COLUMNS],
                  char grigliaOstacoli[ROWS][COLUMNS], int posizione[2]) {
-  if (grigliaDiGioco[posizione[0]][posizione[1]] == '-')
-    if (grigliaOstacoli[posizione[0]][posizione[1]] == '-')
+  if (grigliaDiGioco[posizione[0]][posizione[1]] == '-' ||
+      grigliaDiGioco[posizione[0]][posizione[1]] == '_')
+    if (grigliaOstacoli[posizione[0]][posizione[1]] == '-' ||
+        grigliaOstacoli[posizione[0]][posizione[1]] == '_')
       return 1;
   return 0;
 }
@@ -249,6 +251,7 @@ int eraUnPuntoDepo(int vecchiaPosizione[2], Point depo[]) {
   while (ret == 0 && i < numberOfPackages) {
     if ((depo[i])->y == vecchiaPosizione[1] &&
         (depo[i])->x == vecchiaPosizione[0]) {
+      // TODO rimuovere questo printf
       printf("Era un punto raccolta\n");
       ret = 1;
     }
@@ -261,10 +264,9 @@ PlayerStats gestisciW(char grigliaDiGioco[ROWS][COLUMNS],
                       char grigliaOstacoli[ROWS][COLUMNS],
                       PlayerStats giocatore, Obstacles *listaOstacoli,
                       Point deployCoords[]) {
-  if (giocatore == NULL) {
-    printf("Giocatore = NULL");
+  if (giocatore == NULL)
     return NULL;
-  }
+
   PlayerStats nuoveStatistiche =
       initStats(giocatore->deploy, giocatore->score, giocatore->position,
                 giocatore->hasApack);
@@ -284,7 +286,7 @@ PlayerStats gestisciW(char grigliaDiGioco[ROWS][COLUMNS],
     } else if (colpitoPacco(grigliaDiGioco, nuovaPosizione)) {
       spostaPlayer(grigliaDiGioco, giocatore->position, nuovaPosizione,
                    deployCoords);
-    } else if (arrivatoADestinazione(nuovaPosizione, nuovaPosizione)) {
+    } else if (arrivatoADestinazione(nuovaPosizione, giocatore->deploy)) {
       spostaPlayer(grigliaDiGioco, giocatore->position, nuovaPosizione,
                    deployCoords);
       nuovoScore += 10;
@@ -362,10 +364,8 @@ PlayerStats gestisciA(char grigliaDiGioco[ROWS][COLUMNS],
                       char grigliaOstacoli[ROWS][COLUMNS],
                       PlayerStats giocatore, Obstacles *listaOstacoli,
                       Point deployCoords[]) {
-  if (giocatore == NULL) {
-    printf("Giocatore = NULL");
+  if (giocatore == NULL)
     return NULL;
-  }
   PlayerStats nuoveStatistiche =
       initStats(giocatore->deploy, giocatore->score, giocatore->position,
                 giocatore->hasApack);

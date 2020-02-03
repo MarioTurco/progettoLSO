@@ -249,16 +249,16 @@ void generaPosizioniRaccolta(char grigliaDiGioco[ROWS][COLUMNS],
 
   for(i=0;i<numberOfPackages;i++){
     coord[i]=(Point)malloc(sizeof(struct Coord));
+    
   }
   
   i=0;
-  while (i<numberOfPackages) {
-    i++;
+  for (i=0;i<numberOfPackages;i++) {
     x = rand() % COLUMNS;
     y = rand() % ROWS;
     if (grigliaDiGioco[y][x] == '-' && grigliaOstacoli[y][x] == '-') {
-      (coord[i])->x = y;
-      (coord[i])->y = x;
+      coord[i]->x = y;
+      coord[i]->y = x;
       grigliaDiGioco[y][x] = '_';
       grigliaOstacoli[y][x] = '_';       
     }

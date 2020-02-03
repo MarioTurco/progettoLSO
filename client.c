@@ -92,6 +92,7 @@ int gestisci() {
   while (1) {
     printMenu();
     scanf("%c", &choice);
+    fflush(stdin);
     system("clear");
     if (choice == '3') {
       esciDalServer();
@@ -115,6 +116,7 @@ char getInput() {
   printf("Inserisci comando: ");
   while (!done) {
     scanf("%c", &input);
+    fflush(stdin);
     if (isCorrect(input))
       done = 1;
   }
@@ -185,7 +187,7 @@ void play() {
     giocatore = initStats(deploy, score, position, hasApack);
 
     printGrid(grigliaDiGioco, giocatore);
-    char send = getInput();
+    char send = getUserInput();
     write(socketDesc, &send, sizeof(char));
     if (send == 'e' || send == 'E') {
       printf("Disconnessione in corso...\n");

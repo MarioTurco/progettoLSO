@@ -10,6 +10,8 @@
 #include <string.h>
 #include <sys/socket.h>
 #include <unistd.h>
+
+void sendTimerValue(int clientDesc);
 void *threadGenerazioneNuoviPlayer(void *args);
 void startProceduraGenrazioneMappa();
 void *threadGenerazioneMappa(void *args);
@@ -31,7 +33,7 @@ char grigliaDiGiocoConPacchiSenzaOstacoli[ROWS][COLUMNS];
 char grigliaOstacoliSenzaPacchi[ROWS][COLUMNS];
 int numeroClient = 0;
 int playerGenerati = 0;
-time_t timerCount = TIME_LIMIT_IN_SECONDS;
+int timerCount = TIME_LIMIT_IN_SECONDS;
 pthread_t tidTimer;
 pthread_t tidGeneratoreMappa;
 int socketDesc;
@@ -212,10 +214,17 @@ void play(int clientDesc, pthread_t tid) {
     if (inputFromClient == 'e' || inputFromClient == 'E') {
       // TODO svuotare la lista obstacles quando si disconnette un client
       disconnettiClient(clientDesc, tid);
-    } else
+    } else if(inputFromClient == 't' || inputFromClient == 'T'){
+      sendTimerValue(clientDesc);
+    }else
       giocatore = gestisciInput(grigliaDiGiocoConPacchiSenzaOstacoli,
                                 grigliaOstacoliSenzaPacchi, inputFromClient,
                                 giocatore, &listaOstacoli);
+  }
+}
+void sendTimerValue(int clientDesc){
+  if(!clientDisconnesso(clientDesc)){
+    write(clientDesc, &timerCount, sizeof(timerCount));
   }
 }
 void *threadGenerazioneNuoviPlayer(void *args) {
@@ -317,11 +326,11 @@ void *timer(void *args) {
       cambiato = 1;
       sleep(1);
       timerCount--;
-      fprintf(stdout, "Time left: %ld\n", timerCount);
+      fprintf(stdout, "Time left: %d\n", timerCount);
     } else if (numeroClient == 0) {
       timerCount = TIME_LIMIT_IN_SECONDS;
       if (cambiato) {
-        fprintf(stdout, "Time left: %ld\n", timerCount);
+        fprintf(stdout, "Time left: %d\n", timerCount);
         cambiato = 0;
       }
     }

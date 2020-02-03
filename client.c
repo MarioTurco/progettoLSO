@@ -14,8 +14,11 @@
 #include <sys/socket.h>
 #include <sys/stat.h>
 #include <sys/types.h>
+#include <time.h>
 #include <unistd.h>
 
+
+void receiveTimer();
 void play();
 int tryLogin();
 void printMenu();
@@ -24,7 +27,6 @@ char *ipResolver(char **argv);
 int registrati();
 int gestisci();
 char getUserInput();
-int login();
 void clientCrashHandler();
 void serverCrashHandler();
 int serverCaduto();
@@ -132,6 +134,8 @@ int isCorrect(char input) {
   case 'D':
   case 'e':
   case 'E':
+  case 't':
+  case 'T':
     return 1;
     break;
   default:
@@ -183,9 +187,21 @@ void play() {
       printf("Disconnessione in corso...\n");
       exit(0);
     }
+    if (send == 't' || send == 'T'){
+      receiveTimer();
+    }
   }
 }
-
+void receiveTimer(){
+      int timeLeft;
+      if(!serverCaduto(socketDesc)){
+        read(socketDesc, &timeLeft, sizeof(timeLeft));
+        system("clear");
+        fprintf(stdout, "Tempo restante: %d...\n", timeLeft);
+        sleep(1);
+      }
+    //  write(socketDesc, msg, sizeof(msg));
+}
 int tryLogin() {
   int msg = 1;
   write(socketDesc, &msg, sizeof(int));
@@ -239,8 +255,6 @@ char getUserInput() {
   }
   return c;
 }
-
-int login() { return 0; }
 
 int registrati() {
   int msg = 2;

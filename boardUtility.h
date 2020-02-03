@@ -31,7 +31,7 @@ PlayerStats gestisciS(char grigliaDiGioco[ROWS][COLUMNS],
                       char grigliaOstacoli[ROWS][COLUMNS],
                       PlayerStats giocatore, Obstacles *listaOstacoli,Point deployCoords[]);
 void inizializzaGiocoSenzaPlayer(char grigliaDiGioco[ROWS][COLUMNS],
-                                 char grigliaConOstacoli[ROWS][COLUMNS]);
+                                 char grigliaConOstacoli[ROWS][COLUMNS],Point packsCoords[]);
 void inserisciPlayerNellaGrigliaInPosizioneCasuale(
     char grigliaDiGioco[ROWS][COLUMNS], char grigliaOstacoli[ROWS][COLUMNS],
     int posizione[2]);
@@ -39,7 +39,7 @@ void inizializzaGrigliaVuota(char grigliaDiGioco[ROWS][COLUMNS]);
 void generaPosizioneOstacoli(char grigliaDiGioco[ROWS][COLUMNS],
                              char grigliaOstacoli[ROWS][COLUMNS]);
 void riempiGrigliaConPacchiInPosizioniGenerateCasualmente(
-    char grigliaDiGioco[ROWS][COLUMNS]);
+    char grigliaDiGioco[ROWS][COLUMNS],Point packsCoords[]);
 void printGrid(char grigliaDaStampare[ROWS][COLUMNS], PlayerStats stats);
 void start(char grigliaDiGioco[ROWS][COLUMNS],
            char grigliaOstacoli[ROWS][COLUMNS]);

@@ -40,6 +40,7 @@ int socketDesc;
 Players onLineUsers = NULL;
 char *users;
 Point deployCoords[numberOfPackages];
+Point packsCoords[numberOfPackages];
 /*///////////////////////////////*/
 
 int main(int argc, char **argv) {
@@ -58,7 +59,7 @@ int main(int argc, char **argv) {
   }
   startTimer();
   inizializzaGiocoSenzaPlayer(grigliaDiGiocoConPacchiSenzaOstacoli,
-                              grigliaOstacoliSenzaPacchi);
+                              grigliaOstacoliSenzaPacchi,packsCoords);
   generaPosizioniRaccolta(grigliaDiGiocoConPacchiSenzaOstacoli,grigliaOstacoliSenzaPacchi,deployCoords);
   startListening();
   return 0;

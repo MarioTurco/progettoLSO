@@ -154,7 +154,6 @@ void generaPosizioniRaccolta(char grigliaDiGioco[ROWS][COLUMNS],
 
   for(i=0;i<numberOfPackages;i++){
     coord[i]=(Point)malloc(sizeof(struct Coord));
-    
   }
   
   i=0;
@@ -174,14 +173,19 @@ void generaPosizioniRaccolta(char grigliaDiGioco[ROWS][COLUMNS],
 
 /*Inserisci dei pacchi nella griglia di gioco nella posizione casuale */
 void riempiGrigliaConPacchiInPosizioniGenerateCasualmente(
-    char grigliaDiGioco[ROWS][COLUMNS]) {
-  int x, y, i;
+    char grigliaDiGioco[ROWS][COLUMNS],Point packsCoords[]) {
+  int x, y, i=0;
+  for(i=0;i<numberOfPackages;i++){
+    packsCoords[i]=(Point)malloc(sizeof(struct Coord));
+  }
   srand(time(0));
   for (i = 0; i < numberOfPackages; i++) {
     x = rand() % COLUMNS;
     y = rand() % ROWS;
     if (grigliaDiGioco[y][x] == '-') {
       grigliaDiGioco[y][x] = '$';
+      packsCoords[i]->x=y;
+      packsCoords[i]->y=x;
     } else
       i--;
   }
@@ -227,10 +231,10 @@ void inserisciPlayerNellaGrigliaInPosizioneCasuale(
 
 /*Genera sia la griglia con i pacchi che la griglia con gli ostacoli*/
 void inizializzaGiocoSenzaPlayer(char grigliaDiGioco[ROWS][COLUMNS],
-                                 char grigliaConOstacoli[ROWS][COLUMNS]) {
+                                 char grigliaConOstacoli[ROWS][COLUMNS],Point packsCoords[]) {
 
   inizializzaGrigliaVuota(grigliaDiGioco);
-  riempiGrigliaConPacchiInPosizioniGenerateCasualmente(grigliaDiGioco);
+  riempiGrigliaConPacchiInPosizioniGenerateCasualmente(grigliaDiGioco,packsCoords);
   generaPosizioneOstacoli(grigliaDiGioco, grigliaConOstacoli);
   return;
 }

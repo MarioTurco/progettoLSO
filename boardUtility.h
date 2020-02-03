@@ -13,16 +13,24 @@
 #define MATRIX_DIMENSION sizeof(char) * ROWS *COLUMNS
 #define RED_COLOR "\x1b[31m"
 #define RESET_COLOR "\x1b[0m"
+
+struct Coord{
+    int x;
+    int y;
+};
+
+typedef struct Coord* Point;
+
 void printMenu();
 PlayerStats gestisciA(char grigliaDiGioco[ROWS][COLUMNS],
                       char grigliaOstacoli[ROWS][COLUMNS],
-                      PlayerStats giocatore, Obstacles *listaOstacoli);
+                      PlayerStats giocatore, Obstacles *listaOstacoli,Point deployCoords[]);
 PlayerStats gestisciD(char grigliaDiGioco[ROWS][COLUMNS],
                       char grigliaOstacoli[ROWS][COLUMNS],
-                      PlayerStats giocatore, Obstacles *listaOstacoli);
+                      PlayerStats giocatore, Obstacles *listaOstacoli,Point deployCoords[]);
 PlayerStats gestisciS(char grigliaDiGioco[ROWS][COLUMNS],
                       char grigliaOstacoli[ROWS][COLUMNS],
-                      PlayerStats giocatore, Obstacles *listaOstacoli);
+                      PlayerStats giocatore, Obstacles *listaOstacoli,Point deployCoords[]);
 void inizializzaGiocoSenzaPlayer(char grigliaDiGioco[ROWS][COLUMNS],
                                  char grigliaConOstacoli[ROWS][COLUMNS]);
 void inserisciPlayerNellaGrigliaInPosizioneCasuale(
@@ -41,14 +49,14 @@ void riempiGrigliaConGliOstacoli(char grigliaDiGioco[ROWS][COLUMNS],
                                  char grigliaOstacoli[ROWS][COLUMNS]);
 PlayerStats gestisciInput(char grigliaDiGioco[ROWS][COLUMNS],
                           char grigliaOstacoli[ROWS][COLUMNS], char input,
-                          PlayerStats giocatore, Obstacles *listaOstacoli);
-void generaPosizioneRaccolta(char grigliaDiGioco[ROWS][COLUMNS],
-                             char grigliaOstacoli[ROWS][COLUMNS], int *coord,
-                             int xPlayer, int yPlayer);
+                          PlayerStats giocatore, Obstacles *listaOstacoli,Point deployCoords[]);
+void generaPosizioniRaccolta(char grigliaDiGioco[ROWS][COLUMNS],
+                             char grigliaOstacoli[ROWS][COLUMNS], Point coord[]);
 PlayerStats gestisciW(char grigliaDiGioco[ROWS][COLUMNS],
                       char grigliaOstacoli[ROWS][COLUMNS],
-                      PlayerStats giocatore, Obstacles *listaOstacoli);
+                      PlayerStats giocatore, Obstacles *listaOstacoli,Point deployCoords[]);
 void mergeGridAndList(char grid[ROWS][COLUMNS], Obstacles top);
+void scegliPosizioneRaccolta(Point coord[], int deploy[]);
 int colpitoOstacolo(char grigliaOstacoli[ROWS][COLUMNS], int posizione[2]);
 int colpitoPacco(char grigliaDiGioco[ROWS][COLUMNS], int posizione[2]);
 int colpitoPlayer(char grigliaDiGioco[ROWS][COLUMNS], int posizione[2]);

@@ -37,6 +37,7 @@ pthread_t tidGeneratoreMappa;
 int socketDesc;
 Players onLineUsers = NULL;
 char *users;
+Point deployCoords[numberOfPackages];
 /*///////////////////////////////*/
 
 int main(int argc, char **argv) {
@@ -56,6 +57,7 @@ int main(int argc, char **argv) {
   startTimer();
   inizializzaGiocoSenzaPlayer(grigliaDiGiocoConPacchiSenzaOstacoli,
                               grigliaOstacoliSenzaPacchi);
+  generaPosizioniRaccolta(grigliaDiGiocoConPacchiSenzaOstacoli,grigliaOstacoliSenzaPacchi,deployCoords);
   startListening();
   return 0;
 }
@@ -215,7 +217,7 @@ void play(int clientDesc, pthread_t tid) {
     } else
       giocatore = gestisciInput(grigliaDiGiocoConPacchiSenzaOstacoli,
                                 grigliaOstacoliSenzaPacchi, inputFromClient,
-                                giocatore, &listaOstacoli);
+                                giocatore, &listaOstacoli,deployCoords);
   }
 }
 void *threadGenerazioneNuoviPlayer(void *args) {

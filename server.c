@@ -40,6 +40,7 @@ int socketDesc;
 Players onLineUsers = NULL;
 char *users;
 Point deployCoords[numberOfPackages];
+Point packagesCoords[numberOfPackages];
 /*///////////////////////////////*/
 
 int main(int argc, char **argv) {

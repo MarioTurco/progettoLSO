@@ -132,7 +132,7 @@ void printGrid(char grigliaDaStampare[ROWS][COLUMNS], PlayerStats stats) {
         printf("%c", grigliaDaStampare[i][j]);
     }
     if (i == 0)
-      printf("\t Inviare 'i' per le istruzioni.");
+      printf("\t Inviare 't' per il timer.");
     if (i == 1)
       printf("\t Inviare 'e' per uscire");
     if (i == 2)

@@ -159,7 +159,7 @@ int serverCaduto() {
 void play() {
   PlayerStats giocatore = NULL;
   int score, deploy[2], position[2];
-  int exitFlag = 0;
+  int exitFlag = 0,hasApack=0;
   while (!exitFlag) {
     if (serverCaduto())
       serverCrashHandler();
@@ -179,9 +179,12 @@ void play() {
     if (read(socketDesc, &score, sizeof(score)) < 1) {
       printf("Impossibile comunicare con il server\n"), exit(-1);
     }
-    giocatore = initStats(deploy, score, position);
 
-    printf("Player stats: %d %d\n", giocatore->deploy[0],giocatore->deploy[1]);
+    if (read(socketDesc, &hasApack, sizeof(hasApack)) < 1) {
+      printf("Impossibile comunicare con il server\n"), exit(-1);
+    }
+    giocatore = initStats(deploy, score, position,hasApack);
+
     printGrid(grigliaDiGioco, giocatore);
     char send = getInput();
     write(socketDesc, &send, sizeof(char));

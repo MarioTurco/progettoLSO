@@ -46,7 +46,7 @@ PlayerStats gestisciInput(char grigliaDiGioco[ROWS][COLUMNS],
     return NULL;
   }
   PlayerStats nuoveStatistiche =
-      initStats(giocatore->deploy, giocatore->score, giocatore->position);
+      initStats(giocatore->deploy, giocatore->score, giocatore->position,giocatore->hasApack);
   if (input == 'w' || input == 'W') {
     nuoveStatistiche =
         gestisciW(grigliaDiGioco, grigliaOstacoli, giocatore, listaOstacoli,deployCoords);
@@ -60,12 +60,25 @@ PlayerStats gestisciInput(char grigliaDiGioco[ROWS][COLUMNS],
     nuoveStatistiche =
         gestisciD(grigliaDiGioco, grigliaOstacoli, giocatore, listaOstacoli,deployCoords);
   } else if (input == 'p' || input == 'P'){
-
+    nuoveStatistiche =
+        gestisciP(grigliaDiGioco,giocatore,deployCoords);
   }
 
 
   // aggiorna la posizione dell'utente
   return nuoveStatistiche;
+}
+
+PlayerStats gestisciP(char grigliaDiGioco[ROWS][COLUMNS],PlayerStats giocatore,Point deployCoords[]){
+  int nuovoDeploy[2];
+  if(colpitoPacco(grigliaDiGioco,giocatore->position) && giocatore->hasApack==0){
+    scegliPosizioneRaccolta(deployCoords,nuovoDeploy);
+    giocatore->hasApack=1;
+  }
+
+  PlayerStats nuoveStats=initStats(nuovoDeploy,giocatore->score,giocatore->position,giocatore->hasApack);
+  return nuoveStats;
+
 }
 
 /*Svuota la griglia di gioco e la riempe solo di '-' */
@@ -235,7 +248,7 @@ PlayerStats gestisciW(char grigliaDiGioco[ROWS][COLUMNS],
     return NULL;
   }
   PlayerStats nuoveStatistiche =
-      initStats(giocatore->deploy, giocatore->score, giocatore->position);
+      initStats(giocatore->deploy, giocatore->score, giocatore->position,giocatore->hasApack);
   int nuovaPosizione[2];
   nuovaPosizione[1] = giocatore->position[1];
 
@@ -249,8 +262,6 @@ PlayerStats gestisciW(char grigliaDiGioco[ROWS][COLUMNS],
     if (casellaVuota(grigliaDiGioco, grigliaOstacoli, nuovaPosizione)) {
       spostaPlayer(grigliaDiGioco, giocatore->position, nuovaPosizione);
     } else if (colpitoPacco(grigliaDiGioco, nuovaPosizione)) {
-      printf("Colpito Pacco\n");
-      scegliPosizioneRaccolta( deployCoords,nuovoDeploy);
       spostaPlayer(grigliaDiGioco, giocatore->position, nuovaPosizione);
     } else if (arrivatoADestinazione(nuovaPosizione, nuovaPosizione)) {
       spostaPlayer(grigliaDiGioco, giocatore->position, nuovaPosizione);
@@ -267,10 +278,10 @@ PlayerStats gestisciW(char grigliaDiGioco[ROWS][COLUMNS],
       nuovaPosizione[0] = giocatore->position[0];
       nuovaPosizione[1] = giocatore->position[1];
     }
-    nuoveStatistiche = initStats(nuovoDeploy, nuovoScore, nuovaPosizione);
+    nuoveStatistiche = initStats(nuovoDeploy, nuovoScore, nuovaPosizione,giocatore->hasApack);
   } else {
     nuoveStatistiche =
-        initStats(giocatore->deploy, giocatore->score, giocatore->position);
+        initStats(giocatore->deploy, giocatore->score, giocatore->position,giocatore->hasApack);
   }
   return nuoveStatistiche;
 }
@@ -282,7 +293,7 @@ PlayerStats gestisciD(char grigliaDiGioco[ROWS][COLUMNS],
     return NULL;
   }
   PlayerStats nuoveStatistiche =
-      initStats(giocatore->deploy, giocatore->score, giocatore->position);
+      initStats(giocatore->deploy, giocatore->score, giocatore->position,giocatore->hasApack);
   int nuovaPosizione[2];
   nuovaPosizione[1] = giocatore->position[1] + 1;
   nuovaPosizione[0] = giocatore->position[0];
@@ -295,8 +306,6 @@ PlayerStats gestisciD(char grigliaDiGioco[ROWS][COLUMNS],
     if (casellaVuota(grigliaDiGioco, grigliaOstacoli, nuovaPosizione)) {
       spostaPlayer(grigliaDiGioco, giocatore->position, nuovaPosizione);
     } else if (colpitoPacco(grigliaDiGioco, nuovaPosizione)) {
-      printf("Colpito Pacco\n");
-      scegliPosizioneRaccolta(deployCoords,nuovoDeploy);
       spostaPlayer(grigliaDiGioco, giocatore->position, nuovaPosizione);
     } else if (arrivatoADestinazione(nuovaPosizione, giocatore->deploy)) {
       spostaPlayer(grigliaDiGioco, giocatore->position, nuovaPosizione);
@@ -313,10 +322,10 @@ PlayerStats gestisciD(char grigliaDiGioco[ROWS][COLUMNS],
       nuovaPosizione[0] = giocatore->position[0];
       nuovaPosizione[1] = giocatore->position[1];
     }
-    nuoveStatistiche = initStats(nuovoDeploy, nuovoScore, nuovaPosizione);
+    nuoveStatistiche = initStats(nuovoDeploy, nuovoScore, nuovaPosizione,giocatore->hasApack);
   } else {
     nuoveStatistiche =
-        initStats(giocatore->deploy, giocatore->score, giocatore->position);
+        initStats(giocatore->deploy, giocatore->score, giocatore->position,giocatore->hasApack);
   }
   return nuoveStatistiche;
 }
@@ -328,7 +337,7 @@ PlayerStats gestisciA(char grigliaDiGioco[ROWS][COLUMNS],
     return NULL;
   }
   PlayerStats nuoveStatistiche =
-      initStats(giocatore->deploy, giocatore->score, giocatore->position);
+      initStats(giocatore->deploy, giocatore->score, giocatore->position,giocatore->hasApack);
   int nuovaPosizione[2];
   nuovaPosizione[0] = giocatore->position[0];
 
@@ -343,8 +352,6 @@ PlayerStats gestisciA(char grigliaDiGioco[ROWS][COLUMNS],
       printf("Casella vuota \n");
       spostaPlayer(grigliaDiGioco, giocatore->position, nuovaPosizione);
     } else if (colpitoPacco(grigliaDiGioco, nuovaPosizione)) {
-      printf("Colpito Pacco\n");
-      scegliPosizioneRaccolta( deployCoords,nuovoDeploy);
       spostaPlayer(grigliaDiGioco, giocatore->position, nuovaPosizione);
     } else if (arrivatoADestinazione(nuovaPosizione, giocatore->deploy)) {
       printf("Arrivato a destinazione");
@@ -363,10 +370,10 @@ PlayerStats gestisciA(char grigliaDiGioco[ROWS][COLUMNS],
       nuovaPosizione[0] = giocatore->position[0];
       nuovaPosizione[1] = giocatore->position[1];
     }
-    nuoveStatistiche = initStats(nuovoDeploy, nuovoScore, nuovaPosizione);
+    nuoveStatistiche = initStats(nuovoDeploy, nuovoScore, nuovaPosizione,giocatore->hasApack);
   } else {
     nuoveStatistiche =
-        initStats(giocatore->deploy, giocatore->score, giocatore->position);
+        initStats(giocatore->deploy, giocatore->score, giocatore->position,giocatore->hasApack);
   }
   return nuoveStatistiche;
 }
@@ -379,7 +386,7 @@ PlayerStats gestisciS(char grigliaDiGioco[ROWS][COLUMNS],
   }
   // inizializza le statistiche con i valori attuali
   PlayerStats nuoveStatistiche =
-      initStats(giocatore->deploy, giocatore->score, giocatore->position);
+      initStats(giocatore->deploy, giocatore->score, giocatore->position,giocatore->hasApack);
 
   // crea le nuove statistiche
   int nuovaPosizione[2];
@@ -395,14 +402,12 @@ PlayerStats gestisciS(char grigliaDiGioco[ROWS][COLUMNS],
     if (casellaVuota(grigliaDiGioco, grigliaOstacoli, nuovaPosizione)) {
       spostaPlayer(grigliaDiGioco, giocatore->position, nuovaPosizione);
     } else if (colpitoPacco(grigliaDiGioco, nuovaPosizione)) {
-      printf("Colpito Pacco\n");
-      scegliPosizioneRaccolta( deployCoords,nuovoDeploy);
-      spostaPlayer(grigliaDiGioco, giocatore->position, nuovaPosizione);
+        spostaPlayer(grigliaDiGioco, giocatore->position, nuovaPosizione);
     } else if (arrivatoADestinazione(nuovaPosizione, giocatore->deploy)) {
-      spostaPlayer(grigliaDiGioco, giocatore->position, nuovaPosizione);
-      nuovoScore += 10;
-      nuovoDeploy[0] = -1;
-      nuovoDeploy[1] = -1;
+        spostaPlayer(grigliaDiGioco, giocatore->position, nuovaPosizione);
+        nuovoScore += 10;
+        nuovoDeploy[0] = -1;
+        nuovoDeploy[1] = -1;
     } else if (colpitoOstacolo(grigliaOstacoli, nuovaPosizione)) {
       printf("Ostacolo\n");
       *listaOstacoli =
@@ -413,10 +418,10 @@ PlayerStats gestisciS(char grigliaDiGioco[ROWS][COLUMNS],
       nuovaPosizione[0] = giocatore->position[0];
       nuovaPosizione[1] = giocatore->position[1];
     }
-    nuoveStatistiche = initStats(nuovoDeploy, nuovoScore, nuovaPosizione);
+    nuoveStatistiche = initStats(nuovoDeploy, nuovoScore, nuovaPosizione,giocatore->hasApack);
   } else {
     nuoveStatistiche =
-        initStats(giocatore->deploy, giocatore->score, giocatore->position);
+        initStats(giocatore->deploy, giocatore->score, giocatore->position,giocatore->hasApack);
   }
   return nuoveStatistiche;
 }

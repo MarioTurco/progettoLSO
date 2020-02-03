@@ -57,6 +57,7 @@ PlayerStats gestisciW(char grigliaDiGioco[ROWS][COLUMNS],
 void mergeGridAndList(char grid[ROWS][COLUMNS], Obstacles top);
 void scegliPosizioneRaccolta(Point coord[], int deploy[]);
 int colpitoOstacolo(char grigliaOstacoli[ROWS][COLUMNS], int posizione[2]);
+PlayerStats gestisciP(char grigliaDiGioco[ROWS][COLUMNS],PlayerStats giocatore,Point deployCoords[]);
 int colpitoPacco(char grigliaDiGioco[ROWS][COLUMNS], int posizione[2]);
 int colpitoPlayer(char grigliaDiGioco[ROWS][COLUMNS], int posizione[2]);
 int casellaVuota(char grigliaDiGioco[ROWS][COLUMNS],

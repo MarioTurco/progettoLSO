@@ -184,7 +184,7 @@ void play(int clientDesc, pthread_t tid) {
   int true = 1;
   int posizione[2];
   int destinazione[2] = {-1, -1};
-  PlayerStats giocatore = initStats(destinazione, 0, posizione);
+  PlayerStats giocatore = initStats(destinazione, 0, posizione,0);
   Obstacles listaOstacoli = NULL;
   pthread_t tidGenerazionePlayer;
   char inputFromClient;
@@ -210,6 +210,7 @@ void play(int clientDesc, pthread_t tid) {
     write(clientDesc, giocatore->deploy, sizeof(giocatore->deploy));
     write(clientDesc, giocatore->position, sizeof(giocatore->position));
     write(clientDesc, &giocatore->score, sizeof(giocatore->score));
+    write(clientDesc, &giocatore->hasApack, sizeof(giocatore->hasApack));
 
     // legge l'input
     read(clientDesc, &inputFromClient, sizeof(char));

@@ -30,7 +30,7 @@ typedef struct TList2 *Obstacles;
 Players initPlayerNode(char *name, int sockDes, pthread_t tid);
 
 // Crea un nodo di Stats da mandare a un client
-PlayerStats initStats(int deploy[], int score, int position[]);
+PlayerStats initStats(int deploy[], int score, int position[], int flag);
 
 // Inizializza un nuovo nodo
 Players initNodeList(char *name, int sockDes);

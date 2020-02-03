@@ -40,7 +40,7 @@ int socketDesc;
 Players onLineUsers = NULL;
 char *users;
 Point deployCoords[numberOfPackages];
-Point packagesCoords[numberOfPackages];
+Point packsCoords[numberOfPackages];
 /*///////////////////////////////*/
 
 int main(int argc, char **argv) {
@@ -59,7 +59,7 @@ int main(int argc, char **argv) {
   }
   startTimer();
   inizializzaGiocoSenzaPlayer(grigliaDiGiocoConPacchiSenzaOstacoli,
-                              grigliaOstacoliSenzaPacchi);
+                              grigliaOstacoliSenzaPacchi, packsCoords);
   generaPosizioniRaccolta(grigliaDiGiocoConPacchiSenzaOstacoli,
                           grigliaOstacoliSenzaPacchi, deployCoords);
   startListening();
@@ -202,7 +202,7 @@ void play(int clientDesc, pthread_t tid) {
   while (true) {
     if (clientDisconnesso(clientDesc)) {
       freeObstacles(listaOstacoli);
-      clientCrashHandler(clientDesc);
+      disconnettiClient(clientDesc);
       return;
     }
     // printObstacles(listaOstacoli);
@@ -225,9 +225,10 @@ void play(int clientDesc, pthread_t tid) {
     } else if (inputFromClient == 't' || inputFromClient == 'T') {
       sendTimerValue(clientDesc);
     } else
-      giocatore = gestisciInput(grigliaDiGiocoConPacchiSenzaOstacoli,
-                                grigliaOstacoliSenzaPacchi, inputFromClient,
-                                giocatore, &listaOstacoli, deployCoords);
+      giocatore =
+          gestisciInput(grigliaDiGiocoConPacchiSenzaOstacoli,
+                        grigliaOstacoliSenzaPacchi, inputFromClient, giocatore,
+                        &listaOstacoli, deployCoords, packsCoords);
   }
 }
 void sendTimerValue(int clientDesc) {
@@ -251,7 +252,7 @@ void *threadGenerazioneNuoviPlayer(void *args) {
   }
 }
 void clientCrashHandler(int signalNum) {
-  char msg[1] = {'U'};
+  char msg[0];
   int socketClientCrashato;
   Obstacles listaOstacoliClientCrashato = NULL;
   // elimina il client dalla lista dei client connessi
@@ -317,7 +318,7 @@ void *threadGenerazioneMappa(void *args) {
   fprintf(stdout, "Rigenerazione mappa\n");
   inizializzaGrigliaVuota(grigliaDiGiocoConPacchiSenzaOstacoli);
   riempiGrigliaConPacchiInPosizioniGenerateCasualmente(
-      grigliaDiGiocoConPacchiSenzaOstacoli);
+      grigliaDiGiocoConPacchiSenzaOstacoli, packsCoords);
   generaPosizioneOstacoli(grigliaDiGiocoConPacchiSenzaOstacoli,
                           grigliaOstacoliSenzaPacchi);
   timerCount = TIME_LIMIT_IN_SECONDS;

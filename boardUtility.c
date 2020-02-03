@@ -114,6 +114,7 @@ void inizializzaGrigliaVuota(char griglia[ROWS][COLUMNS]) {
 /* stampa a schermo la griglia passata in input */
 void printGrid(char grigliaDaStampare[ROWS][COLUMNS], PlayerStats stats) {
   system("clear");
+  printf("\n\n");
   int i = 0, j = 0;
   for (i = 0; i < ROWS; i++) {
     printf("\t");
@@ -130,6 +131,20 @@ void printGrid(char grigliaDaStampare[ROWS][COLUMNS], PlayerStats stats) {
       } else
         printf("%c", grigliaDaStampare[i][j]);
     }
+    if (i == 0)
+      printf("\t Inviare 'i' per le istruzioni.");
+    if (i == 1)
+      printf("\t Inviare 'e' per uscire");
+    if (i == 2)
+      printf("\t Inviare 'p' per raccogliere un pacco");
+    if (i == 3)
+      printf("\t Inviare 'r' per rilasciare il pacco");
+    if (i == 4)
+      printf("\t Inviare 'w'/'s' per andare sopra/sotto");
+    if (i == 5)
+      printf("\t Inviare 'a'/'d' per andare a dx/sx");
+    if (i == 6)
+      printf("\t\t Punteggio: %d", stats->score);
     printf("\n");
   }
 }

@@ -17,7 +17,6 @@
 #include <time.h>
 #include <unistd.h>
 
-
 void receiveTimer();
 void play();
 int tryLogin();
@@ -159,7 +158,7 @@ int serverCaduto() {
 void play() {
   PlayerStats giocatore = NULL;
   int score, deploy[2], position[2];
-  int exitFlag = 0,hasApack=0;
+  int exitFlag = 0, hasApack = 0;
   while (!exitFlag) {
     if (serverCaduto())
       serverCrashHandler();
@@ -183,7 +182,7 @@ void play() {
     if (read(socketDesc, &hasApack, sizeof(hasApack)) < 1) {
       printf("Impossibile comunicare con il server\n"), exit(-1);
     }
-    giocatore = initStats(deploy, score, position,hasApack);
+    giocatore = initStats(deploy, score, position, hasApack);
 
     printGrid(grigliaDiGioco, giocatore);
     char send = getInput();
@@ -192,20 +191,20 @@ void play() {
       printf("Disconnessione in corso...\n");
       exit(0);
     }
-    if (send == 't' || send == 'T'){
+    if (send == 't' || send == 'T') {
       receiveTimer();
     }
   }
 }
-void receiveTimer(){
-      int timeLeft;
-      if(!serverCaduto(socketDesc)){
-        read(socketDesc, &timeLeft, sizeof(timeLeft));
-        system("clear");
-        fprintf(stdout, "Tempo restante: %d...\n", timeLeft);
-        sleep(1);
-      }
-    //  write(socketDesc, msg, sizeof(msg));
+void receiveTimer() {
+  int timeLeft;
+  if (!serverCaduto(socketDesc)) {
+    read(socketDesc, &timeLeft, sizeof(timeLeft));
+    system("clear");
+    fprintf(stdout, "Tempo restante: %d...\n", timeLeft);
+    sleep(1);
+  }
+  //  write(socketDesc, msg, sizeof(msg));
 }
 int tryLogin() {
   int msg = 1;
@@ -327,7 +326,7 @@ void clientCrashHandler() {
 }
 void serverCrashHandler() {
   system("clear");
-  printf("Il server è crashato o è irraggiungibile\n");
+  printf("Il server è stato spento o è irraggiungibile\n");
   close(socketDesc);
   signal(SIGPIPE, SIG_IGN);
   premiEnterPerContinuare();

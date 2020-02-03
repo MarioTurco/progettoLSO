@@ -59,7 +59,8 @@ int main(int argc, char **argv) {
   startTimer();
   inizializzaGiocoSenzaPlayer(grigliaDiGiocoConPacchiSenzaOstacoli,
                               grigliaOstacoliSenzaPacchi);
-  generaPosizioniRaccolta(grigliaDiGiocoConPacchiSenzaOstacoli,grigliaOstacoliSenzaPacchi,deployCoords);
+  generaPosizioniRaccolta(grigliaDiGiocoConPacchiSenzaOstacoli,
+                          grigliaOstacoliSenzaPacchi, deployCoords);
   startListening();
   return 0;
 }
@@ -178,13 +179,14 @@ void *gestisci(void *descriptor) {
       break;
     }
   }
+  pthread_exit(0);
 }
 
 void play(int clientDesc, pthread_t tid) {
   int true = 1;
   int posizione[2];
   int destinazione[2] = {-1, -1};
-  PlayerStats giocatore = initStats(destinazione, 0, posizione,0);
+  PlayerStats giocatore = initStats(destinazione, 0, posizione, 0);
   Obstacles listaOstacoli = NULL;
   pthread_t tidGenerazionePlayer;
   char inputFromClient;
@@ -217,16 +219,16 @@ void play(int clientDesc, pthread_t tid) {
     if (inputFromClient == 'e' || inputFromClient == 'E') {
       // TODO svuotare la lista obstacles quando si disconnette un client
       disconnettiClient(clientDesc, tid);
-    } else if(inputFromClient == 't' || inputFromClient == 'T'){
+    } else if (inputFromClient == 't' || inputFromClient == 'T') {
       sendTimerValue(clientDesc);
-    }else
+    } else
       giocatore = gestisciInput(grigliaDiGiocoConPacchiSenzaOstacoli,
                                 grigliaOstacoliSenzaPacchi, inputFromClient,
-                                giocatore, &listaOstacoli,deployCoords);
+                                giocatore, &listaOstacoli, deployCoords);
   }
 }
-void sendTimerValue(int clientDesc){
-  if(!clientDisconnesso(clientDesc)){
+void sendTimerValue(int clientDesc) {
+  if (!clientDisconnesso(clientDesc)) {
     write(clientDesc, &timerCount, sizeof(timerCount));
   }
 }

@@ -7,6 +7,7 @@
 #include <netinet/in.h> //conversioni
 #include <netinet/in.h>
 #include <netinet/ip.h> //struttura
+#include <pthread.h>
 #include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -36,6 +37,7 @@ int isCorrect(char);
 /*/////////////////////////////*/
 int socketDesc;
 char grigliaDiGioco[ROWS][COLUMNS];
+pthread_t tid;
 /*//////////////////////////////*/
 int main(int argc, char **argv) {
   signal(SIGINT, clientCrashHandler); /* CTRL-C */
@@ -188,7 +190,6 @@ void play() {
     }
     timer = getTimer();
     giocatore = initStats(deploy, score, position, hasApack);
-
     printGrid(grigliaDiGioco, giocatore);
     char send = getUserInput();
     write(socketDesc, &send, sizeof(char));
@@ -201,23 +202,22 @@ void play() {
     }
   }
 }
-// TODO da finire
 
 void printTimer() {
-  int timeLeft;
+  int timer;
   if (!serverCaduto(socketDesc)) {
-    read(socketDesc, &timeLeft, sizeof(timeLeft));
-    system("clear");
-    fprintf(stdout, "Tempo restante: %d...\n", timeLeft);
+    read(socketDesc, &timer, sizeof(timer));
+    // system("clear");
+    fprintf(stdout, "Tempo restante: %d...\n", timer);
     sleep(1);
   }
 }
 int getTimer() {
-  int timeLeft;
+  int timer;
   if (!serverCaduto(socketDesc)) {
-    read(socketDesc, &timeLeft, sizeof(timeLeft));
+    read(socketDesc, &timer, sizeof(timer));
   }
-  return timeLeft;
+  return timer;
 }
 int tryLogin() {
   int msg = 1;

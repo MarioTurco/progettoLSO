@@ -18,8 +18,6 @@
 #include <unistd.h>
 
 int getTimer();
-void rimuoviVecchioPlayer();
-int cambiatoRound(int posizione[2]);
 void printTimer();
 void play();
 int tryLogin();
@@ -204,15 +202,7 @@ void play() {
   }
 }
 // TODO da finire
-void rimuoviVecchioPlayer() {
-  char msg = 'o';
-  write(socketDesc, &msg, sizeof(char));
-}
-int cambiatoRound(int posizione[2]) {
-  if (posizione[0] == -1 && posizione[1] == -1)
-    return 1;
-  return 0;
-}
+
 void printTimer() {
   int timeLeft;
   if (!serverCaduto(socketDesc)) {

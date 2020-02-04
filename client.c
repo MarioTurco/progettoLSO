@@ -208,7 +208,7 @@ void printTimer() {
   if (!serverCaduto(socketDesc)) {
     read(socketDesc, &timer, sizeof(timer));
     // system("clear");
-    fprintf(stdout, "Tempo restante: %d...\n", timer);
+    fprintf(stdout, "\t\tTempo restante: %d...\n", timer);
     sleep(1);
   }
 }

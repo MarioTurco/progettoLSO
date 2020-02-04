@@ -343,6 +343,8 @@ void quitServer() {
 void *threadGenerazioneMappa(void *args) {
   fprintf(stdout, "Rigenerazione mappa\n");
   inizializzaGrigliaVuota(grigliaDiGiocoConPacchiSenzaOstacoli);
+  generaPosizioniRaccolta(grigliaDiGiocoConPacchiSenzaOstacoli,
+                          grigliaOstacoliSenzaPacchi, deployCoords);
   riempiGrigliaConPacchiInPosizioniGenerateCasualmente(
       grigliaDiGiocoConPacchiSenzaOstacoli, packsCoords);
   generaPosizioneOstacoli(grigliaDiGiocoConPacchiSenzaOstacoli,

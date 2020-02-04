@@ -242,6 +242,7 @@ void play(int clientDesc, pthread_t tid) {
       inserisciPlayerNellaGrigliaInPosizioneCasuale(
           grigliaDiGiocoConPacchiSenzaOstacoli, grigliaOstacoliSenzaPacchi,
           giocatore->position);
+      giocatore->score = 0;
       turnoGiocatore = turno;
       playerGenerati++;
     }

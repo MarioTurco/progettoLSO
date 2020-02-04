@@ -107,6 +107,8 @@ PlayerStats gestisciC(char grigliaDiGioco[ROWS][COLUMNS], PlayerStats giocatore,
   else{
     if(isOnADeployPoint(giocatore,deployCoords)){
       giocatore->score+=10;
+      giocatore->deploy[0]=-1;
+      giocatore->deploy[1]=-1;
       giocatore->hasApack=0;
     }
     else{

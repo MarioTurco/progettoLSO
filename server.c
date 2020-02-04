@@ -243,7 +243,7 @@ void play(int clientDesc, pthread_t tid) {
       inserisciPlayerNellaGrigliaInPosizioneCasuale(
           grigliaDiGiocoConPacchiSenzaOstacoli, grigliaOstacoliSenzaPacchi,
           giocatore->position);
-
+      giocatore->score = 0;
       turnoGiocatore = turno;
       playerGenerati++;
     }
@@ -254,6 +254,8 @@ void sendTimerValue(int clientDesc) {
     write(clientDesc, &timerCount, sizeof(timerCount));
   }
 }
+
+// TODO da cancellare, non serve più
 void *threadGenerazioneNuoviPlayer(void *args) {
   timerCount = TIME_LIMIT_IN_SECONDS;
   PlayerStats giocatore = (PlayerStats)args;
@@ -262,6 +264,9 @@ void *threadGenerazioneNuoviPlayer(void *args) {
       inserisciPlayerNellaGrigliaInPosizioneCasuale(
           grigliaDiGiocoConPacchiSenzaOstacoli, grigliaOstacoliSenzaPacchi,
           giocatore->position);
+      giocatore->score = 0;
+      giocatore->deploy[0] = -1;
+      giocatore->deploy[1] = -1;
       playerGenerati++;
       if (playerGenerati == numeroClient) {
         timerCount = TIME_LIMIT_IN_SECONDS;
@@ -343,6 +348,7 @@ void *threadGenerazioneMappa(void *args) {
   generaPosizioneOstacoli(grigliaDiGiocoConPacchiSenzaOstacoli,
                           grigliaOstacoliSenzaPacchi);
   timerCount = TIME_LIMIT_IN_SECONDS;
+  printf("Mappa generata\n");
   pthread_exit(NULL);
 }
 int almenoUnaMossaFatta() {

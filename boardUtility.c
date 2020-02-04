@@ -192,7 +192,7 @@ void printGrid(char grigliaDaStampare[ROWS][COLUMNS], PlayerStats stats) {
     if (i == 5)
       printf("\t Inviare 'a'/'d' per andare a dx/sx");
     if (i == 6)
-      printf("\t\t Punteggio: %d", stats->score);
+      printf(GREEN_COLOR"\t\t Punteggio: %d"RESET_COLOR, stats->score);
     printf("\n");
   }
 }

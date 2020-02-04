@@ -138,7 +138,7 @@ void printGrid(char grigliaDaStampare[ROWS][COLUMNS], PlayerStats stats) {
     if (i == 2)
       printf("\t Inviare 'p' per raccogliere un pacco");
     if (i == 3)
-      printf("\t Inviare 'r' per rilasciare il pacco");
+      printf("\t Inviare 'c' per consegnare il pacco");
     if (i == 4)
       printf("\t Inviare 'w'/'s' per andare sopra/sotto");
     if (i == 5)

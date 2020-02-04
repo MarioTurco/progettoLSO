@@ -34,6 +34,7 @@ char grigliaOstacoliSenzaPacchi[ROWS][COLUMNS];
 int numeroClient = 0;
 int playerGenerati = 0;
 int timerCount = TIME_LIMIT_IN_SECONDS;
+int round = 0;
 pthread_t tidTimer;
 pthread_t tidGeneratoreMappa;
 int socketDesc;
@@ -215,7 +216,7 @@ void play(int clientDesc, pthread_t tid) {
     write(clientDesc, giocatore->position, sizeof(giocatore->position));
     write(clientDesc, &giocatore->score, sizeof(giocatore->score));
     write(clientDesc, &giocatore->hasApack, sizeof(giocatore->hasApack));
-
+    sendTimerValue(clientDesc);
     // legge l'input
     read(clientDesc, &inputFromClient, sizeof(char));
     if (inputFromClient == 'e' || inputFromClient == 'E') {
@@ -344,6 +345,7 @@ void *timer(void *args) {
       printf("Reset timer e generazione nuova mappa..\n");
       startProceduraGenrazioneMappa();
       pthread_join(tidGeneratoreMappa, NULL);
+      round++;
       timerCount = TIME_LIMIT_IN_SECONDS + 1;
     }
   }

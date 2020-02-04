@@ -17,7 +17,10 @@
 #include <time.h>
 #include <unistd.h>
 
-void receiveTimer();
+int getTimer();
+void rimuoviVecchioPlayer();
+int cambiatoRound(int posizione[2]);
+void printTimer();
 void play();
 int tryLogin();
 void printMenu();
@@ -125,20 +128,22 @@ char getInput() {
 
 int isCorrect(char input) {
   switch (input) {
-  case 'w':
+  case 'w': // muovi avanti
   case 'W':
-  case 'a':
+  case 'a': // muovi sinistra
   case 'A':
-  case 's':
+  case 's': // muovi sotto
   case 'S':
-  case 'd':
+  case 'd': // muovi destra
   case 'D':
-  case 'e':
+  case 'e': // esci
   case 'E':
-  case 't':
+  case 't': // stampa timer
   case 'T':
-  case 'P':
+  case 'P': // prendi pacco
   case 'p':
+  case 'c': // consegna
+  case 'C':
     return 1;
     break;
   default:
@@ -146,7 +151,6 @@ int isCorrect(char input) {
     break;
   }
 }
-
 int serverCaduto() {
   char msg = 'y';
   if (read(socketDesc, &msg, sizeof(char)) == 0)
@@ -159,7 +163,7 @@ int serverCaduto() {
 }
 void play() {
   PlayerStats giocatore = NULL;
-  int score, deploy[2], position[2];
+  int score, deploy[2], position[2], timer;
   int exitFlag = 0, hasApack = 0;
   while (!exitFlag) {
     if (serverCaduto())
@@ -184,21 +188,35 @@ void play() {
     if (read(socketDesc, &hasApack, sizeof(hasApack)) < 1) {
       printf("Impossibile comunicare con il server\n"), exit(-1);
     }
+    timer = getTimer();
     giocatore = initStats(deploy, score, position, hasApack);
-
-    printGrid(grigliaDiGioco, giocatore);
-    char send = getUserInput();
-    write(socketDesc, &send, sizeof(char));
-    if (send == 'e' || send == 'E') {
-      printf("Disconnessione in corso...\n");
-      exit(0);
-    }
-    if (send == 't' || send == 'T') {
-      receiveTimer();
+    if (cambiatoRound(position)) {
+      rimuoviVecchioPlayer();
+    } else {
+      printGrid(grigliaDiGioco, giocatore);
+      char send = getUserInput();
+      write(socketDesc, &send, sizeof(char));
+      if (send == 'e' || send == 'E') {
+        printf("Disconnessione in corso...\n");
+        exit(0);
+      }
+      if (send == 't' || send == 'T') {
+        printTimer();
+      }
     }
   }
 }
-void receiveTimer() {
+// TODO da finire
+void rimuoviVecchioPlayer() {
+  char msg = 'o';
+  write(socketDesc, &msg, sizeof(char));
+}
+int cambiatoRound(int posizione[2]) {
+  if (posizione[0] == -1 && posizione[1] == -1)
+    return 1;
+  return 0;
+}
+void printTimer() {
   int timeLeft;
   if (!serverCaduto(socketDesc)) {
     read(socketDesc, &timeLeft, sizeof(timeLeft));
@@ -206,7 +224,13 @@ void receiveTimer() {
     fprintf(stdout, "Tempo restante: %d...\n", timeLeft);
     sleep(1);
   }
-  //  write(socketDesc, msg, sizeof(msg));
+}
+int getTimer() {
+  int timeLeft;
+  if (!serverCaduto(socketDesc)) {
+    read(socketDesc, &timeLeft, sizeof(timeLeft));
+  }
+  return timeLeft;
 }
 int tryLogin() {
   int msg = 1;
@@ -255,6 +279,7 @@ int tryLogin() {
 
 // TODO da modificare/cancellare
 char getUserInput() {
+  fflush(stdin);
   char c;
   c = getchar();
   int daIgnorare;

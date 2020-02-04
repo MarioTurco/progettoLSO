@@ -10,7 +10,7 @@
 #include <string.h>
 #include <sys/socket.h>
 #include <unistd.h>
-
+void clonaGriglia(char destinazione[ROWS][COLUMNS], char source[ROWS][COLUMNS]);
 int almenoUnClientConnesso();
 int valoreTimerValido();
 int almenoUnPlayerGenerato();
@@ -214,11 +214,11 @@ void play(int clientDesc, pthread_t tid) {
       disconnettiClient(clientDesc);
       return;
     }
-    // printObstacles(listaOstacoli);
-    mergeGridAndList(grigliaDiGiocoConPacchiSenzaOstacoli, listaOstacoli);
+    char grigliaTmp[ROWS][COLUMNS];
+    clonaGriglia(grigliaTmp, grigliaDiGiocoConPacchiSenzaOstacoli);
+    mergeGridAndList(grigliaTmp, listaOstacoli);
     // invia la griglia
-    write(clientDesc, grigliaDiGiocoConPacchiSenzaOstacoli,
-          sizeof(grigliaDiGiocoConPacchiSenzaOstacoli));
+    write(clientDesc, grigliaTmp, sizeof(grigliaTmp));
     // invia la struttura del player
     write(clientDesc, giocatore->deploy, sizeof(giocatore->deploy));
     write(clientDesc, giocatore->position, sizeof(giocatore->position));
@@ -263,7 +263,17 @@ void sendTimerValue(int clientDesc) {
     write(clientDesc, &timerCount, sizeof(timerCount));
   }
 }
+void clonaGriglia(char destinazione[ROWS][COLUMNS],
+                  char source[ROWS][COLUMNS]) {
+  int i = 0, j = 0;
+  for (i = 0; i < ROWS; i++) {
+    for (j = 0; j < COLUMNS; j++) {
+      destinazione[i][j] = source[i][j];
+    }
+  }
 
+  return;
+}
 // TODO da cancellare, non serve più
 /*void *threadGenerazioneNuoviPlayer(void *args) {
   timerCount = TIME_LIMIT_IN_SECONDS;

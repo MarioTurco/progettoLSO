@@ -168,9 +168,7 @@ void play() {
   while (!exitFlag) {
     if (serverCaduto())
       serverCrashHandler();
-
     if (read(socketDesc, grigliaDiGioco, sizeof(grigliaDiGioco)) < 1) {
-
       printf("Impossibile comunicare con il server\n"), exit(-1);
     }
     if (read(socketDesc, deploy, sizeof(deploy)) < 1) {
@@ -209,7 +207,7 @@ void printTimer() {
     read(socketDesc, &timer, sizeof(timer));
     // system("clear");
     printf("\t\tTempo restante: %d...\n", timer);
-    sleep(1 );
+    sleep(1);
   }
 }
 int getTimer() {

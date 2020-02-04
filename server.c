@@ -186,6 +186,7 @@ void *gestisci(void *descriptor) {
 
 void play(int clientDesc, pthread_t tid) {
   int true = 1;
+  int turnoGiocatore = turno;
   int posizione[2];
   int destinazione[2] = {-1, -1};
   PlayerStats giocatore = initStats(destinazione, 0, posizione, 0);
@@ -197,9 +198,10 @@ void play(int clientDesc, pthread_t tid) {
     inserisciPlayerNellaGrigliaInPosizioneCasuale(
         grigliaDiGiocoConPacchiSenzaOstacoli, grigliaOstacoliSenzaPacchi,
         giocatore->position);
+    playerGenerati++;
   }
-  pthread_create(&tidGenerazionePlayer, NULL, threadGenerazioneNuoviPlayer,
-                 (void *)giocatore);
+  // pthread_create(&tidGenerazionePlayer, NULL, threadGenerazioneNuoviPlayer,
+  //                (void *)giocatore);
   while (true) {
     if (clientDisconnesso(clientDesc)) {
       freeObstacles(listaOstacoli);
@@ -225,11 +227,18 @@ void play(int clientDesc, pthread_t tid) {
       disconnettiClient(clientDesc);
     } else if (inputFromClient == 't' || inputFromClient == 'T') {
       sendTimerValue(clientDesc);
-    } else
+    } else if (turnoGiocatore == turno)
       giocatore =
           gestisciInput(grigliaDiGiocoConPacchiSenzaOstacoli,
                         grigliaOstacoliSenzaPacchi, inputFromClient, giocatore,
                         &listaOstacoli, deployCoords, packsCoords);
+    else {
+      inserisciPlayerNellaGrigliaInPosizioneCasuale(
+          grigliaDiGiocoConPacchiSenzaOstacoli, grigliaOstacoliSenzaPacchi,
+          giocatore->position);
+      turnoGiocatore = turno;
+      playerGenerati++;
+    }
   }
 }
 void sendTimerValue(int clientDesc) {
@@ -238,6 +247,7 @@ void sendTimerValue(int clientDesc) {
   }
 }
 void *threadGenerazioneNuoviPlayer(void *args) {
+  timerCount = TIME_LIMIT_IN_SECONDS;
   PlayerStats giocatore = (PlayerStats)args;
   while (1) {
     if (timerCount == TIME_LIMIT_IN_SECONDS + 1) {
@@ -329,7 +339,7 @@ void *timer(void *args) {
   int cambiato = 1;
   while (1) {
     if (numeroClient > 0 && timerCount > 0 &&
-        timerCount <= TIME_LIMIT_IN_SECONDS) {
+        timerCount <= TIME_LIMIT_IN_SECONDS && playerGenerati > 0) {
       cambiato = 1;
       sleep(1);
       timerCount--;
@@ -342,11 +352,12 @@ void *timer(void *args) {
       }
     }
     if (timerCount == 0) {
+      playerGenerati = 0;
       printf("Reset timer e generazione nuova mappa..\n");
       startProceduraGenrazioneMappa();
       pthread_join(tidGeneratoreMappa, NULL);
       turno++;
-      timerCount = TIME_LIMIT_IN_SECONDS + 1;
+      timerCount = TIME_LIMIT_IN_SECONDS;
     }
   }
 }

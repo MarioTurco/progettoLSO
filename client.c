@@ -190,19 +190,16 @@ void play() {
     }
     timer = getTimer();
     giocatore = initStats(deploy, score, position, hasApack);
-    if (cambiatoRound(position)) {
-      rimuoviVecchioPlayer();
-    } else {
-      printGrid(grigliaDiGioco, giocatore);
-      char send = getUserInput();
-      write(socketDesc, &send, sizeof(char));
-      if (send == 'e' || send == 'E') {
-        printf("Disconnessione in corso...\n");
-        exit(0);
-      }
-      if (send == 't' || send == 'T') {
-        printTimer();
-      }
+
+    printGrid(grigliaDiGioco, giocatore);
+    char send = getUserInput();
+    write(socketDesc, &send, sizeof(char));
+    if (send == 'e' || send == 'E') {
+      printf("Disconnessione in corso...\n");
+      exit(0);
+    }
+    if (send == 't' || send == 'T') {
+      printTimer();
     }
   }
 }

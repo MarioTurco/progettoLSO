@@ -231,6 +231,7 @@ void play(int clientDesc, pthread_t tid) {
     if (inputFromClient == 'e' || inputFromClient == 'E') {
       // TODO svuotare la lista obstacles quando si disconnette un client
       freeObstacles(listaOstacoli);
+      listaOstacoli = NULL;
       disconnettiClient(clientDesc);
     } else if (inputFromClient == 't' || inputFromClient == 'T') {
       sendTimerValue(clientDesc);
@@ -240,10 +241,18 @@ void play(int clientDesc, pthread_t tid) {
                         grigliaOstacoliSenzaPacchi, inputFromClient, giocatore,
                         &listaOstacoli, deployCoords, packsCoords);
     else {
+      printObstacles(listaOstacoli);
+      freeObstacles(listaOstacoli);
+      listaOstacoli = NULL;
+      printObstacles(listaOstacoli);
+      printObstacles(listaOstacoli);
       inserisciPlayerNellaGrigliaInPosizioneCasuale(
           grigliaDiGiocoConPacchiSenzaOstacoli, grigliaOstacoliSenzaPacchi,
           giocatore->position);
       giocatore->score = 0;
+      giocatore->hasApack = 0;
+      giocatore->deploy[0] = -1;
+      giocatore->deploy[1] = -1;
       turnoGiocatore = turno;
       playerGenerati++;
     }
@@ -256,7 +265,7 @@ void sendTimerValue(int clientDesc) {
 }
 
 // TODO da cancellare, non serve più
-void *threadGenerazioneNuoviPlayer(void *args) {
+/*void *threadGenerazioneNuoviPlayer(void *args) {
   timerCount = TIME_LIMIT_IN_SECONDS;
   PlayerStats giocatore = (PlayerStats)args;
   while (1) {
@@ -265,6 +274,7 @@ void *threadGenerazioneNuoviPlayer(void *args) {
           grigliaDiGiocoConPacchiSenzaOstacoli, grigliaOstacoliSenzaPacchi,
           giocatore->position);
       giocatore->score = 0;
+      giocatore->hasApack = 0;
       giocatore->deploy[0] = -1;
       giocatore->deploy[1] = -1;
       playerGenerati++;
@@ -274,7 +284,7 @@ void *threadGenerazioneNuoviPlayer(void *args) {
       }
     }
   }
-}
+}*/
 void clientCrashHandler(int signalNum) {
   char msg[0];
   int socketClientCrashato;

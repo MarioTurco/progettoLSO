@@ -34,7 +34,7 @@ char grigliaOstacoliSenzaPacchi[ROWS][COLUMNS];
 int numeroClient = 0;
 int playerGenerati = 0;
 int timerCount = TIME_LIMIT_IN_SECONDS;
-int round = 0;
+int turno = 0;
 pthread_t tidTimer;
 pthread_t tidGeneratoreMappa;
 int socketDesc;
@@ -345,7 +345,7 @@ void *timer(void *args) {
       printf("Reset timer e generazione nuova mappa..\n");
       startProceduraGenrazioneMappa();
       pthread_join(tidGeneratoreMappa, NULL);
-      round++;
+      turno++;
       timerCount = TIME_LIMIT_IN_SECONDS + 1;
     }
   }

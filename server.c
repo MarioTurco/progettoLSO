@@ -11,6 +11,10 @@
 #include <sys/socket.h>
 #include <unistd.h>
 
+int almenoUnClientConnesso();
+int valoreTimerValido();
+int almenoUnPlayerGenerato();
+int almenoUnaMossaFatta();
 void sendTimerValue(int clientDesc);
 void *threadGenerazioneNuoviPlayer(void *args);
 void startProceduraGenrazioneMappa();
@@ -40,6 +44,7 @@ pthread_t tidGeneratoreMappa;
 int socketDesc;
 Players onLineUsers = NULL;
 char *users;
+int numMosse = 0;
 Point deployCoords[numberOfPackages];
 Point packsCoords[numberOfPackages];
 /*///////////////////////////////*/
@@ -220,7 +225,8 @@ void play(int clientDesc, pthread_t tid) {
     write(clientDesc, &giocatore->hasApack, sizeof(giocatore->hasApack));
     sendTimerValue(clientDesc);
     // legge l'input
-    read(clientDesc, &inputFromClient, sizeof(char));
+    if (read(clientDesc, &inputFromClient, sizeof(char)) > 0)
+      numMosse++;
     if (inputFromClient == 'e' || inputFromClient == 'E') {
       // TODO svuotare la lista obstacles quando si disconnette un client
       freeObstacles(listaOstacoli);
@@ -265,17 +271,19 @@ void *threadGenerazioneNuoviPlayer(void *args) {
 void clientCrashHandler(int signalNum) {
   char msg[0];
   int socketClientCrashato;
+  int flag = 1;
   Obstacles listaOstacoliClientCrashato = NULL;
   // elimina il client dalla lista dei client connessi
   if (onLineUsers != NULL) {
     Players prec = onLineUsers;
     Players top = prec->next;
     // controlla se è crashato il top
-    while (top != NULL) {
+    while (top != NULL && flag) {
       if (write(top->sockDes, msg, sizeof(msg)) < 0) {
         socketClientCrashato = top->sockDes;
         printPlayers(onLineUsers);
         disconnettiClient(socketClientCrashato);
+        flag = 0;
       }
       top = top->next;
     }
@@ -335,11 +343,31 @@ void *threadGenerazioneMappa(void *args) {
   timerCount = TIME_LIMIT_IN_SECONDS;
   pthread_exit(NULL);
 }
+int almenoUnaMossaFatta() {
+  if (numMosse > 0)
+    return 1;
+  return 0;
+}
+int almenoUnClientConnesso() {
+  if (numeroClient > 0)
+    return 1;
+  return 0;
+}
+int valoreTimerValido() {
+  if (timerCount > 0 && timerCount <= TIME_LIMIT_IN_SECONDS)
+    return 1;
+  return 0;
+}
+int almenoUnPlayerGenerato() {
+  if (playerGenerati > 0)
+    return 1;
+  return 0;
+}
 void *timer(void *args) {
   int cambiato = 1;
   while (1) {
-    if (numeroClient > 0 && timerCount > 0 &&
-        timerCount <= TIME_LIMIT_IN_SECONDS && playerGenerati > 0) {
+    if (almenoUnClientConnesso() && valoreTimerValido() &&
+        almenoUnPlayerGenerato() && almenoUnaMossaFatta()) {
       cambiato = 1;
       sleep(1);
       timerCount--;
@@ -353,6 +381,7 @@ void *timer(void *args) {
     }
     if (timerCount == 0) {
       playerGenerati = 0;
+      numMosse = 0;
       printf("Reset timer e generazione nuova mappa..\n");
       startProceduraGenrazioneMappa();
       pthread_join(tidGeneratoreMappa, NULL);

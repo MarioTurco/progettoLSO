@@ -7,7 +7,7 @@
 #define COLUMNS 30
 #define numberOfObstacles 35
 #define numberOfPackages 15
-#define TIME_LIMIT_IN_SECONDS 10
+#define TIME_LIMIT_IN_SECONDS 30
 #define packageLimitNumber 4
 #define MATRIX_DIMENSION sizeof(char) * ROWS *COLUMNS
 #define RED_COLOR "\x1b[31m"
@@ -22,6 +22,9 @@ struct Coord {
 typedef struct Coord *Point;
 void rimuoviPaccoDaArray(int posizione[2], Point packsCoords[]);
 void printMenu();
+int getHiddenPack(Point packsCoords[]);
+int isOnADeployPoint(PlayerStats giocatore,Point deployCoords[]);
+PlayerStats gestisciC(char grigliaDiGioco[ROWS][COLUMNS], PlayerStats giocatore, Point deployCoords[], Point packsCoords[]);
 PlayerStats gestisciA(char grigliaDiGioco[ROWS][COLUMNS],
                       char grigliaOstacoli[ROWS][COLUMNS],
                       PlayerStats giocatore, Obstacles *listaOstacoli,

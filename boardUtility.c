@@ -69,10 +69,56 @@ PlayerStats gestisciInput(char grigliaDiGioco[ROWS][COLUMNS],
   } else if (input == 'p' || input == 'P') {
     nuoveStatistiche =
         gestisciP(grigliaDiGioco, giocatore, deployCoords, packsCoords);
+  }else if (input == 'c' || input == 'C'){
+    nuoveStatistiche =
+        gestisciC(grigliaDiGioco,giocatore,deployCoords,packsCoords);
   }
 
   // aggiorna la posizione dell'utente
   return nuoveStatistiche;
+}
+
+int isOnADeployPoint(PlayerStats giocatore,Point deployCoords[]){
+  int i=0;
+  for(i=0;i<numberOfPackages;i++){
+    if(giocatore->deploy[0]==deployCoords[i]->x && giocatore->deploy[1]==deployCoords[i]->y){
+      if(deployCoords[i]->x==giocatore->position[0] && deployCoords[i]->y==giocatore->position[1])
+       return 1;
+    }
+  }
+  return 0;
+}
+
+int getHiddenPack(Point packsCoords[]){
+  int i=0;
+
+  for(i=0;i<numberOfPackages;i++){
+    if(packsCoords[i]->x==-1 && packsCoords[i]->y==-1)
+      return i;
+  }
+
+  return -1;
+}
+
+PlayerStats gestisciC(char grigliaDiGioco[ROWS][COLUMNS], PlayerStats giocatore, Point deployCoords[], Point packsCoords[]){
+  if(giocatore->hasApack==0){
+    return giocatore;
+  }
+  else{
+    if(isOnADeployPoint(giocatore,deployCoords)){
+      giocatore->score+=10;
+      giocatore->hasApack=0;
+    }
+    else{
+      int index=getHiddenPack(packsCoords);
+      if(index >= 0){
+        packsCoords[index]->x=giocatore->position[0];
+        packsCoords[index]->y=giocatore->position[1];
+        giocatore->hasApack=0;
+      }
+    }
+  }
+  return giocatore;
 }
 
 PlayerStats gestisciP(char grigliaDiGioco[ROWS][COLUMNS], PlayerStats giocatore,

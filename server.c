@@ -271,17 +271,19 @@ void *threadGenerazioneNuoviPlayer(void *args) {
 void clientCrashHandler(int signalNum) {
   char msg[0];
   int socketClientCrashato;
+  int flag = 1;
   Obstacles listaOstacoliClientCrashato = NULL;
   // elimina il client dalla lista dei client connessi
   if (onLineUsers != NULL) {
     Players prec = onLineUsers;
     Players top = prec->next;
     // controlla se è crashato il top
-    while (top != NULL) {
+    while (top != NULL && flag) {
       if (write(top->sockDes, msg, sizeof(msg)) < 0) {
         socketClientCrashato = top->sockDes;
         printPlayers(onLineUsers);
         disconnettiClient(socketClientCrashato);
+        flag = 0;
       }
       top = top->next;
     }

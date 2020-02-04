@@ -44,6 +44,7 @@ pthread_t tidGeneratoreMappa;
 int socketDesc;
 Players onLineUsers = NULL;
 char *users;
+int scoreMassimo = 0;
 int numMosse = 0;
 Point deployCoords[numberOfPackages];
 Point packsCoords[numberOfPackages];
@@ -242,7 +243,7 @@ void play(int clientDesc, pthread_t tid) {
       inserisciPlayerNellaGrigliaInPosizioneCasuale(
           grigliaDiGiocoConPacchiSenzaOstacoli, grigliaOstacoliSenzaPacchi,
           giocatore->position);
-      giocatore->score = 0;
+
       turnoGiocatore = turno;
       playerGenerati++;
     }
@@ -380,7 +381,7 @@ void *timer(void *args) {
         cambiato = 0;
       }
     }
-    if (timerCount == 0) {
+    if (timerCount == 0 || scoreMassimo == packageLimitNumber) {
       playerGenerati = 0;
       numMosse = 0;
       printf("Reset timer e generazione nuova mappa..\n");

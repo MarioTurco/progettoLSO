@@ -31,7 +31,7 @@ typedef struct TList2 *Obstacles;
 int dimensioneLista(Players L);
 
 // inizializza un giocatore
-Players initPlayerNode(char *name, int sockDes, pthread_t tid);
+Players initPlayerNode(char *name, int sockDes);
 
 // Crea un nodo di Stats da mandare a un client
 PlayerStats initStats(int deploy[], int score, int position[], int flag);
@@ -41,7 +41,7 @@ Players initNodeList(char *name, int sockDes);
 
 // Aggiunge un nodo in testa alla lista
 // La funzione ritorna sempre la testa della lista
-Players addPlayer(Players L, char *name, int sockDes, pthread_t tid);
+Players addPlayer(Players L, char *name, int sockDes);
 
 // Rimuove solo un occorrenza di un nodo con il socket Descriptor
 //  specificato dalla lista

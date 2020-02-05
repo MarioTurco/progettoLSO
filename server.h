@@ -1,6 +1,8 @@
 #include "boardUtility.h"
 #include "list.h"
 #include "parser.h"
+#include <errno.h>
+#include <fcntl.h>
 #include <netinet/in.h> //conversioni
 #include <netinet/ip.h> //struttura
 #include <pthread.h>
@@ -9,7 +11,14 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/socket.h>
+#include <sys/stat.h>
+#include <sys/types.h>
 #include <unistd.h>
+/*
+
+TODO vanno incollate di nuovo tutte le firme perchè molto probabilmente molte sono cambiate e/o ne mancano un paio
+
+*/
 //retituisce 1 se c'è almeno un client connesso
 int almenoUnClientConnesso();
 
@@ -72,3 +81,18 @@ int clientDisconnesso(int clientSocket);
 
 //gestisce gli input da parte del client durante la partita
 void play(int clientDesc, pthread_t tid);
+
+//invia al client la lista dei player
+void sendPlayerList(int clientDesc);
+
+//gestisci la consegna del pacco del player
+PlayerStats gestisciC(char grigliaDiGioco[ROWS][COLUMNS], PlayerStats giocatore,
+                      Point deployCoords[], Point packsCoords[]);
+
+//gestisci l'input del player
+PlayerStats gestisciInput(char grigliaDiGioco[ROWS][COLUMNS],
+                          char grigliaOstacoli[ROWS][COLUMNS], char input,
+                          PlayerStats giocatore, Obstacles *listaOstacoli,
+                          Point deployCoords[], Point packsCoords[]);
+//clona una matrice
+void clonaGriglia(char destinazione[ROWS][COLUMNS], char source[ROWS][COLUMNS]);

@@ -1,3 +1,4 @@
+
 #include "boardUtility.h"
 #include "list.h"
 #include "parser.h"
@@ -14,6 +15,7 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
+
 void sendPlayerList(int clientDesc);
 
 PlayerStats gestisciC(char grigliaDiGioco[ROWS][COLUMNS], PlayerStats giocatore,
@@ -32,7 +34,7 @@ void *threadGenerazioneNuoviPlayer(void *args);
 void startProceduraGenrazioneMappa();
 void *threadGenerazioneMappa(void *args);
 void *fileWriter(void *args);
-int tryLogin(int clientDesc, pthread_t tid);
+int tryLogin(int clientDesc);
 void disconnettiClient(int);
 int registraClient(int);
 void *timer(void *args);
@@ -44,11 +46,11 @@ void configuraSocket(struct sockaddr_in mio_indirizzo);
 struct sockaddr_in configuraIndirizzo();
 void startListening();
 int clientDisconnesso(int clientSocket);
-void play(int clientDesc, pthread_t tid);
+void play(int clientDesc);
 /*//////////////////////////////////*/
 char grigliaDiGiocoConPacchiSenzaOstacoli[ROWS][COLUMNS];
 char grigliaOstacoliSenzaPacchi[ROWS][COLUMNS];
-int numeroClient = 0;
+int numeroClientLoggati = 0;
 int playerGenerati = 0;
 int timerCount = TIME_LIMIT_IN_SECONDS;
 int turno = 0;
@@ -65,7 +67,6 @@ pthread_mutex_t LogMutex = PTHREAD_MUTEX_INITIALIZER;
 /*///////////////////////////////*/
 
 int main(int argc, char **argv) {
-  printf("%d", TIME_LIMIT_IN_SECONDS);
   users = argv[1];
   struct sockaddr_in mio_indirizzo = configuraIndirizzo();
   configuraSocket(mio_indirizzo);
@@ -86,6 +87,7 @@ int main(int argc, char **argv) {
   startListening();
   return 0;
 }
+
 void startListening() {
   pthread_t tid;
   int clientDesc;
@@ -98,8 +100,7 @@ void startListening() {
       perror("Impossibile effettuare connessione\n");
       exit(-1);
     }
-    printf("Connessione effettuata (totale client connessi: %d)\n",
-           numeroClient);
+    printf("Nuovo client connesso\n");
     // creo un puntatore per il socket del client e lo passo al thread
     puntClientDesc = (int *)malloc(sizeof(int));
     *puntClientDesc = clientDesc;
@@ -128,7 +129,7 @@ void startTimer() {
   printf("Thread timer avviato\n");
   pthread_create(&tidTimer, NULL, timer, NULL);
 }
-int tryLogin(int clientDesc, pthread_t tid) {
+int tryLogin(int clientDesc) {
   // TODO proteggere con un mutex
   char *userName = (char *)calloc(MAX_BUF, 1);
   char *password = (char *)calloc(MAX_BUF, 1);
@@ -142,11 +143,11 @@ int tryLogin(int clientDesc, pthread_t tid) {
   if (validateLogin(userName, password, users) &&
       !isAlreadyLogged(onLineUsers, userName)) {
     ret = 1;
-    numeroClient++;
+    numeroClientLoggati++;
     write(clientDesc, "y", 1);
-    printf("Nuovo client loggato, client loggati : %d\n", numeroClient);
+    printf("Nuovo client loggato, client loggati : %d\n", numeroClientLoggati);
     // TODO: proteggere con un mutex
-    onLineUsers = addPlayer(onLineUsers, userName, clientDesc, tid);
+    onLineUsers = addPlayer(onLineUsers, userName, clientDesc);
     printPlayers(onLineUsers);
     printf("\n");
   } else {
@@ -156,13 +157,9 @@ int tryLogin(int clientDesc, pthread_t tid) {
 }
 
 void *gestisci(void *descriptor) {
-  int bufferSend[2] = {0};
   int bufferReceive[2] = {1};
-  int client_sd;
-  int ret = 1;
+  int client_sd = *(int *)descriptor;
   int continua = 1;
-  client_sd = *(int *)descriptor;
-  pthread_t tid = pthread_self();
 
   while (continua) {
     read(client_sd, bufferReceive, sizeof(bufferReceive));
@@ -171,15 +168,15 @@ void *gestisci(void *descriptor) {
     }
 
     else if (bufferReceive[0] == 1) {
-      if (tryLogin(client_sd, tid)) {
-        play(client_sd, tid);
+      if (tryLogin(client_sd)) {
+        play(client_sd);
         continua = 0;
       }
     } else if (bufferReceive[0] == 3) {
       disconnettiClient(client_sd);
       break;
     }
-
+    // TODO Aggiungere un opzione per stampare tutte le impostazioni
     else {
       printf("Input invalido, uscita...\n");
       disconnettiClient(client_sd);
@@ -189,7 +186,7 @@ void *gestisci(void *descriptor) {
   pthread_exit(0);
 }
 
-void play(int clientDesc, pthread_t tid) {
+void play(int clientDesc) {
   int true = 1;
   int turnoGiocatore = turno;
   int posizione[2];
@@ -289,7 +286,7 @@ void clonaGriglia(char destinazione[ROWS][COLUMNS],
       giocatore->deploy[0] = -1;
       giocatore->deploy[1] = -1;
       playerGenerati++;
-      if (playerGenerati == numeroClient) {
+      if (playerGenerati == numeroClientLoggati) {
         timerCount = TIME_LIMIT_IN_SECONDS;
         playerGenerati = 0;
       }
@@ -319,14 +316,14 @@ void clientCrashHandler(int signalNum) {
   signal(SIGPIPE, SIG_IGN);
 }
 void disconnettiClient(int clientDescriptor) {
-  if (numeroClient > 0)
-    numeroClient--;
+  if (numeroClientLoggati > 0)
+    numeroClientLoggati--;
   // TODO proteggere con un mutex
   onLineUsers = removePlayer(onLineUsers, clientDescriptor);
   printPlayers(onLineUsers);
   printf("\n");
   int msg = 1;
-  printf("Client disconnesso (client attuali: %d)\n", numeroClient);
+  printf("Client disconnesso (client attuali: %d)\n", numeroClientLoggati);
   write(clientDescriptor, &msg, sizeof(msg));
   close(clientDescriptor);
 }
@@ -391,7 +388,7 @@ int almenoUnaMossaFatta() {
   return 0;
 }
 int almenoUnClientConnesso() {
-  if (numeroClient > 0)
+  if (numeroClientLoggati > 0)
     return 1;
   return 0;
 }
@@ -414,7 +411,7 @@ void *timer(void *args) {
       sleep(1);
       timerCount--;
       fprintf(stdout, "Time left: %d\n", timerCount);
-    } else if (numeroClient == 0) {
+    } else if (numeroClientLoggati == 0) {
       timerCount = TIME_LIMIT_IN_SECONDS;
       if (cambiato) {
         fprintf(stdout, "Time left: %d\n", timerCount);

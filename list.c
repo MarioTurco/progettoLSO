@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-Players initPlayerNode(char *name, int sockDes, pthread_t tid) {
+Players initPlayerNode(char *name, int sockDes) {
   Players L = (Players)malloc(sizeof(struct TList));
   L->name = (char *)malloc(MAX_BUF);
   strcpy(L->name, name);
@@ -58,8 +58,8 @@ int isAlreadyLogged(Players L, char *name) {
   return ret;
 }
 
-Players addPlayer(Players L, char *name, int sockDes, pthread_t tid) {
-  Players tmp = initPlayerNode(name, sockDes, tid);
+Players addPlayer(Players L, char *name, int sockDes) {
+  Players tmp = initPlayerNode(name, sockDes);
   if (L != NULL) {
     tmp->next = L;
   }

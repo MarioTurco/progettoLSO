@@ -89,7 +89,7 @@ int main(int argc, char **argv) {
 void startListening() {
   pthread_t tid;
   int clientDesc;
-  int *thread_desc;
+  int *puntClientDesc;
   while (1 == 1) {
     if (listen(socketDesc, 10) < 0)
       perror("Impossibile mettersi in ascolto"), exit(-1);
@@ -101,9 +101,9 @@ void startListening() {
     printf("Connessione effettuata (totale client connessi: %d)\n",
            numeroClient);
     // creo un puntatore per il socket del client e lo passo al thread
-    thread_desc = (int *)malloc(sizeof(int));
-    *thread_desc = clientDesc;
-    pthread_create(&tid, NULL, gestisci, (void *)thread_desc);
+    puntClientDesc = (int *)malloc(sizeof(int));
+    *puntClientDesc = clientDesc;
+    pthread_create(&tid, NULL, gestisci, (void *)puntClientDesc);
   }
   close(clientDesc);
   quitServer();

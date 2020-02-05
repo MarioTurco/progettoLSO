@@ -10,7 +10,17 @@
 #include <string.h>
 #include <sys/socket.h>
 #include <unistd.h>
+<<<<<<< HEAD
 void sendPlayerList(int clientDesc);
+=======
+
+PlayerStats gestisciC(char grigliaDiGioco[ROWS][COLUMNS], PlayerStats giocatore,
+                      Point deployCoords[], Point packsCoords[]);
+PlayerStats gestisciInput(char grigliaDiGioco[ROWS][COLUMNS],
+                          char grigliaOstacoli[ROWS][COLUMNS], char input,
+                          PlayerStats giocatore, Obstacles *listaOstacoli,
+                          Point deployCoords[], Point packsCoords[]);
+>>>>>>> master
 void clonaGriglia(char destinazione[ROWS][COLUMNS], char source[ROWS][COLUMNS]);
 int almenoUnClientConnesso();
 int valoreTimerValido();
@@ -20,6 +30,7 @@ void sendTimerValue(int clientDesc);
 void *threadGenerazioneNuoviPlayer(void *args);
 void startProceduraGenrazioneMappa();
 void *threadGenerazioneMappa(void *args);
+void *fileWriter(void *args);
 int tryLogin(int clientDesc, pthread_t tid);
 void disconnettiClient(int);
 int registraClient(int);
@@ -475,22 +486,12 @@ PlayerStats gestisciInput(char grigliaDiGioco[ROWS][COLUMNS],
   return nuoveStatistiche;
 }
 
-PlayerStats gestisciP(char grigliaDiGioco[ROWS][COLUMNS], PlayerStats giocatore,
-                      Point deployCoords[], Point packsCoords[]) {
-  int nuovoDeploy[2];
-  if (colpitoPacco(packsCoords, giocatore->position) &&
-      giocatore->hasApack == 0) {
-    scegliPosizioneRaccolta(deployCoords, nuovoDeploy);
-    giocatore->hasApack = 1;
-    rimuoviPaccoDaArray(giocatore->position, packsCoords);
-  }
-  PlayerStats nuoveStats = initStats(nuovoDeploy, giocatore->score,
-                                     giocatore->position, giocatore->hasApack);
-  return nuoveStats;
-}
-
 PlayerStats gestisciC(char grigliaDiGioco[ROWS][COLUMNS], PlayerStats giocatore,
                       Point deployCoords[], Point packsCoords[]) {
+  pthread_t tid;
+  pthread_create(&tid, NULL, fileWriter, NULL);
+  // il secondo NULL è il parametro da passare alla funzione NULL = nessun
+  // parametro
   if (giocatore->hasApack == 0) {
     return giocatore;
   } else {
@@ -529,4 +530,6 @@ void sendPlayerList(int clientDesc) {
     finito = 1;
     write(clientDesc, &finito, sizeof(finito));
   }
+void *fileWriter(void *args) {
+  // bo
 }

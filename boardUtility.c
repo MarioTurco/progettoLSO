@@ -96,6 +96,21 @@ void inizializzaGrigliaVuota(char griglia[ROWS][COLUMNS]) {
     }
   }
 }
+
+PlayerStats gestisciP(char grigliaDiGioco[ROWS][COLUMNS], PlayerStats giocatore,
+                      Point deployCoords[], Point packsCoords[]) {
+  int nuovoDeploy[2];
+  if (colpitoPacco(packsCoords, giocatore->position) &&
+      giocatore->hasApack == 0) {
+    scegliPosizioneRaccolta(deployCoords, nuovoDeploy);
+    giocatore->hasApack = 1;
+    rimuoviPaccoDaArray(giocatore->position, packsCoords);
+  }
+  PlayerStats nuoveStats = initStats(nuovoDeploy, giocatore->score,
+                                     giocatore->position, giocatore->hasApack);
+  return nuoveStats;
+}
+
 /* stampa a schermo la griglia passata in input */
 void printGrid(char grigliaDaStampare[ROWS][COLUMNS], PlayerStats stats) {
   system("clear");

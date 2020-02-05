@@ -25,6 +25,8 @@ void printMenu();
 int getHiddenPack(Point packsCoords[]);
 int isOnADeployPoint(PlayerStats giocatore, Point deployCoords[]);
 int isOnCorrectDeployPoint(PlayerStats giocatore,Point deployCoords[]);
+PlayerStats gestisciP(char grigliaDiGioco[ROWS][COLUMNS], PlayerStats giocatore,
+                      Point deployCoords[], Point packsCoords[]);
 PlayerStats gestisciA(char grigliaDiGioco[ROWS][COLUMNS],
                       char grigliaOstacoli[ROWS][COLUMNS],
                       PlayerStats giocatore, Obstacles *listaOstacoli,
@@ -74,3 +76,4 @@ void spostaPlayer(char griglia[ROWS][COLUMNS], int vecchiaPosizione[2],
 int arrivatoADestinazione(int posizione[2], int destinazione[2]);
 int eraUnPuntoDepo(int vecchiaPosizione[2], Point depo[]);
 int eraUnPacco(int vecchiaPosizione[2], Point packsCoords[]);
+int isOnAPack(PlayerStats giocatore,Point packsCoords[]);

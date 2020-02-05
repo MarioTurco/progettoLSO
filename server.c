@@ -10,6 +10,12 @@
 #include <string.h>
 #include <sys/socket.h>
 #include <unistd.h>
+
+PlayerStats gestisciC(char grigliaDiGioco[ROWS][COLUMNS], PlayerStats giocatore, Point deployCoords[], Point packsCoords[]);
+PlayerStats gestisciInput(char grigliaDiGioco[ROWS][COLUMNS],
+                          char grigliaOstacoli[ROWS][COLUMNS], char input,
+                          PlayerStats giocatore, Obstacles *listaOstacoli,
+                          Point deployCoords[], Point packsCoords[]);
 void clonaGriglia(char destinazione[ROWS][COLUMNS], char source[ROWS][COLUMNS]);
 int almenoUnClientConnesso();
 int valoreTimerValido();
@@ -470,20 +476,6 @@ PlayerStats gestisciInput(char grigliaDiGioco[ROWS][COLUMNS],
 
   // aggiorna la posizione dell'utente
   return nuoveStatistiche;
-}
-
-PlayerStats gestisciP(char grigliaDiGioco[ROWS][COLUMNS], PlayerStats giocatore,
-                      Point deployCoords[], Point packsCoords[]) {
-  int nuovoDeploy[2];
-  if (colpitoPacco(packsCoords, giocatore->position) &&
-      giocatore->hasApack == 0) {
-    scegliPosizioneRaccolta(deployCoords, nuovoDeploy);
-    giocatore->hasApack = 1;
-    rimuoviPaccoDaArray(giocatore->position, packsCoords);
-  }
-  PlayerStats nuoveStats = initStats(nuovoDeploy, giocatore->score,
-                                     giocatore->position, giocatore->hasApack);
-  return nuoveStats;
 }
 
 PlayerStats gestisciC(char grigliaDiGioco[ROWS][COLUMNS], PlayerStats giocatore, Point deployCoords[], Point packsCoords[]){

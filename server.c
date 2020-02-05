@@ -15,6 +15,7 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
+#include <string.h>
 
 void sendPlayerList(int clientDesc);
 
@@ -67,6 +68,15 @@ pthread_mutex_t LogMutex = PTHREAD_MUTEX_INITIALIZER;
 /*///////////////////////////////*/
 
 int main(int argc, char **argv) {
+  
+  if (argc != 2) {
+    printf("Wrong parameters number(Usage: ./server usersFile)\n");
+    exit(-1);
+  }else if (strcmp(argv[1],"Log")==0){
+    printf("Cannot use the Log file as a UserList \n");
+    exit(-1);
+  }
+
   users = argv[1];
   struct sockaddr_in mio_indirizzo = configuraIndirizzo();
   configuraSocket(mio_indirizzo);
@@ -75,10 +85,8 @@ int main(int argc, char **argv) {
   signal(SIGINT, quitServer);
   signal(SIGHUP, quitServer);
 
-  if (argc != 2) {
-    printf("Wrong parameters number(Usage: ./server usersFile)\n");
-    exit(-1);
-  }
+  
+
   startTimer();
   inizializzaGiocoSenzaPlayer(grigliaDiGiocoConPacchiSenzaOstacoli,
                               grigliaOstacoliSenzaPacchi, packsCoords);

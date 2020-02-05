@@ -23,7 +23,8 @@ typedef struct Coord *Point;
 void rimuoviPaccoDaArray(int posizione[2], Point packsCoords[]);
 void printMenu();
 int getHiddenPack(Point packsCoords[]);
-int isOnADeployPoint(PlayerStats giocatore,Point deployCoords[]);
+int isOnADeployPoint(PlayerStats giocatore, Point deployCoords[]);
+int isOnCorrectDeployPoint(PlayerStats giocatore,Point deployCoords[]);
 PlayerStats gestisciC(char grigliaDiGioco[ROWS][COLUMNS], PlayerStats giocatore, Point deployCoords[], Point packsCoords[]);
 PlayerStats gestisciA(char grigliaDiGioco[ROWS][COLUMNS],
                       char grigliaOstacoli[ROWS][COLUMNS],

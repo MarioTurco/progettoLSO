@@ -78,7 +78,7 @@ PlayerStats gestisciInput(char grigliaDiGioco[ROWS][COLUMNS],
   return nuoveStatistiche;
 }
 
-int isOnADeployPoint(PlayerStats giocatore,Point deployCoords[]){
+int isOnCorrectDeployPoint(PlayerStats giocatore,Point deployCoords[]){
   int i=0;
   for(i=0;i<numberOfPackages;i++){
     if(giocatore->deploy[0]==deployCoords[i]->x && giocatore->deploy[1]==deployCoords[i]->y){
@@ -100,22 +100,49 @@ int getHiddenPack(Point packsCoords[]){
   return -1;
 }
 
+int isOnAPack(PlayerStats giocatore,Point packsCoords[]){
+  int i=0;
+
+  for(i=0;i<numberOfPackages;i++){
+    if(giocatore->position[0]==packsCoords[i]->x && giocatore->position[1]==packsCoords[i]->y)
+      return 1; 
+  }
+  return 0;
+}
+
+int isOnADeployPoint(PlayerStats giocatore, Point deployCoords[]){
+  int i=0;
+
+  for(i=0;i<numberOfPackages;i++){
+    if(giocatore->position[0]==deployCoords[i]->x && giocatore->position[1]==deployCoords[i]->y)
+      return 1; 
+  }
+  return 0;
+}
+
+
 PlayerStats gestisciC(char grigliaDiGioco[ROWS][COLUMNS], PlayerStats giocatore, Point deployCoords[], Point packsCoords[]){
   if(giocatore->hasApack==0){
     return giocatore;
   }
   else{
-    if(isOnADeployPoint(giocatore,deployCoords)){
+    if(isOnCorrectDeployPoint(giocatore,deployCoords)){
       giocatore->score+=10;
+      giocatore->deploy[0]=-1;
+      giocatore->deploy[1]=-1;
       giocatore->hasApack=0;
     }
     else{
-      int index=getHiddenPack(packsCoords);
-      if(index >= 0){
-        packsCoords[index]->x=giocatore->position[0];
-        packsCoords[index]->y=giocatore->position[1];
-        giocatore->hasApack=0;
+      if(!isOnAPack(giocatore,packsCoords) && !isOnADeployPoint(giocatore,deployCoords)){
+        int index=getHiddenPack(packsCoords);
+        if(index >= 0){
+          packsCoords[index]->x=giocatore->position[0];
+          packsCoords[index]->y=giocatore->position[1];
+          giocatore->hasApack=0;
+        }
       }
+      else return giocatore;
+      
     }
   }
   return giocatore;
@@ -190,7 +217,7 @@ void printGrid(char grigliaDaStampare[ROWS][COLUMNS], PlayerStats stats) {
     if (i == 5)
       printf("\t Inviare 'a'/'d' per andare a dx/sx");
     if (i == 6)
-      printf("\t\t Punteggio: %d", stats->score);
+      printf(GREEN_COLOR"\t\t Punteggio: %d"RESET_COLOR, stats->score);
     printf("\n");
   }
 }

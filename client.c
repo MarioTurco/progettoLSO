@@ -18,6 +18,7 @@
 #include <time.h>
 #include <unistd.h>
 
+void printPlayerList();
 int getTimer();
 void printTimer();
 void play();
@@ -197,10 +198,28 @@ void play() {
     }
     if (send == 't' || send == 'T') {
       printTimer();
+    } else if (send == 'l' || send == 'L') {
+      printPlayerList();
     }
   }
 }
-
+void printPlayerList() {
+  int lunghezza = 0;
+  int finito = 0;
+  int number = 1;
+  system("clear");
+  fprintf(stdout, "Lista dei player: \n");
+  if (!serverCaduto(socketDesc)) {
+    while (finito == 0) {
+      read(socketDesc, &lunghezza, sizeof(lunghezza));
+      char *buffer = malloc(lunghezza * sizeof(char));
+      read(socketDesc, buffer, sizeof(buffer));
+      fprintf(stdout, "%d) %s", number, buffer);
+      read(socketDesc, &finito, sizeof(finito));
+      number++;
+    }
+  }
+}
 void printTimer() {
   int timer;
   if (!serverCaduto(socketDesc)) {

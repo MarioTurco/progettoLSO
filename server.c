@@ -521,10 +521,10 @@ void sendPlayerList(int clientDesc) {
   Players tmp = onLineUsers;
   if (!clientDisconnesso(clientDesc)) {
     while (tmp != NULL) {
-      write(clientDesc, &finito, sizeof(finito));
       lunghezza = sizeof(tmp->name);
       write(clientDesc, &lunghezza, sizeof(lunghezza));
       write(clientDesc, &(tmp->name), sizeof(tmp->name));
+      write(clientDesc, &finito, sizeof(finito));
     }
     finito = 1;
     write(clientDesc, &finito, sizeof(finito));

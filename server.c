@@ -16,15 +16,22 @@
 #include <sys/types.h>
 #include <unistd.h>
 #include <string.h>
+#include <time.h>
+
+struct argsToSend{
+  char *userName;
+  int flag;
+};
+
+typedef struct argsToSend* Args;
 
 void sendPlayerList(int clientDesc);
-
 PlayerStats gestisciC(char grigliaDiGioco[ROWS][COLUMNS], PlayerStats giocatore,
-                      Point deployCoords[], Point packsCoords[]);
+                      Point deployCoords[], Point packsCoords[],char name[]);
 PlayerStats gestisciInput(char grigliaDiGioco[ROWS][COLUMNS],
                           char grigliaOstacoli[ROWS][COLUMNS], char input,
                           PlayerStats giocatore, Obstacles *listaOstacoli,
-                          Point deployCoords[], Point packsCoords[]);
+                          Point deployCoords[], Point packsCoords[],char name[]);
 void clonaGriglia(char destinazione[ROWS][COLUMNS], char source[ROWS][COLUMNS]);
 int almenoUnClientConnesso();
 int valoreTimerValido();
@@ -34,8 +41,8 @@ void sendTimerValue(int clientDesc);
 void *threadGenerazioneNuoviPlayer(void *args);
 void startProceduraGenrazioneMappa();
 void *threadGenerazioneMappa(void *args);
-void *fileWriter(void *args);
-int tryLogin(int clientDesc);
+void *fileWriter(void *);
+int tryLogin(int clientDesc,char name[]);
 void disconnettiClient(int);
 int registraClient(int);
 void *timer(void *args);
@@ -47,7 +54,7 @@ void configuraSocket(struct sockaddr_in mio_indirizzo);
 struct sockaddr_in configuraIndirizzo();
 void startListening();
 int clientDisconnesso(int clientSocket);
-void play(int clientDesc);
+void play(int clientDesc,char name[]);
 /*//////////////////////////////////*/
 char grigliaDiGiocoConPacchiSenzaOstacoli[ROWS][COLUMNS];
 char grigliaOstacoliSenzaPacchi[ROWS][COLUMNS];
@@ -137,7 +144,7 @@ void startTimer() {
   printf("Thread timer avviato\n");
   pthread_create(&tidTimer, NULL, timer, NULL);
 }
-int tryLogin(int clientDesc) {
+int tryLogin(int clientDesc,char name[]) {
   // TODO proteggere con un mutex
   char *userName = (char *)calloc(MAX_BUF, 1);
   char *password = (char *)calloc(MAX_BUF, 1);
@@ -153,6 +160,13 @@ int tryLogin(int clientDesc) {
     ret = 1;
     numeroClientLoggati++;
     write(clientDesc, "y", 1);
+    strcpy(name,userName);
+    Args args=(Args)malloc(sizeof(struct argsToSend));
+    args->userName=(char *)malloc(MAX_BUF);
+    strcpy(args->userName,name);
+    args->flag=0;
+    pthread_t tid;
+    pthread_create(&tid, NULL, fileWriter, (void *)args);
     printf("Nuovo client loggato, client loggati : %d\n", numeroClientLoggati);
     // TODO: proteggere con un mutex
     onLineUsers = addPlayer(onLineUsers, userName, clientDesc);
@@ -168,7 +182,7 @@ void *gestisci(void *descriptor) {
   int bufferReceive[2] = {1};
   int client_sd = *(int *)descriptor;
   int continua = 1;
-
+  char name[MAX_BUF];
   while (continua) {
     read(client_sd, bufferReceive, sizeof(bufferReceive));
     if (bufferReceive[0] == 2) {
@@ -176,8 +190,8 @@ void *gestisci(void *descriptor) {
     }
 
     else if (bufferReceive[0] == 1) {
-      if (tryLogin(client_sd)) {
-        play(client_sd);
+      if (tryLogin(client_sd,name)) {
+        play(client_sd,name);
         continua = 0;
       }
     } else if (bufferReceive[0] == 3) {
@@ -194,7 +208,7 @@ void *gestisci(void *descriptor) {
   pthread_exit(0);
 }
 
-void play(int clientDesc) {
+void play(int clientDesc,char name[]) {
   int true = 1;
   int turnoGiocatore = turno;
   int posizione[2];
@@ -245,7 +259,7 @@ void play(int clientDesc) {
       giocatore =
           gestisciInput(grigliaDiGiocoConPacchiSenzaOstacoli,
                         grigliaOstacoliSenzaPacchi, inputFromClient, giocatore,
-                        &listaOstacoli, deployCoords, packsCoords);
+                        &listaOstacoli, deployCoords, packsCoords,name);
     else {
       printObstacles(listaOstacoli);
       freeObstacles(listaOstacoli);
@@ -456,7 +470,7 @@ void configuraSocket(struct sockaddr_in mio_indirizzo) {
 PlayerStats gestisciInput(char grigliaDiGioco[ROWS][COLUMNS],
                           char grigliaOstacoli[ROWS][COLUMNS], char input,
                           PlayerStats giocatore, Obstacles *listaOstacoli,
-                          Point deployCoords[], Point packsCoords[]) {
+                          Point deployCoords[], Point packsCoords[],char name[]) {
   if (giocatore == NULL) {
     return NULL;
   }
@@ -480,7 +494,7 @@ PlayerStats gestisciInput(char grigliaDiGioco[ROWS][COLUMNS],
         gestisciP(grigliaDiGioco, giocatore, deployCoords, packsCoords);
   } else if (input == 'c' || input == 'C') {
     nuoveStatistiche =
-        gestisciC(grigliaDiGioco, giocatore, deployCoords, packsCoords);
+        gestisciC(grigliaDiGioco, giocatore, deployCoords, packsCoords,name);
   }
 
   // aggiorna la posizione dell'utente
@@ -488,7 +502,7 @@ PlayerStats gestisciInput(char grigliaDiGioco[ROWS][COLUMNS],
 }
 
 PlayerStats gestisciC(char grigliaDiGioco[ROWS][COLUMNS], PlayerStats giocatore,
-                      Point deployCoords[], Point packsCoords[]) {
+                      Point deployCoords[], Point packsCoords[],char name[]) {
   pthread_t tid;
   // il secondo NULL è il parametro da passare alla funzione NULL = nessun
   // parametro
@@ -496,7 +510,11 @@ PlayerStats gestisciC(char grigliaDiGioco[ROWS][COLUMNS], PlayerStats giocatore,
     return giocatore;
   } else {
     if (isOnCorrectDeployPoint(giocatore, deployCoords)) {
-      pthread_create(&tid, NULL, fileWriter, NULL);
+      Args args=(Args)malloc(sizeof(struct argsToSend));
+      args->userName=(char *)malloc(MAX_BUF);
+      strcpy(args->userName,name);
+      args->flag=1;
+      pthread_create(&tid, NULL, fileWriter, (void *)args);
       giocatore->score += 10;
       giocatore->deploy[0] = -1;
       giocatore->deploy[1] = -1;
@@ -542,10 +560,32 @@ void *fileWriter(void *args) {
     perror("Error while opening log file");
     exit(-1);
   }
-  char message[] = "Pacco Posato";
-  pthread_mutex_lock(&LogMutex); 
-  write(fDes, message, sizeof(message));
-  pthread_mutex_unlock(&LogMutex);
+  Args info=(Args)args;
+  time_t t= time(NULL);
+  struct tm *infoTime=localtime(&t);
+  char toPrint[64];
+  strftime(toPrint,sizeof(toPrint), "%X %x",infoTime);
+  if(info->flag==1){
+    char message[MAX_BUF] = "Pack delivered by \"";
+    strcat(message,info->userName);
+    char at[]="\" at ";
+    strcat(message,at);
+    strcat(message, toPrint);
+    strcat(message,"\n");
+    pthread_mutex_lock(&LogMutex); 
+    write(fDes, message, sizeof(message));
+    pthread_mutex_unlock(&LogMutex);
+  }
+  else if(info->flag==0){
+    char message[MAX_BUF] = "\"";
+    strcat(message,info->userName);
+    strcat(message,"\" connected at ");
+    strcat(message,toPrint);
+    strcat(message,"\n");
+    pthread_mutex_lock(&LogMutex); 
+    write(fDes, message, sizeof(message));
+    pthread_mutex_unlock(&LogMutex);
+  }
   close(fDes);
   pthread_exit(NULL);
 }

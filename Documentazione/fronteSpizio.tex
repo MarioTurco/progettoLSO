@@ -6,8 +6,10 @@
 \usepackage[T1]{fontenc} 
 \usepackage{fancyhdr}
 \usepackage{setspace}
+\usepackage{listings}
 \usepackage[italian]{varioref}
 \usepackage{hyperref}
+\usepackage{fancyvrb}
 \hypersetup{
     colorlinks=true, %set true if you want colored links
     linktoc=all,     %set to all if you want both sections and subsections linked
@@ -80,6 +82,14 @@
 \section{Modalità di compilazione}
 \paragraph{}
 Il progetto è provvisto un file makefile il quale è in grado di compilare autonomamente l'intero progetto.
-Per utilizzare il make file aprire la cartella del progetto tramite la console di sistema e digitare "make".
+Per utilizzare il make file aprire la cartella del progetto tramite la console di sistema e digitare "make".\\
+In alternativa è possibile compilare manualemente il client ed il server con i seguenti comandi:\\
+\lstset{basicstyle=\tiny}
+
+\begin{Verbatim}[fontsize=\small]
+    gcc -o server server.c boardUtility.c parser.c list.c -lpthread
+    gcc -o client client.c boardUtility.c parser.c list.c -lpthread
+\end{Verbatim}
+
 \section{Seconda sezione}
 \end{document}

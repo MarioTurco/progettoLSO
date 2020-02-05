@@ -1,13 +1,8 @@
-\documentclass[a4paper,12pt,openright,oneside]{book}
-\usepackage{graphicx}
+\documentclass[a4paper]{article}
 \usepackage{amsfonts,amssymb,amstext,amsmath,amsthm,verbatim,times,cancel,epsfig} 
 \usepackage[utf8]{inputenc}
-\usepackage[italian]{babel}
-\usepackage[T1]{fontenc} 
-\usepackage{fancyhdr}
+\usepackage[italian]{babel} 
 \usepackage{setspace}
-\usepackage{listings}
-\usepackage[italian]{varioref}
 \usepackage{hyperref}
 \usepackage{fancyvrb}
 \hypersetup{
@@ -16,11 +11,8 @@
     linkcolor=black,  %choose some color if you want links to stand out
 }
 
-
-
 \begin{document} 
 \begin{titlepage}
-
 
 \begin{center}
     {\bfseries\Huge Università degli Studi di Napoli\\}
@@ -74,22 +66,38 @@
     {\large{\bf Anno Accademico 2019/2020}} 
 \end{center}
 \end{titlepage}
-\newpage
+
+
+\thispagestyle{empty}\null\newpage
 \tableofcontents
 \newpage
 \pagenumbering{arabic}
-\fontfamily{lmodern}
+
 \section{Modalità di compilazione}
 \paragraph{}
-Il progetto è provvisto un file makefile il quale è in grado di compilare autonomamente l'intero progetto.
+Il progetto è provvisto di un file makefile il quale è in grado di compilare autonomamente l'intero progetto.
 Per utilizzare il make file aprire la cartella del progetto tramite la console di sistema e digitare "make".\\
 In alternativa è possibile compilare manualemente il client ed il server con i seguenti comandi:\\
-\lstset{basicstyle=\tiny}
 
 \begin{Verbatim}[fontsize=\small]
     gcc -o server server.c boardUtility.c parser.c list.c -lpthread
     gcc -o client client.c boardUtility.c parser.c list.c -lpthread
 \end{Verbatim}
+\section{Guida all'uso }
+\subsection{Server}
+\paragraph{}
+Una volta compilato il progetto è possibile avviare il server digitando da console il seguente comando
+\begin{verbatim}
+    ./server users
+\end{verbatim}
+L'identificativo \textit{users} ri riferisce al nome del file sul quale sarà salvata la lista degli utenti e delle loro credenziali.\\
+È possibile scegliere un nome a piacimento per il file purchè esso sia diverso da \textit{log}.
+\subsection{Client}
+\paragraph{}
+Una volta compilato il progetto è possibile avviare il cient digitando da console il seguente comando:
+\begin{verbatim}
+    ./client ip porta
+\end{verbatim}
+Dove \textit{ip} andrà sostituito con l'ip o l'indirizzo URL del server e \textit{porta} andrà sostituito con la porta del server.
 
-\section{Seconda sezione}
 \end{document}

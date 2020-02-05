@@ -535,9 +535,9 @@ void *fileWriter(void *args) {
     exit(-1);
   }
   char message[] = "Pacco Posato";
-  // pthread_mutex_lock(LogMutex); errore
+  pthread_mutex_lock(&LogMutex); 
   write(fDes, message, sizeof(message));
-  // pthread_mutex_unlock(LogMutex); errore
+  pthread_mutex_unlock(&LogMutex);
   close(fDes);
   pthread_exit(NULL);
 }

@@ -11,7 +11,8 @@
 #include <sys/socket.h>
 #include <unistd.h>
 
-PlayerStats gestisciC(char grigliaDiGioco[ROWS][COLUMNS], PlayerStats giocatore, Point deployCoords[], Point packsCoords[]);
+PlayerStats gestisciC(char grigliaDiGioco[ROWS][COLUMNS], PlayerStats giocatore,
+                      Point deployCoords[], Point packsCoords[]);
 PlayerStats gestisciInput(char grigliaDiGioco[ROWS][COLUMNS],
                           char grigliaOstacoli[ROWS][COLUMNS], char input,
                           PlayerStats giocatore, Obstacles *listaOstacoli,
@@ -25,6 +26,7 @@ void sendTimerValue(int clientDesc);
 void *threadGenerazioneNuoviPlayer(void *args);
 void startProceduraGenrazioneMappa();
 void *threadGenerazioneMappa(void *args);
+void *fileWriter(void *args);
 int tryLogin(int clientDesc, pthread_t tid);
 void disconnettiClient(int);
 int registraClient(int);
@@ -469,39 +471,45 @@ PlayerStats gestisciInput(char grigliaDiGioco[ROWS][COLUMNS],
   } else if (input == 'p' || input == 'P') {
     nuoveStatistiche =
         gestisciP(grigliaDiGioco, giocatore, deployCoords, packsCoords);
-  }else if (input == 'c' || input == 'C'){
+  } else if (input == 'c' || input == 'C') {
     nuoveStatistiche =
-        gestisciC(grigliaDiGioco,giocatore,deployCoords,packsCoords);
+        gestisciC(grigliaDiGioco, giocatore, deployCoords, packsCoords);
   }
 
   // aggiorna la posizione dell'utente
   return nuoveStatistiche;
 }
 
-PlayerStats gestisciC(char grigliaDiGioco[ROWS][COLUMNS], PlayerStats giocatore, Point deployCoords[], Point packsCoords[]){
-  if(giocatore->hasApack==0){
+PlayerStats gestisciC(char grigliaDiGioco[ROWS][COLUMNS], PlayerStats giocatore,
+                      Point deployCoords[], Point packsCoords[]) {
+  pthread_t tid;
+  pthread_create(&tid, NULL, fileWriter, NULL);
+  // il secondo NULL è il parametro da passare alla funzione NULL = nessun
+  // parametro
+  if (giocatore->hasApack == 0) {
     return giocatore;
-  }
-  else{
-    if(isOnCorrectDeployPoint(giocatore,deployCoords)){
-      giocatore->score+=10;
-      giocatore->deploy[0]=-1;
-      giocatore->deploy[1]=-1;
-      giocatore->hasApack=0;
-    }
-    else{
-      if(!isOnAPack(giocatore,packsCoords) && !isOnADeployPoint(giocatore,deployCoords)){
-        int index=getHiddenPack(packsCoords);
-        if(index >= 0){
-          packsCoords[index]->x=giocatore->position[0];
-          packsCoords[index]->y=giocatore->position[1];
-          giocatore->hasApack=0;
+  } else {
+    if (isOnCorrectDeployPoint(giocatore, deployCoords)) {
+      giocatore->score += 10;
+      giocatore->deploy[0] = -1;
+      giocatore->deploy[1] = -1;
+      giocatore->hasApack = 0;
+    } else {
+      if (!isOnAPack(giocatore, packsCoords) &&
+          !isOnADeployPoint(giocatore, deployCoords)) {
+        int index = getHiddenPack(packsCoords);
+        if (index >= 0) {
+          packsCoords[index]->x = giocatore->position[0];
+          packsCoords[index]->y = giocatore->position[1];
+          giocatore->hasApack = 0;
         }
-      }
-      else return giocatore;
-      
+      } else
+        return giocatore;
     }
   }
   return giocatore;
 }
 
+void *fileWriter(void *args) {
+  // bo
+}

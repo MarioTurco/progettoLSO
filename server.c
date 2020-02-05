@@ -143,11 +143,14 @@ int tryLogin(int clientDesc, pthread_t tid) {
       !isAlreadyLogged(onLineUsers, userName)) {
     ret = 1;
     numeroClient++;
+    write(clientDesc, "y", 1);
     printf("Nuovo client loggato, client loggati : %d\n", numeroClient);
     // TODO: proteggere con un mutex
     onLineUsers = addPlayer(onLineUsers, userName, clientDesc, tid);
     printPlayers(onLineUsers);
     printf("\n");
+  } else {
+    write(clientDesc, "n", 1);
   }
   return ret;
 }
@@ -157,40 +160,22 @@ void *gestisci(void *descriptor) {
   int bufferReceive[2] = {1};
   int client_sd;
   int ret = 1;
-  int true = 1;
+  int continua = 1;
   client_sd = *(int *)descriptor;
   pthread_t tid = pthread_self();
 
-  while (true) {
+  while (continua) {
     read(client_sd, bufferReceive, sizeof(bufferReceive));
     if (bufferReceive[0] == 2) {
-      int ret = registraClient(client_sd);
-      char risposta;
-      if (!ret) {
-        risposta = 'n';
-        write(client_sd, &risposta, sizeof(char));
-        printf("Impossibile registrare utente, riprovare\n");
-      } else {
-
-        risposta = 'y';
-        write(client_sd, &risposta, sizeof(char));
-        printf("Utente registrato con successo\n");
-      }
+      registraClient(client_sd);
     }
 
     else if (bufferReceive[0] == 1) {
-      int grantAccess = tryLogin(client_sd, tid);
-
-      if (grantAccess) {
-        write(client_sd, "y", 1);
+      if (tryLogin(client_sd, tid)) {
         play(client_sd, tid);
-        true = 0;
-      } else {
-        write(client_sd, "n", 1);
+        continua = 0;
       }
-    }
-
-    else if (bufferReceive[0] == 3) {
+    } else if (bufferReceive[0] == 3) {
       disconnettiClient(client_sd);
       break;
     }
@@ -367,6 +352,17 @@ int registraClient(int clientDesc) {
   // printf("%s:%d\n%s:%d\n", userName, dimName, password, dimPwd);
   // TODO proteggere con un mutex
   int ret = appendPlayer(userName, password, users);
+  char risposta;
+  if (!ret) {
+    risposta = 'n';
+    write(clientDesc, &risposta, sizeof(char));
+    printf("Impossibile registrare utente, riprovare\n");
+  } else {
+
+    risposta = 'y';
+    write(clientDesc, &risposta, sizeof(char));
+    printf("Utente registrato con successo\n");
+  }
   return ret;
 }
 

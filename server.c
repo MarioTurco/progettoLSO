@@ -9,6 +9,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/socket.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <errno.h>
+#include <fcntl.h>
 #include <unistd.h>
 
 PlayerStats gestisciC(char grigliaDiGioco[ROWS][COLUMNS], PlayerStats giocatore,
@@ -56,6 +60,7 @@ int scoreMassimo = 0;
 int numMosse = 0;
 Point deployCoords[numberOfPackages];
 Point packsCoords[numberOfPackages];
+pthread_mutex_t LogMutex=PTHREAD_MUTEX_INITIALIZER;
 /*///////////////////////////////*/
 
 int main(int argc, char **argv) {
@@ -483,13 +488,13 @@ PlayerStats gestisciInput(char grigliaDiGioco[ROWS][COLUMNS],
 PlayerStats gestisciC(char grigliaDiGioco[ROWS][COLUMNS], PlayerStats giocatore,
                       Point deployCoords[], Point packsCoords[]) {
   pthread_t tid;
-  pthread_create(&tid, NULL, fileWriter, NULL);
   // il secondo NULL è il parametro da passare alla funzione NULL = nessun
   // parametro
   if (giocatore->hasApack == 0) {
     return giocatore;
   } else {
     if (isOnCorrectDeployPoint(giocatore, deployCoords)) {
+      pthread_create(&tid, NULL, fileWriter, NULL);
       giocatore->score += 10;
       giocatore->deploy[0] = -1;
       giocatore->deploy[1] = -1;
@@ -511,5 +516,15 @@ PlayerStats gestisciC(char grigliaDiGioco[ROWS][COLUMNS], PlayerStats giocatore,
 }
 
 void *fileWriter(void *args) {
-  // bo
+  int fDes=open("Log",O_WRONLY|O_CREAT|O_APPEND,S_IWUSR);
+  if(fDes<0){
+    perror("Error while opening log file")
+    exit(-1);
+  }
+  char message[]="Pacco Posato";
+  pthread_mutex_lock(LogMutex);
+  write(fDes,message,sizeof(message));
+  pthread_mutex_unlock(LogMutex);
+  close(fDes);
+  pthread_exit(NULL);
 }

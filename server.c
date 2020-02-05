@@ -193,7 +193,7 @@ void play(int clientDesc) {
   int destinazione[2] = {-1, -1};
   PlayerStats giocatore = initStats(destinazione, 0, posizione, 0);
   Obstacles listaOstacoli = NULL;
-  pthread_t tidGenerazionePlayer;
+  // pthread_t tidGenerazionePlayer;
   char inputFromClient;
   int punteggio = 0;
   if (timer != 0) {
@@ -297,7 +297,7 @@ void clientCrashHandler(int signalNum) {
   char msg[0];
   int socketClientCrashato;
   int flag = 1;
-  Obstacles listaOstacoliClientCrashato = NULL;
+  // TODO eliminare la lista degli ostacoli dell'utente
   // elimina il client dalla lista dei client connessi
   if (onLineUsers != NULL) {
     Players prec = onLineUsers;
@@ -321,9 +321,8 @@ void disconnettiClient(int clientDescriptor) {
   // TODO proteggere con un mutex
   onLineUsers = removePlayer(onLineUsers, clientDescriptor);
   printPlayers(onLineUsers);
-  printf("\n");
   int msg = 1;
-  printf("Client disconnesso (client attuali: %d)\n", numeroClientLoggati);
+  printf("Client disconnesso (client attualmente loggati: %d)\n", numeroClientLoggati);
   write(clientDescriptor, &msg, sizeof(msg));
   close(clientDescriptor);
 }
@@ -451,7 +450,6 @@ PlayerStats gestisciInput(char grigliaDiGioco[ROWS][COLUMNS],
                           PlayerStats giocatore, Obstacles *listaOstacoli,
                           Point deployCoords[], Point packsCoords[]) {
   if (giocatore == NULL) {
-    printf("Giocatore = NULL");
     return NULL;
   }
   PlayerStats nuoveStatistiche =
@@ -513,20 +511,19 @@ PlayerStats gestisciC(char grigliaDiGioco[ROWS][COLUMNS], PlayerStats giocatore,
 
 void sendPlayerList(int clientDesc) {
   int lunghezza = 0;
-  int finito = 0;
   char name[100];
   Players tmp = onLineUsers;
-  int numero = dimensioneLista(tmp);
-  printf("%d ", numero);
+  int numeroClientLoggati = dimensioneLista(tmp);
+  printf("%d ", numeroClientLoggati);
   if (!clientDisconnesso(clientDesc)) {
-    write(clientDesc, &numero, sizeof(numero));
-    while (numero > 0 && tmp != NULL) {
+    write(clientDesc, &numeroClientLoggati, sizeof(numeroClientLoggati));
+    while (numeroClientLoggati > 0 && tmp != NULL) {
       strcpy(name, tmp->name);
       lunghezza = strlen(tmp->name);
       write(clientDesc, &lunghezza, sizeof(lunghezza));
       write(clientDesc, name, lunghezza);
       tmp = tmp->next;
-      numero--;
+      numeroClientLoggati--;
     }
   }
 }

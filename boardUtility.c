@@ -43,46 +43,48 @@ int colpitoPlayer(char grigliaDiGioco[ROWS][COLUMNS], int posizione[2]) {
   return 0;
 }
 
-
-
-int isOnCorrectDeployPoint(PlayerStats giocatore,Point deployCoords[]){
-  int i=0;
-  for(i=0;i<numberOfPackages;i++){
-    if(giocatore->deploy[0]==deployCoords[i]->x && giocatore->deploy[1]==deployCoords[i]->y){
-      if(deployCoords[i]->x==giocatore->position[0] && deployCoords[i]->y==giocatore->position[1])
-       return 1;
+int isOnCorrectDeployPoint(PlayerStats giocatore, Point deployCoords[]) {
+  int i = 0;
+  for (i = 0; i < numberOfPackages; i++) {
+    if (giocatore->deploy[0] == deployCoords[i]->x &&
+        giocatore->deploy[1] == deployCoords[i]->y) {
+      if (deployCoords[i]->x == giocatore->position[0] &&
+          deployCoords[i]->y == giocatore->position[1])
+        return 1;
     }
   }
   return 0;
 }
 
-int getHiddenPack(Point packsCoords[]){
-  int i=0;
+int getHiddenPack(Point packsCoords[]) {
+  int i = 0;
 
-  for(i=0;i<numberOfPackages;i++){
-    if(packsCoords[i]->x==-1 && packsCoords[i]->y==-1)
+  for (i = 0; i < numberOfPackages; i++) {
+    if (packsCoords[i]->x == -1 && packsCoords[i]->y == -1)
       return i;
   }
 
   return -1;
 }
 
-int isOnAPack(PlayerStats giocatore,Point packsCoords[]){
-  int i=0;
+int isOnAPack(PlayerStats giocatore, Point packsCoords[]) {
+  int i = 0;
 
-  for(i=0;i<numberOfPackages;i++){
-    if(giocatore->position[0]==packsCoords[i]->x && giocatore->position[1]==packsCoords[i]->y)
-      return 1; 
+  for (i = 0; i < numberOfPackages; i++) {
+    if (giocatore->position[0] == packsCoords[i]->x &&
+        giocatore->position[1] == packsCoords[i]->y)
+      return 1;
   }
   return 0;
 }
 
-int isOnADeployPoint(PlayerStats giocatore, Point deployCoords[]){
-  int i=0;
+int isOnADeployPoint(PlayerStats giocatore, Point deployCoords[]) {
+  int i = 0;
 
-  for(i=0;i<numberOfPackages;i++){
-    if(giocatore->position[0]==deployCoords[i]->x && giocatore->position[1]==deployCoords[i]->y)
-      return 1; 
+  for (i = 0; i < numberOfPackages; i++) {
+    if (giocatore->position[0] == deployCoords[i]->x &&
+        giocatore->position[1] == deployCoords[i]->y)
+      return 1;
   }
   return 0;
 }
@@ -132,19 +134,23 @@ void printGrid(char grigliaDaStampare[ROWS][COLUMNS], PlayerStats stats) {
         printf("%c", grigliaDaStampare[i][j]);
     }
     if (i == 0)
-      printf("\t Inviare 't' per il timer.");
+      printf("\t \t ISTRUZIONI ");
     if (i == 1)
-      printf("\t Inviare 'e' per uscire");
+      printf("\t Inviare 't' per il timer.");
     if (i == 2)
-      printf("\t Inviare 'p' per raccogliere un pacco");
+      printf("\t Inviare 'e' per uscire");
     if (i == 3)
-      printf("\t Inviare 'c' per consegnare il pacco");
+      printf("\t Inviare 'p' per raccogliere un pacco");
     if (i == 4)
-      printf("\t Inviare 'w'/'s' per andare sopra/sotto");
+      printf("\t Inviare 'c' per consegnare il pacco");
     if (i == 5)
-      printf("\t Inviare 'a'/'d' per andare a dx/sx");
+      printf("\t Inviare 'w'/'s' per andare sopra/sotto");
     if (i == 6)
-      printf(GREEN_COLOR"\t\t Punteggio: %d"RESET_COLOR, stats->score);
+      printf("\t Inviare 'a'/'d' per andare a dx/sx");
+    if (i == 7)
+      printf("\t Inviare 'l' per la lista degli utenti ");
+    if (i == 8)
+      printf(GREEN_COLOR "\t\t Punteggio: %d" RESET_COLOR, stats->score);
     printf("\n");
   }
 }

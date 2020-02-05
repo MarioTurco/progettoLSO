@@ -97,6 +97,7 @@ void printPlayers(Players L) {
     printf("%s ->", L->name);
     printPlayers(L->next);
   }
+  printf("\n");
 }
 
 void printObstacles(Obstacles L) {

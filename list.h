@@ -28,6 +28,10 @@ typedef struct Data *PlayerStats;
 typedef struct TList *Players;
 typedef struct TList2 *Obstacles;
 
+// calcola e restituisce il numero di player commessi dalla lista L
+int dimensioneLista(Players L);
+
+// inizializza un giocatore
 Players initPlayerNode(char *name, int sockDes, pthread_t tid);
 
 // Crea un nodo di Stats da mandare a un client

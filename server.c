@@ -10,6 +10,7 @@
 #include <string.h>
 #include <sys/socket.h>
 #include <unistd.h>
+void sendPlayerList(int clientDesc);
 void clonaGriglia(char destinazione[ROWS][COLUMNS], char source[ROWS][COLUMNS]);
 int almenoUnClientConnesso();
 int valoreTimerValido();
@@ -235,6 +236,8 @@ void play(int clientDesc, pthread_t tid) {
       disconnettiClient(clientDesc);
     } else if (inputFromClient == 't' || inputFromClient == 'T') {
       sendTimerValue(clientDesc);
+    } else if (inputFromClient == 'l' || inputFromClient == 'L') {
+      sendPlayerList(clientDesc);
     } else if (turnoGiocatore == turno)
       giocatore =
           gestisciInput(grigliaDiGiocoConPacchiSenzaOstacoli,
@@ -463,9 +466,9 @@ PlayerStats gestisciInput(char grigliaDiGioco[ROWS][COLUMNS],
   } else if (input == 'p' || input == 'P') {
     nuoveStatistiche =
         gestisciP(grigliaDiGioco, giocatore, deployCoords, packsCoords);
-  }else if (input == 'c' || input == 'C'){
+  } else if (input == 'c' || input == 'C') {
     nuoveStatistiche =
-        gestisciC(grigliaDiGioco,giocatore,deployCoords,packsCoords);
+        gestisciC(grigliaDiGioco, giocatore, deployCoords, packsCoords);
   }
 
   // aggiorna la posizione dell'utente
@@ -486,30 +489,44 @@ PlayerStats gestisciP(char grigliaDiGioco[ROWS][COLUMNS], PlayerStats giocatore,
   return nuoveStats;
 }
 
-PlayerStats gestisciC(char grigliaDiGioco[ROWS][COLUMNS], PlayerStats giocatore, Point deployCoords[], Point packsCoords[]){
-  if(giocatore->hasApack==0){
+PlayerStats gestisciC(char grigliaDiGioco[ROWS][COLUMNS], PlayerStats giocatore,
+                      Point deployCoords[], Point packsCoords[]) {
+  if (giocatore->hasApack == 0) {
     return giocatore;
-  }
-  else{
-    if(isOnCorrectDeployPoint(giocatore,deployCoords)){
-      giocatore->score+=10;
-      giocatore->deploy[0]=-1;
-      giocatore->deploy[1]=-1;
-      giocatore->hasApack=0;
-    }
-    else{
-      if(!isOnAPack(giocatore,packsCoords) && !isOnADeployPoint(giocatore,deployCoords)){
-        int index=getHiddenPack(packsCoords);
-        if(index >= 0){
-          packsCoords[index]->x=giocatore->position[0];
-          packsCoords[index]->y=giocatore->position[1];
-          giocatore->hasApack=0;
+  } else {
+    if (isOnCorrectDeployPoint(giocatore, deployCoords)) {
+      giocatore->score += 10;
+      giocatore->deploy[0] = -1;
+      giocatore->deploy[1] = -1;
+      giocatore->hasApack = 0;
+    } else {
+      if (!isOnAPack(giocatore, packsCoords) &&
+          !isOnADeployPoint(giocatore, deployCoords)) {
+        int index = getHiddenPack(packsCoords);
+        if (index >= 0) {
+          packsCoords[index]->x = giocatore->position[0];
+          packsCoords[index]->y = giocatore->position[1];
+          giocatore->hasApack = 0;
         }
-      }
-      else return giocatore;
-      
+      } else
+        return giocatore;
     }
   }
   return giocatore;
 }
 
+void sendPlayerList(int clientDesc) {
+  int lunghezza = 0;
+  int finito = 0;
+  Players tmp = onLineUsers;
+  if (!clientDisconnesso(clientDesc)) {
+    while (tmp != NULL) {
+      write(clientDesc, &finito, sizeof(finito));
+      lunghezza = sizeof(tmp->name);
+      write(clientDesc, &lunghezza, sizeof(lunghezza));
+      write(clientDesc, &(tmp->name), sizeof(tmp->name));
+    }
+    finito = 1;
+    write(clientDesc, &finito, sizeof(finito));
+  }
+}

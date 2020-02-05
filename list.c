@@ -39,7 +39,15 @@ Obstacles addObstacle(Obstacles L, int x, int y) {
   }
   return tmp;
 }
-
+int dimensioneLista(Players L) {
+  int size = 0;
+  Players tmp = L;
+  while (tmp != NULL) {
+    size++;
+    tmp = tmp->next;
+  }
+  return size;
+}
 int isAlreadyLogged(Players L, char *name) {
   int ret = 0;
   if (L != NULL) {

@@ -204,20 +204,23 @@ void play() {
   }
 }
 void printPlayerList() {
-  int lunghezza = 0;
-  int finito = 0;
-  int number = 1;
   system("clear");
+  int lunghezza = 0;
+  char buffer[100];
+  int continua = 1;
+  int number = 1;
   fprintf(stdout, "Lista dei player: \n");
   if (!serverCaduto(socketDesc)) {
-    while (finito == 0) {
+    read(socketDesc, &continua, sizeof(continua));
+    while (continua) {
       read(socketDesc, &lunghezza, sizeof(lunghezza));
-      char *buffer = malloc(lunghezza * sizeof(char));
-      read(socketDesc, buffer, sizeof(buffer));
-      fprintf(stdout, "%d) %s", number, buffer);
-      read(socketDesc, &finito, sizeof(finito));
+      read(socketDesc, buffer, lunghezza);
+      buffer[lunghezza] = '\0';
+      fprintf(stdout, "%d) %s\n", number, buffer);
+      continua--;
       number++;
     }
+    sleep(1);
   }
 }
 void printTimer() {

@@ -516,16 +516,20 @@ PlayerStats gestisciC(char grigliaDiGioco[ROWS][COLUMNS], PlayerStats giocatore,
 void sendPlayerList(int clientDesc) {
   int lunghezza = 0;
   int finito = 0;
+  char name[100];
   Players tmp = onLineUsers;
+  int numero = dimensioneLista(tmp);
+  printf("%d ", numero);
   if (!clientDisconnesso(clientDesc)) {
-    while (tmp != NULL) {
-      lunghezza = sizeof(tmp->name);
+    write(clientDesc, &numero, sizeof(numero));
+    while (numero > 0 && tmp != NULL) {
+      strcpy(name, tmp->name);
+      lunghezza = strlen(tmp->name);
       write(clientDesc, &lunghezza, sizeof(lunghezza));
-      write(clientDesc, &(tmp->name), sizeof(tmp->name));
-      write(clientDesc, &finito, sizeof(finito));
+      write(clientDesc, name, lunghezza);
+      tmp = tmp->next;
+      numero--;
     }
-    finito = 1;
-    write(clientDesc, &finito, sizeof(finito));
   }
 }
 void *fileWriter(void *args) { printf("foo"); }

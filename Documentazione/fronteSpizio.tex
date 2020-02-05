@@ -7,9 +7,14 @@
 \usepackage{fancyhdr}
 \usepackage{setspace}
 \usepackage[italian]{varioref}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true, %set true if you want colored links
+    linktoc=all,     %set to all if you want both sections and subsections linked
+    linkcolor=black,  %choose some color if you want links to stand out
+}
 
 
-\DeclareGraphicsExtensions{.eps}
 
 \begin{document} 
 \begin{titlepage}
@@ -38,37 +43,43 @@
 \end{center}
 \vspace{40pt}
 \begin{center}
-    {{ \textit{Laurea Triennale in Informatica}}}
+    {\emph{\Large{\bf{Progetto sistemi operativi}}}}\\
+    
 \end{center}
 \vspace{15pt}
 
 
 \begin{center}
-    {\Large{\bf{Progetto sistemi operativi}}}
+    {{ \textit{Traccia A}}}
 \end{center}
-
-
-
-
 \vspace{25mm}
 \par
 \noindent
 \begin{minipage}[t]{0.47\textwidth}
     \textbf{Professore:}\\
-    Alberto Finzi\\    %modificare nome relatore
+    Alberto Finzi\\   
 \end{minipage}
 \hfill
 \begin{minipage}[t]{0.47\textwidth}\raggedleft
     \textbf{Candidati:}\\
-    Mario Turco\\ %modificare nome e matricola candidato
+    Mario Turco\\ 
     Matr. $N860002503$\\
     Francesco Longobardi\\
-    Matr. 
+    Matr.  $N860002503$\\
 \end{minipage}
 \vspace{5.5mm}
 \begin{center}
-    {\large{\bf Anno Accademico 2019/2020}} %modificare anno accademico
+    {\large{\bf Anno Accademico 2019/2020}} 
 \end{center}
 \end{titlepage}
-
+\newpage
+\tableofcontents
+\newpage
+\pagenumbering{arabic}
+\fontfamily{lmodern}
+\section{Modalità di compilazione}
+\paragraph{}
+Il progetto è provvisto un file makefile il quale è in grado di compilare autonomamente l'intero progetto.
+Per utilizzare il make file aprire la cartella del progetto tramite la console di sistema e digitare "make".
+\section{Seconda sezione}
 \end{document}

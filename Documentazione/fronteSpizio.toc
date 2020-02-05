@@ -1,0 +1,5 @@
+\babel@toc {italian}{}
+\babel@toc {italian}{}
+\contentsline {section}{\numberline {0.1}Modalit\IeC {\`a} di compilazione}{1}{section.0.1}% 
+\contentsline {paragraph}{}{1}{section*.2}% 
+\contentsline {section}{\numberline {0.2}Seconda sezione}{1}{section.0.2}% 

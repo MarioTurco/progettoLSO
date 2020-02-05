@@ -10,9 +10,7 @@
 #include <string.h>
 #include <sys/socket.h>
 #include <unistd.h>
-<<<<<<< HEAD
 void sendPlayerList(int clientDesc);
-=======
 
 PlayerStats gestisciC(char grigliaDiGioco[ROWS][COLUMNS], PlayerStats giocatore,
                       Point deployCoords[], Point packsCoords[]);
@@ -20,7 +18,6 @@ PlayerStats gestisciInput(char grigliaDiGioco[ROWS][COLUMNS],
                           char grigliaOstacoli[ROWS][COLUMNS], char input,
                           PlayerStats giocatore, Obstacles *listaOstacoli,
                           Point deployCoords[], Point packsCoords[]);
->>>>>>> master
 void clonaGriglia(char destinazione[ROWS][COLUMNS], char source[ROWS][COLUMNS]);
 int almenoUnClientConnesso();
 int valoreTimerValido();
@@ -530,6 +527,5 @@ void sendPlayerList(int clientDesc) {
     finito = 1;
     write(clientDesc, &finito, sizeof(finito));
   }
-void *fileWriter(void *args) {
-  // bo
 }
+void *fileWriter(void *args) { printf("foo"); }

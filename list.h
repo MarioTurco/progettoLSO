@@ -7,7 +7,6 @@ struct TList {
   char *name;
   struct TList *next;
   int sockDes;
-  pthread_t tid; // TODO da cancellare, non serve
 } TList;
 
 struct Data {

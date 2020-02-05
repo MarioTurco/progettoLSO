@@ -25,7 +25,6 @@ void printMenu();
 int getHiddenPack(Point packsCoords[]);
 int isOnADeployPoint(PlayerStats giocatore, Point deployCoords[]);
 int isOnCorrectDeployPoint(PlayerStats giocatore,Point deployCoords[]);
-PlayerStats gestisciC(char grigliaDiGioco[ROWS][COLUMNS], PlayerStats giocatore, Point deployCoords[], Point packsCoords[]);
 PlayerStats gestisciA(char grigliaDiGioco[ROWS][COLUMNS],
                       char grigliaOstacoli[ROWS][COLUMNS],
                       PlayerStats giocatore, Obstacles *listaOstacoli,
@@ -55,10 +54,6 @@ void start(char grigliaDiGioco[ROWS][COLUMNS],
 void printObs(char grigliaOstacoli[ROWS][COLUMNS]);
 void riempiGrigliaConGliOstacoli(char grigliaDiGioco[ROWS][COLUMNS],
                                  char grigliaOstacoli[ROWS][COLUMNS]);
-PlayerStats gestisciInput(char grigliaDiGioco[ROWS][COLUMNS],
-                          char grigliaOstacoli[ROWS][COLUMNS], char input,
-                          PlayerStats giocatore, Obstacles *listaOstacoli,
-                          Point deployCoords[], Point packsCoords[]);
 void generaPosizioniRaccolta(char grigliaDiGioco[ROWS][COLUMNS],
                              char grigliaOstacoli[ROWS][COLUMNS],
                              Point coord[]);
@@ -69,8 +64,6 @@ PlayerStats gestisciW(char grigliaDiGioco[ROWS][COLUMNS],
 void mergeGridAndList(char grid[ROWS][COLUMNS], Obstacles top);
 void scegliPosizioneRaccolta(Point coord[], int deploy[]);
 int colpitoOstacolo(char grigliaOstacoli[ROWS][COLUMNS], int posizione[2]);
-PlayerStats gestisciP(char grigliaDiGioco[ROWS][COLUMNS], PlayerStats giocatore,
-                      Point deployCoords[], Point packsCoords[]);
 int colpitoPacco(Point packsCoords[], int posizione[2]);
 int colpitoPlayer(char grigliaDiGioco[ROWS][COLUMNS], int posizione[2]);
 int casellaVuota(char grigliaDiGioco[ROWS][COLUMNS],

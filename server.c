@@ -436,3 +436,80 @@ void configuraSocket(struct sockaddr_in mio_indirizzo) {
     exit(-1);
   }
 }
+
+PlayerStats gestisciInput(char grigliaDiGioco[ROWS][COLUMNS],
+                          char grigliaOstacoli[ROWS][COLUMNS], char input,
+                          PlayerStats giocatore, Obstacles *listaOstacoli,
+                          Point deployCoords[], Point packsCoords[]) {
+  if (giocatore == NULL) {
+    printf("Giocatore = NULL");
+    return NULL;
+  }
+  PlayerStats nuoveStatistiche =
+      initStats(giocatore->deploy, giocatore->score, giocatore->position,
+                giocatore->hasApack);
+  if (input == 'w' || input == 'W') {
+    nuoveStatistiche = gestisciW(grigliaDiGioco, grigliaOstacoli, giocatore,
+                                 listaOstacoli, deployCoords, packsCoords);
+  } else if (input == 's' || input == 'S') {
+    nuoveStatistiche = gestisciS(grigliaDiGioco, grigliaOstacoli, giocatore,
+                                 listaOstacoli, deployCoords, packsCoords);
+  } else if (input == 'a' || input == 'A') {
+    nuoveStatistiche = gestisciA(grigliaDiGioco, grigliaOstacoli, giocatore,
+                                 listaOstacoli, deployCoords, packsCoords);
+  } else if (input == 'd' || input == 'D') {
+    nuoveStatistiche = gestisciD(grigliaDiGioco, grigliaOstacoli, giocatore,
+                                 listaOstacoli, deployCoords, packsCoords);
+  } else if (input == 'p' || input == 'P') {
+    nuoveStatistiche =
+        gestisciP(grigliaDiGioco, giocatore, deployCoords, packsCoords);
+  }else if (input == 'c' || input == 'C'){
+    nuoveStatistiche =
+        gestisciC(grigliaDiGioco,giocatore,deployCoords,packsCoords);
+  }
+
+  // aggiorna la posizione dell'utente
+  return nuoveStatistiche;
+}
+
+PlayerStats gestisciP(char grigliaDiGioco[ROWS][COLUMNS], PlayerStats giocatore,
+                      Point deployCoords[], Point packsCoords[]) {
+  int nuovoDeploy[2];
+  if (colpitoPacco(packsCoords, giocatore->position) &&
+      giocatore->hasApack == 0) {
+    scegliPosizioneRaccolta(deployCoords, nuovoDeploy);
+    giocatore->hasApack = 1;
+    rimuoviPaccoDaArray(giocatore->position, packsCoords);
+  }
+  PlayerStats nuoveStats = initStats(nuovoDeploy, giocatore->score,
+                                     giocatore->position, giocatore->hasApack);
+  return nuoveStats;
+}
+
+PlayerStats gestisciC(char grigliaDiGioco[ROWS][COLUMNS], PlayerStats giocatore, Point deployCoords[], Point packsCoords[]){
+  if(giocatore->hasApack==0){
+    return giocatore;
+  }
+  else{
+    if(isOnCorrectDeployPoint(giocatore,deployCoords)){
+      giocatore->score+=10;
+      giocatore->deploy[0]=-1;
+      giocatore->deploy[1]=-1;
+      giocatore->hasApack=0;
+    }
+    else{
+      if(!isOnAPack(giocatore,packsCoords) && !isOnADeployPoint(giocatore,deployCoords)){
+        int index=getHiddenPack(packsCoords);
+        if(index >= 0){
+          packsCoords[index]->x=giocatore->position[0];
+          packsCoords[index]->y=giocatore->position[1];
+          giocatore->hasApack=0;
+        }
+      }
+      else return giocatore;
+      
+    }
+  }
+  return giocatore;
+}
+

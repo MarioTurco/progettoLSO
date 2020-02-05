@@ -529,7 +529,7 @@ void sendPlayerList(int clientDesc) {
 }
 
 void *fileWriter(void *args) {
-  int fDes = open("Log", O_WRONLY | O_CREAT | O_APPEND, S_IWUSR);
+  int fDes = open("Log", O_WRONLY | O_CREAT | O_APPEND, S_IWUSR | S_IRUSR);
   if (fDes < 0) {
     perror("Error while opening log file");
     exit(-1);

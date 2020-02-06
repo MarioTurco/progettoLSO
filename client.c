@@ -131,10 +131,8 @@ void play() {
     printGrid(grigliaDiGioco, giocatore);
     char send = getUserInput();
     write(socketDesc, &send, sizeof(char));
-    if (send == 'e' || send == 'E') {
-      printf("Disconnessione in corso...\n");
-      exit(0);
-    }
+    if (send == 'e' || send == 'E')
+      printf("Disconnessione in corso...\n"), exit(0);
     if (send == 't' || send == 'T')
       printTimer();
     else if (send == 'l' || send == 'L')
@@ -253,7 +251,6 @@ char *ipResolver(char **argv) {
   printf("Address:\t%s\n", inet_ntoa(*(struct in_addr *)hp->h_addr_list[0]));
   return inet_ntoa(*(struct in_addr *)hp->h_addr_list[0]);
 }
-
 void clientCrashHandler() {
   int msg = 3;
   int rec = 0;

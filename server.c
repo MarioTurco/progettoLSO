@@ -354,7 +354,6 @@ void quitServer() {
   close(socketDesc);
   exit(-1);
 }
-
 void *threadGenerazioneMappa(void *args) {
   fprintf(stdout, "Rigenerazione mappa\n");
   inizializzaGrigliaVuota(grigliaDiGiocoConPacchiSenzaOstacoli);

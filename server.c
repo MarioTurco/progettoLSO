@@ -197,7 +197,7 @@ void *gestisci(void *descriptor) {
       disconnettiClient(client_sd);
       break;
     }
-    // TODO Aggiungere un opzione per stampare tutte le impostazioni
+    // TODO Aggiungere un opzione per stampare tutte le istruzioni
     else {
       printf("Input invalido, uscita...\n");
       disconnettiClient(client_sd);
@@ -206,7 +206,6 @@ void *gestisci(void *descriptor) {
   }
   pthread_exit(0);
 }
-
 void play(int clientDesc, char name[]) {
   int true = 1;
   int turnoGiocatore = turno;
@@ -452,31 +451,27 @@ PlayerStats gestisciInput(char grigliaDiGioco[ROWS][COLUMNS],
   if (giocatore == NULL) {
     return NULL;
   }
-  PlayerStats nuoveStatistiche =
-      initStats(giocatore->deploy, giocatore->score, giocatore->position,
-                giocatore->hasApack);
   if (input == 'w' || input == 'W') {
-    nuoveStatistiche = gestisciW(grigliaDiGioco, grigliaOstacoli, giocatore,
-                                 listaOstacoli, deployCoords, packsCoords);
+    giocatore = gestisciW(grigliaDiGioco, grigliaOstacoli, giocatore,
+                          listaOstacoli, deployCoords, packsCoords);
   } else if (input == 's' || input == 'S') {
-    nuoveStatistiche = gestisciS(grigliaDiGioco, grigliaOstacoli, giocatore,
-                                 listaOstacoli, deployCoords, packsCoords);
+    giocatore = gestisciS(grigliaDiGioco, grigliaOstacoli, giocatore,
+                          listaOstacoli, deployCoords, packsCoords);
   } else if (input == 'a' || input == 'A') {
-    nuoveStatistiche = gestisciA(grigliaDiGioco, grigliaOstacoli, giocatore,
-                                 listaOstacoli, deployCoords, packsCoords);
+    giocatore = gestisciA(grigliaDiGioco, grigliaOstacoli, giocatore,
+                          listaOstacoli, deployCoords, packsCoords);
   } else if (input == 'd' || input == 'D') {
-    nuoveStatistiche = gestisciD(grigliaDiGioco, grigliaOstacoli, giocatore,
-                                 listaOstacoli, deployCoords, packsCoords);
+    giocatore = gestisciD(grigliaDiGioco, grigliaOstacoli, giocatore,
+                          listaOstacoli, deployCoords, packsCoords);
   } else if (input == 'p' || input == 'P') {
-    nuoveStatistiche =
-        gestisciP(grigliaDiGioco, giocatore, deployCoords, packsCoords);
+    giocatore = gestisciP(grigliaDiGioco, giocatore, deployCoords, packsCoords);
   } else if (input == 'c' || input == 'C') {
-    nuoveStatistiche =
+    giocatore =
         gestisciC(grigliaDiGioco, giocatore, deployCoords, packsCoords, name);
   }
 
   // aggiorna la posizione dell'utente
-  return nuoveStatistiche;
+  return giocatore;
 }
 
 PlayerStats gestisciC(char grigliaDiGioco[ROWS][COLUMNS], PlayerStats giocatore,

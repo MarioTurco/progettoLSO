@@ -101,6 +101,10 @@ Una volta avviato il client comprarià il menu con le scelte 3 possibili: accedi
 Una volta effettuata la registrazione dell'utente è possibile effettuare l'accesso al programma al seguito del quale verranno mostrate sia la mappa dei gioco si le istruzioni di gioco.
 \pagebreak
 \section{Comunicazione tra client e server}
+Di seguito verranno illustrate le modalità di comunicazione tra client e server.
+\subsection{Informazioni preliminari sul server}
+Il socket del server viene configurato come PF\_NET e con trasmissione dati di tipo SOCK\_STREAM.\\
+È importante notare come il server riesca a gestire in modo concorrente più client tramite l'uso di un thread dedicato ad ogni client.
 
 
 \end{document}

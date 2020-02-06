@@ -9,3 +9,4 @@
 \contentsline {subsection}{\numberline {2.2}Client}{1}{subsection.2.2}% 
 \contentsline {paragraph}{}{1}{section*.4}% 
 \contentsline {section}{\numberline {3}Comunicazione tra client e server}{2}{section.3}% 
+\contentsline {subsection}{\numberline {3.1}Informazioni preliminari sul server}{2}{subsection.3.1}% 

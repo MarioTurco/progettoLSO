@@ -119,26 +119,29 @@ void printGrid(char grigliaDaStampare[ROWS][COLUMNS], PlayerStats stats) {
       } else
         printf("%c", grigliaDaStampare[i][j]);
     }
-    if (i == 0)
-      printf("\t \t ISTRUZIONI ");
-    if (i == 1)
-      printf("\t Inviare 't' per il timer.");
-    if (i == 2)
-      printf("\t Inviare 'e' per uscire");
-    if (i == 3)
-      printf("\t Inviare 'p' per raccogliere un pacco");
-    if (i == 4)
-      printf("\t Inviare 'c' per consegnare il pacco");
-    if (i == 5)
-      printf("\t Inviare 'w'/'s' per andare sopra/sotto");
-    if (i == 6)
-      printf("\t Inviare 'a'/'d' per andare a dx/sx");
-    if (i == 7)
-      printf("\t Inviare 'l' per la lista degli utenti ");
+    stampaIstruzioni(i);
     if (i == 8)
       printf(GREEN_COLOR "\t\t Punteggio: %d" RESET_COLOR, stats->score);
     printf("\n");
   }
+}
+void stampaIstruzioni(int i) {
+  if (i == 0)
+    printf("\t \t ISTRUZIONI ");
+  if (i == 1)
+    printf("\t Inviare 't' per il timer.");
+  if (i == 2)
+    printf("\t Inviare 'e' per uscire");
+  if (i == 3)
+    printf("\t Inviare 'p' per raccogliere un pacco");
+  if (i == 4)
+    printf("\t Inviare 'c' per consegnare il pacco");
+  if (i == 5)
+    printf("\t Inviare 'w'/'s' per andare sopra/sotto");
+  if (i == 6)
+    printf("\t Inviare 'a'/'d' per andare a dx/sx");
+  if (i == 7)
+    printf("\t Inviare 'l' per la lista degli utenti ");
 }
 // aggiunge alla griglia gli ostacoli visti fino ad ora dal client
 void mergeGridAndList(char grid[ROWS][COLUMNS], Obstacles top) {

@@ -117,7 +117,7 @@ Una volta effettuata la registrazione dell'utente è possibile effettuare l'acce
 \pagebreak
 \section{Comunicazione tra client e server}
 Di seguito verranno illustrate le modalità di comunicazione tra client e server.
-\subsection{Informazioni preliminari sul server}
+\subsection{Configurazione del server}
 Il socket del server viene configurato con famiglia di protoccoli PF\_NET, con tipo di trasmissione dati SOCK\_STREAM e con protocollo TCP. Mostriamo di seguito il codice sorgente:
 \begin{lstlisting}
 void configuraSocket(struct sockaddr_in mio_indirizzo) {
@@ -165,7 +165,7 @@ void startListening()
 \end{lstlisting}
 In particolare al rigo 19 notiamo la creazione di un nuovo thread per gestire la connessione in entrata a cui passiamo il descrittore del client di cui si deve occupare.
 \pagebreak
-\subsection{Informazioni preliminari sul client}
+\subsection{Configurazione del client}
 Il cliente invece viene configurato e si connette al server tramite la seguente funzione:
 \begin{lstlisting}
 int connettiAlServer(char **argv) {

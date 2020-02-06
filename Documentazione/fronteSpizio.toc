@@ -12,4 +12,5 @@
 \contentsline {subsection}{\numberline {3.1}Configurazione del server}{2}{subsection.3.1}% 
 \contentsline {subsection}{\numberline {3.2}Configurazione del client}{3}{subsection.3.2}% 
 \contentsline {subsection}{\numberline {3.3}Comunicazione tra client e server}{4}{subsection.3.3}% 
-\contentsline {subsubsection}{\numberline {3.3.1}Prima comunicazione}{4}{subsubsection.3.3.1}% 
+\contentsline {subsubsection}{\numberline {3.3.1}Esempio: la prima comunicazione}{4}{subsubsection.3.3.1}% 
+\contentsline {section}{\numberline {4}Comunicazione durante la partita}{5}{section.4}% 

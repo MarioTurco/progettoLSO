@@ -233,12 +233,12 @@ Infine, al rigo 11 decidiamo di ritoranre soltanto il primo indirizzo convertito
 \subsection{Comunicazione tra client e server}
 La comunicazione tra client e server avviene tramite write e read sul socket.\\
 Il comportamento del server e del client è determinato da particolari messaggi inviati e/o ricevuti che codificano, tramite interi o caratteri, la richiesta da parte del client di usufruire di un determinato servizio e la relativa risposta del server.
- \subsubsection{Prima comunicazione}
+ \subsubsection{Esempio: la prima comunicazione}
  In particolare, una volta effettuata la connessione,
 il server attenderà un messaggio dal client per poter avviare una delle tre possibili procedure, ovvero login, registrazione ed uscita ( rispettivamente codici: 1,2,3).\\
 Di seguito sono riportate le realtive funzioni di gestione che entrano in esecuzione subito dopo aver stabilito la connessione
 tra client e server.
-\begin{lstlisting}[caption=Thread di gestione del server]
+\begin{lstlisting}[caption=Prima comunicazione del server, label=alg:serverPreLogin]
   void *gestisci(void *descriptor) {
     int bufferReceive[2] = {1};
     int client_sd = *(int *)descriptor;
@@ -262,7 +262,8 @@ tra client e server.
     pthread_exit(0);
   }
 \end{lstlisting}
-\begin{lstlisting}[caption=Procedura di gestione del client]
+Si noti come il server riceva, al rigo 7, il messaggio codificato da parte del client e metta in esecuzione la funzione corrispondente.
+\begin{lstlisting}[caption=Prima comunicazione del client, label=alg:clientPreLogin]
   int gestisci() {
     char choice;
     while (1) {
@@ -281,6 +282,10 @@ tra client e server.
       } else
         printf("Input errato, inserire 1,2 o 3\n");
     }
-\end{lstlisting}
+  \end{lstlisting}
+\section{Comunicazione durante la partita}
+Una volta effettuato il login, il client potrà iniziare a giocare tramite la funzione play 
+(Rigo 15 del \autoref{alg:clientPreLogin}  e rigo 12 del \autoref{alg:serverPreLogin}) che rappresentano il cuore della comunicazione tra client e server.\\
+
 \lstlistoflistings
 \end{document}

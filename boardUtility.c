@@ -98,10 +98,6 @@ PlayerStats gestisciP(char grigliaDiGioco[ROWS][COLUMNS], PlayerStats giocatore,
   }
   giocatore->deploy[0] = nuovoDeploy[0];
   giocatore->deploy[1] = nuovoDeploy[1];
-  // PlayerStats nuoveStats = initStats(nuovoDeploy, giocatore->score,
-  //                                   giocatore->position,
-  //                                   giocatore->hasApack);
-  // return nuoveStats;
   return giocatore;
 }
 void printGrid(char grigliaDaStampare[ROWS][COLUMNS], PlayerStats stats) {

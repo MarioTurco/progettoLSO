@@ -214,7 +214,6 @@ void play(int clientDesc, char name[]) {
   PlayerStats giocatore = initStats(destinazione, 0, posizione, 0);
   Obstacles listaOstacoli = NULL;
   char inputFromClient;
-  int punteggio = 0;
   if (timer != 0) {
     inserisciPlayerNellaGrigliaInPosizioneCasuale(
         grigliaDiGiocoConPacchiSenzaOstacoli, grigliaOstacoliSenzaPacchi,
@@ -273,9 +272,8 @@ void play(int clientDesc, char name[]) {
   }
 }
 void sendTimerValue(int clientDesc) {
-  if (!clientDisconnesso(clientDesc)) {
+  if (!clientDisconnesso(clientDesc))
     write(clientDesc, &timerCount, sizeof(timerCount));
-  }
 }
 void clonaGriglia(char destinazione[ROWS][COLUMNS],
                   char source[ROWS][COLUMNS]) {

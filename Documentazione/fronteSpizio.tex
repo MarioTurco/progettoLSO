@@ -118,7 +118,7 @@ Una volta effettuata la registrazione dell'utente è possibile effettuare l'acce
 \section{Comunicazione tra client e server}
 Di seguito verranno illustrate le modalità di comunicazione tra client e server.
 \subsection{Informazioni preliminari sul server}
-Il socket del server viene configurato con famiglia di protoccoli PF\_NET, con tipo ci trasmissione dati SOCK\_STREAM e con protocollo TCP. Mostriamo di seguito il codice sorgente:
+Il socket del server viene configurato con famiglia di protoccoli PF\_NET, con tipo di trasmissione dati SOCK\_STREAM e con protocollo TCP. Mostriamo di seguito il codice sorgente:
 \begin{lstlisting}
 void configuraSocket(struct sockaddr_in mio_indirizzo) {
   if ((socketDesc = socket(PF_INET, SOCK_STREAM, 0)) < 0) {
@@ -164,6 +164,45 @@ void startListening()
 }
 \end{lstlisting}
 In particolare al rigo 19 notiamo la creazione di un nuovo thread per gestire la connessione in entrata a cui passiamo il descrittore del client di cui si deve occupare.
-
-
+\pagebreak
+\subsection{Informazioni preliminari sul client}
+Il cliente invece viene configurato e si connette al server tramite la seguente funzione:
+\begin{lstlisting}
+int connettiAlServer(char **argv) {
+    char *indirizzoServer;
+    uint16_t porta = strtoul(argv[2], NULL, 10);
+    indirizzoServer = ipResolver(argv);
+    struct sockaddr_in mio_indirizzo;
+    mio_indirizzo.sin_family = AF_INET;
+    mio_indirizzo.sin_port = htons(porta);
+    inet_aton(indirizzoServer, &mio_indirizzo.sin_addr);
+    if ((socketDesc = socket(PF_INET, SOCK_STREAM, 0)) < 0)
+      perror("Impossibile creare socket"), exit(-1);
+    else
+      printf("Socket creato\n");
+    if (connect(socketDesc, (struct sockaddr *)&mio_indirizzo,
+                sizeof(mio_indirizzo)) < 0)
+      perror("Impossibile connettersi"), exit(-1);
+    else
+      printf("Connesso a %s\n", indirizzoServer);
+    return socketDesc;
+  }
+\end{lstlisting}
+Si noti come al rigo 9 viene configurato il socket ed al rigo 13 viene invece effettuato il tentativo di connessione al server.\\
+Al rigo 3 invece viene convertita la porta inserita in input (argv$[$2$]$) dal tipo stringa al tipo della porta (uint16\_t ovvero unsigned long integer).\\
+Al rigo 4 notiamo invece la risoluzione dell'url da parte della funzione ipResolver che è riportata di seguito:
+\begin{lstlisting}
+char *ipResolver(char **argv) {
+    char *ipAddress;
+    struct hostent *hp;
+    hp = gethostbyname(argv[1]);
+    if (!hp) {
+            perror("Impossibile risolvere l'indirizzo ip\n");
+            sleep(1);
+            exit(-1);
+        }
+    printf("Address:\t%s\n", inet_ntoa(*(struct in_addr *)hp->h_addr_list[0]));
+    return inet_ntoa(*(struct in_addr *)hp->h_addr_list[0]);
+}
+\end{lstlisting}
 \end{document}

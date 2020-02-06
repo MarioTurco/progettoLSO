@@ -208,6 +208,7 @@ void *gestisci(void *descriptor) {
 }
 void play(int clientDesc, char name[]) {
   int true = 1;
+  int turnoFinito = 0;
   int turnoGiocatore = turno;
   int posizione[2];
   int destinazione[2] = {-1, -1};
@@ -245,20 +246,22 @@ void play(int clientDesc, char name[]) {
       listaOstacoli = NULL;
       disconnettiClient(clientDesc);
     } else if (inputFromClient == 't' || inputFromClient == 'T') {
+      write(clientDesc, &turnoFinito, sizeof(int));
       sendTimerValue(clientDesc);
     } else if (inputFromClient == 'l' || inputFromClient == 'L') {
+      write(clientDesc, &turnoFinito, sizeof(int));
       sendPlayerList(clientDesc);
-    } else if (turnoGiocatore == turno)
+    } else if (turnoGiocatore == turno) {
+      write(clientDesc, &turnoFinito, sizeof(int));
       giocatore =
           gestisciInput(grigliaDiGiocoConPacchiSenzaOstacoli,
                         grigliaOstacoliSenzaPacchi, inputFromClient, giocatore,
                         &listaOstacoli, deployCoords, packsCoords, name);
-    else {
-      printObstacles(listaOstacoli);
+    } else {
+      turnoFinito = 1;
+      write(clientDesc, &turnoFinito, sizeof(int));
       freeObstacles(listaOstacoli);
       listaOstacoli = NULL;
-      printObstacles(listaOstacoli);
-      printObstacles(listaOstacoli);
       inserisciPlayerNellaGrigliaInPosizioneCasuale(
           grigliaDiGiocoConPacchiSenzaOstacoli, grigliaOstacoliSenzaPacchi,
           giocatore->position);
@@ -267,6 +270,7 @@ void play(int clientDesc, char name[]) {
       giocatore->deploy[0] = -1;
       giocatore->deploy[1] = -1;
       turnoGiocatore = turno;
+      turnoFinito = 0;
       playerGenerati++;
     }
   }
@@ -465,8 +469,6 @@ PlayerStats gestisciInput(char grigliaDiGioco[ROWS][COLUMNS],
 PlayerStats gestisciC(char grigliaDiGioco[ROWS][COLUMNS], PlayerStats giocatore,
                       Point deployCoords[], Point packsCoords[], char name[]) {
   pthread_t tid;
-  // il secondo NULL è il parametro da passare alla funzione NULL = nessun
-  // parametro
   if (giocatore->hasApack == 0) {
     return giocatore;
   } else {
@@ -477,6 +479,8 @@ PlayerStats gestisciC(char grigliaDiGioco[ROWS][COLUMNS], PlayerStats giocatore,
       args->flag = 1;
       pthread_create(&tid, NULL, fileWriter, (void *)args);
       giocatore->score += 10;
+      if (giocatore->score > scoreMassimo)
+        scoreMassimo = giocatore->score;
       giocatore->deploy[0] = -1;
       giocatore->deploy[1] = -1;
       giocatore->hasApack = 0;

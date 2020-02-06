@@ -111,6 +111,7 @@ int serverCaduto() {
 void play() {
   PlayerStats giocatore = NULL;
   int score, deploy[2], position[2], timer;
+  int turnoFinito = 0;
   int exitFlag = 0, hasApack = 0;
   while (!exitFlag) {
     if (serverCaduto())
@@ -130,12 +131,19 @@ void play() {
     printGrid(grigliaDiGioco, giocatore);
     char send = getUserInput();
     write(socketDesc, &send, sizeof(char));
-    if (send == 'e' || send == 'E')
-      printf("Disconnessione in corso...\n"), exit(0);
-    if (send == 't' || send == 'T')
-      printTimer();
-    else if (send == 'l' || send == 'L')
-      printPlayerList();
+    read(socketDesc, &turnoFinito, sizeof(turnoFinito));
+    if (turnoFinito) {
+      system("clear");
+      printf("Turno finito\n");
+      sleep(1);
+    } else {
+      if (send == 'e' || send == 'E')
+        printf("Disconnessione in corso...\n"), exit(0);
+      if (send == 't' || send == 'T')
+        printTimer();
+      else if (send == 'l' || send == 'L')
+        printPlayerList();
+    }
   }
 }
 void printPlayerList() {

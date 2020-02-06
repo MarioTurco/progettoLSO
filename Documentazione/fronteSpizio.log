@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2020.2.4)  6 FEB 2020 23:51
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2020.2.4)  7 FEB 2020 00:20
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -351,21 +351,21 @@ File: lstmisc.sty 2019/02/27 1.8b (Carsten Heinz)
 ) (/home/mario/Scrivania/progettoLSO/Documentazione/fronteSpizio.aux)
 \openout1 = `fronteSpizio.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 30.
-LaTeX Font Info:    ... okay on input line 30.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 30.
-LaTeX Font Info:    ... okay on input line 30.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 30.
-LaTeX Font Info:    ... okay on input line 30.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 30.
-LaTeX Font Info:    ... okay on input line 30.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 30.
-LaTeX Font Info:    ... okay on input line 30.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 30.
-LaTeX Font Info:    ... okay on input line 30.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 30.
-LaTeX Font Info:    ... okay on input line 30.
-LaTeX Font Info:    Try loading font information for OT1+ptm on input line 30.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 33.
+LaTeX Font Info:    ... okay on input line 33.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 33.
+LaTeX Font Info:    ... okay on input line 33.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 33.
+LaTeX Font Info:    ... okay on input line 33.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 33.
+LaTeX Font Info:    ... okay on input line 33.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 33.
+LaTeX Font Info:    ... okay on input line 33.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 33.
+LaTeX Font Info:    ... okay on input line 33.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 33.
+LaTeX Font Info:    ... okay on input line 33.
+LaTeX Font Info:    Try loading font information for OT1+ptm on input line 33.
  (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ot1ptm.fd
 File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
 ) (/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
@@ -393,8 +393,8 @@ Package grfext Info: Graphics extension search list:
  (/usr/share/texlive/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 ))
-LaTeX Info: Redefining \it@ocap on input line 30.
-LaTeX Info: Redefining \it@ccap on input line 30.
+LaTeX Info: Redefining \it@ocap on input line 33.
+LaTeX Info: Redefining \it@ccap on input line 33.
 
 
 File italian.ldf warning: 
@@ -402,10 +402,10 @@ italian.ldf    With OT1 encoding guillemets are poorly faked
 italian.ldf    Use T1 encoding
 italian.ldf    or specify a font with command \CaporaliFrom
 italian.ldf    See the documentation concerning the babel-italian typesetting 
-italian.ldf    on input line 30.
+italian.ldf    on input line 33.
 
 \AtBeginShipoutBox=\box59
-Package hyperref Info: Link coloring ON on input line 30.
+Package hyperref Info: Link coloring ON on input line 33.
 (/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2016/05/21 v2.44 Cross-referencing by name of section
  (/usr/share/texlive/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
@@ -413,39 +413,34 @@ Package: gettitlestring 2016/05/16 v1.5 Cleanup title references (HO)
 )
 \c@section@level=\count142
 )
-LaTeX Info: Redefining \ref on input line 30.
-LaTeX Info: Redefining \pageref on input line 30.
-LaTeX Info: Redefining \nameref on input line 30.
+LaTeX Info: Redefining \ref on input line 33.
+LaTeX Info: Redefining \pageref on input line 33.
+LaTeX Info: Redefining \nameref on input line 33.
  (/home/mario/Scrivania/progettoLSO/Documentazione/fronteSpizio.out) (/home/mario/Scrivania/progettoLSO/Documentazione/fronteSpizio.out)
 \@outlinefile=\write4
 \openout4 = `fronteSpizio.out'.
 
 \c@lstlisting=\count143
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 40.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 43.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <24.88> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 40.
-<fiilogo.png, id=36, 105.39375pt x 103.88812pt>
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 43.
+<fiilogo.png, id=40, 105.39375pt x 103.88812pt>
 File: fiilogo.png Graphic file (type png)
 <use fiilogo.png>
-Package pdftex.def Info: fiilogo.png  used on input line 46.
+Package pdftex.def Info: fiilogo.png  used on input line 49.
 (pdftex.def)             Requested size: 102.42992pt x 100.96791pt.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <17.28> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 50.
-
-
-Package multicol Warning: Using `1' columns doesn't seem a good idea.
- I therefore use two columns instead on input line 77.
-
-[1
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 53.
+ [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map} </home/mario/Scrivania/progettoLSO/Documentazione/fiilogo.png>]pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.103 \thispagestyle{empty}\null\newpage
+l.106 \thispagestyle{empty}\null\newpage
                                          [1]
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <14.4> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 104.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 107.
  (/home/mario/Scrivania/progettoLSO/Documentazione/fronteSpizio.toc
 LaTeX Font Info:    Try loading font information for U+msa on input line 4.
  (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
@@ -460,41 +455,46 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 
  [2]
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 108.
-LaTeX Font Info:    Try loading font information for OT1+pcr on input line 113.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 111.
+LaTeX Font Info:    Try loading font information for OT1+pcr on input line 116.
  (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ot1pcr.fd
 File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
 )pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.136 \section
-              {Comunicazione tra client e server} [1]pdfTeX warning (ext4): destination with the same identifier (name{page.2}) has been already used, duplicate ignored
+l.139 \section
+              {Comunicazione tra client e server} [1]
+Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on input line 143.
+pdfTeX warning (ext4): destination with the same identifier (name{page.2}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.186 \subsection
-                 {Configurazione del client} [2]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 229.
- [3]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 229.
+l.189 \subsection
+                 {Configurazione del client} [2] [3] (/home/mario/Scrivania/progettoLSO/Documentazione/fronteSpizio.lol)
+\tf@lol=\write6
+\openout6 = `fronteSpizio.lol'.
+
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 284.
+ [4]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 284.
  (/home/mario/Scrivania/progettoLSO/Documentazione/fronteSpizio.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 229.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 229.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 284.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 284.
 Package rerunfilecheck Info: File `fronteSpizio.out' has not changed.
-(rerunfilecheck)             Checksum: 3DDF8183E8A78E4666F939CE0A542ED2;508.
+(rerunfilecheck)             Checksum: 7B6AF707EFDB4C8E930FFEB73755DA45;590.
  ) 
 Here is how much of TeX's memory you used:
- 9838 strings out of 492609
- 137685 string characters out of 6131463
+ 9933 strings out of 492609
+ 138972 string characters out of 6131463
  554446 words of memory out of 5000000
- 13531 multiletter control sequences out of 15000+600000
+ 13578 multiletter control sequences out of 15000+600000
  26913 words of font info for 53 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 32i,5n,49p,798b,1167s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 32i,5n,49p,798b,1195s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on /home/mario/Scrivania/progettoLSO/Documentazione/fronteSpizio.pdf (6 pages, 91466 bytes).
+Output written on /home/mario/Scrivania/progettoLSO/Documentazione/fronteSpizio.pdf (7 pages, 96763 bytes).
 PDF statistics:
- 196 PDF objects out of 1000 (max. 8388607)
- 180 compressed objects within 2 object streams
- 88 named destinations out of 1000 (max. 500000)
- 70 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 273 PDF objects out of 1000 (max. 8388607)
+ 255 compressed objects within 3 object streams
+ 133 named destinations out of 1000 (max. 500000)
+ 78 words of extra memory for PDF output out of 10000 (max. 10000000)
 

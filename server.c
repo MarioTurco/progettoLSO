@@ -72,6 +72,8 @@ int numMosse = 0;
 Point deployCoords[numberOfPackages];
 Point packsCoords[numberOfPackages];
 pthread_mutex_t LogMutex = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t RegMutex = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t PlayerMutex = PTHREAD_MUTEX_INITIALIZER;
 /*///////////////////////////////*/
 
 int main(int argc, char **argv) {
@@ -143,7 +145,6 @@ void startTimer() {
   pthread_create(&tidTimer, NULL, timer, NULL);
 }
 int tryLogin(int clientDesc, char name[]) {
-  // TODO proteggere con un mutex
   char *userName = (char *)calloc(MAX_BUF, 1);
   char *password = (char *)calloc(MAX_BUF, 1);
   int dimName, dimPwd;
@@ -166,8 +167,9 @@ int tryLogin(int clientDesc, char name[]) {
     pthread_t tid;
     pthread_create(&tid, NULL, fileWriter, (void *)args);
     printf("Nuovo client loggato, client loggati : %d\n", numeroClientLoggati);
-    // TODO: proteggere con un mutex
+    pthread_mutex_lock(&PlayerMutex);
     onLineUsers = addPlayer(onLineUsers, userName, clientDesc);
+    pthread_mutex_unlock(&PlayerMutex);
     printPlayers(onLineUsers);
     printf("\n");
   } else {
@@ -245,7 +247,6 @@ void play(int clientDesc, char name[]) {
     if (read(clientDesc, &inputFromClient, sizeof(char)) > 0)
       numMosse++;
     if (inputFromClient == 'e' || inputFromClient == 'E') {
-      // TODO svuotare la lista obstacles quando si disconnette un client
       freeObstacles(listaOstacoli);
       listaOstacoli = NULL;
       disconnettiClient(clientDesc);
@@ -338,8 +339,9 @@ void clientCrashHandler(int signalNum) {
 void disconnettiClient(int clientDescriptor) {
   if (numeroClientLoggati > 0)
     numeroClientLoggati--;
-  // TODO proteggere con un mutex
+  pthread_mutex_lock(&PlayerMutex);
   onLineUsers = removePlayer(onLineUsers, clientDescriptor);
+  pthread_mutex_unlock(&PlayerMutex);
   printPlayers(onLineUsers);
   int msg = 1;
   printf("Client disconnesso (client attualmente loggati: %d)\n",
@@ -366,9 +368,9 @@ int registraClient(int clientDesc) {
   read(clientDesc, &dimPwd, sizeof(int));
   read(clientDesc, userName, dimName);
   read(clientDesc, password, dimPwd);
-  // printf("%s:%d\n%s:%d\n", userName, dimName, password, dimPwd);
-  // TODO proteggere con un mutex
+  pthread_mutex_lock(&RegMutex);
   int ret = appendPlayer(userName, password, users);
+  pthread_mutex_unlock(&RegMutex);
   char risposta;
   if (!ret) {
     risposta = 'n';

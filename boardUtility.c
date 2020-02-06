@@ -336,16 +336,11 @@ PlayerStats gestisciD(char grigliaDiGioco[ROWS][COLUMNS],
                       PlayerStats giocatore, Obstacles *listaOstacoli,
                       Point deployCoords[], Point packsCoords[]) {
   if (giocatore == NULL) {
-    printf("Giocatore = NULL");
     return NULL;
   }
-  PlayerStats nuoveStatistiche =
-      initStats(giocatore->deploy, giocatore->score, giocatore->position,
-                giocatore->hasApack);
   int nuovaPosizione[2];
   nuovaPosizione[1] = giocatore->position[1] + 1;
   nuovaPosizione[0] = giocatore->position[0];
-
   int nuovoScore = giocatore->score;
   int nuovoDeploy[2];
   nuovoDeploy[0] = giocatore->deploy[0];
@@ -364,13 +359,13 @@ PlayerStats gestisciD(char grigliaDiGioco[ROWS][COLUMNS],
       nuovaPosizione[0] = giocatore->position[0];
       nuovaPosizione[1] = giocatore->position[1];
     }
-    nuoveStatistiche =
-        initStats(nuovoDeploy, nuovoScore, nuovaPosizione, giocatore->hasApack);
-  } else {
-    nuoveStatistiche = initStats(giocatore->deploy, giocatore->score,
-                                 giocatore->position, giocatore->hasApack);
+    giocatore->deploy[0] = nuovoDeploy[0];
+    giocatore->deploy[1] = nuovoDeploy[1];
+    giocatore->score = nuovoScore;
+    giocatore->position[0] = nuovaPosizione[0];
+    giocatore->position[1] = nuovaPosizione[1];
   }
-  return nuoveStatistiche;
+  return giocatore;
 }
 PlayerStats gestisciA(char grigliaDiGioco[ROWS][COLUMNS],
                       char grigliaOstacoli[ROWS][COLUMNS],
@@ -378,12 +373,8 @@ PlayerStats gestisciA(char grigliaDiGioco[ROWS][COLUMNS],
                       Point deployCoords[], Point packsCoords[]) {
   if (giocatore == NULL)
     return NULL;
-  PlayerStats nuoveStatistiche =
-      initStats(giocatore->deploy, giocatore->score, giocatore->position,
-                giocatore->hasApack);
   int nuovaPosizione[2];
   nuovaPosizione[0] = giocatore->position[0];
-
   // Aggiorna la posizione vecchia spostando il player avanti di 1
   nuovaPosizione[1] = (giocatore->position[1]) - 1;
   int nuovoScore = giocatore->score;
@@ -406,27 +397,21 @@ PlayerStats gestisciA(char grigliaDiGioco[ROWS][COLUMNS],
       nuovaPosizione[0] = giocatore->position[0];
       nuovaPosizione[1] = giocatore->position[1];
     }
-    nuoveStatistiche =
-        initStats(nuovoDeploy, nuovoScore, nuovaPosizione, giocatore->hasApack);
-  } else {
-    nuoveStatistiche = initStats(giocatore->deploy, giocatore->score,
-                                 giocatore->position, giocatore->hasApack);
+    giocatore->deploy[0] = nuovoDeploy[0];
+    giocatore->deploy[1] = nuovoDeploy[1];
+    giocatore->score = nuovoScore;
+    giocatore->position[0] = nuovaPosizione[0];
+    giocatore->position[1] = nuovaPosizione[1];
   }
-  return nuoveStatistiche;
+  return giocatore;
 }
 PlayerStats gestisciS(char grigliaDiGioco[ROWS][COLUMNS],
                       char grigliaOstacoli[ROWS][COLUMNS],
                       PlayerStats giocatore, Obstacles *listaOstacoli,
                       Point deployCoords[], Point packsCoords[]) {
   if (giocatore == NULL) {
-    printf("Giocatore = NULL");
     return NULL;
   }
-  // inizializza le statistiche con i valori attuali
-  PlayerStats nuoveStatistiche =
-      initStats(giocatore->deploy, giocatore->score, giocatore->position,
-                giocatore->hasApack);
-
   // crea le nuove statistiche
   int nuovaPosizione[2];
   nuovaPosizione[1] = giocatore->position[1];
@@ -435,7 +420,6 @@ PlayerStats gestisciS(char grigliaDiGioco[ROWS][COLUMNS],
   int nuovoDeploy[2];
   nuovoDeploy[0] = giocatore->deploy[0];
   nuovoDeploy[1] = giocatore->deploy[1];
-
   // controlla che le nuove statistiche siano corrette
   if (nuovaPosizione[0] >= 0 && nuovaPosizione[0] < ROWS) {
     if (casellaVuotaOValida(grigliaDiGioco, grigliaOstacoli, nuovaPosizione)) {
@@ -451,13 +435,13 @@ PlayerStats gestisciS(char grigliaDiGioco[ROWS][COLUMNS],
       nuovaPosizione[0] = giocatore->position[0];
       nuovaPosizione[1] = giocatore->position[1];
     }
-    nuoveStatistiche =
-        initStats(nuovoDeploy, nuovoScore, nuovaPosizione, giocatore->hasApack);
-  } else {
-    nuoveStatistiche = initStats(giocatore->deploy, giocatore->score,
-                                 giocatore->position, giocatore->hasApack);
+    giocatore->deploy[0] = nuovoDeploy[0];
+    giocatore->deploy[1] = nuovoDeploy[1];
+    giocatore->score = nuovoScore;
+    giocatore->position[0] = nuovaPosizione[0];
+    giocatore->position[1] = nuovaPosizione[1];
   }
-  return nuoveStatistiche;
+  return giocatore;
 }
 int arrivatoADestinazione(int posizione[2], int destinazione[2]) {
   if (posizione[0] == destinazione[0] && posizione[1] == destinazione[1])

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2020.2.4)  5 FEB 2020 22:35
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2020.2.4)  6 FEB 2020 16:00
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -342,7 +342,7 @@ LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 18.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <24.88> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 18.
-<fiilogo.png, id=20, 105.39375pt x 103.88812pt>
+<fiilogo.png, id=24, 105.39375pt x 103.88812pt>
 File: fiilogo.png Graphic file (type png)
 <use fiilogo.png>
 Package pdftex.def Info: fiilogo.png  used on input line 24.
@@ -369,46 +369,42 @@ LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map} </home/mario/Scrivania/progettoLSO/Documentazione/fiilogo.png>]pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.71 \thispagestyle{empty}\null\newpage
+l.70 \thispagestyle{empty}\null\newpage
                                         [1] (/home/mario/Scrivania/progettoLSO/Documentazione/fronteSpizio.toc)
 \tf@toc=\write5
 \openout5 = `fronteSpizio.toc'.
 
  [2]
-Underfull \hbox (badness 10000) in paragraph at lines 78--81
-
- []
-
-LaTeX Font Info:    Try loading font information for OT1+pcr on input line 82.
-(/usr/share/texlive/texmf-dist/tex/latex/psnfss/ot1pcr.fd
+LaTeX Font Info:    Try loading font information for OT1+pcr on input line 80.
+ (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ot1pcr.fd
 File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
 )
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 103.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 102.
 pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.103 \end{document}
+l.102 \end{document}
                      [1]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 103.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 102.
  (/home/mario/Scrivania/progettoLSO/Documentazione/fronteSpizio.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 103.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 103.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 102.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 102.
 Package rerunfilecheck Info: File `fronteSpizio.out' has not changed.
-(rerunfilecheck)             Checksum: 74C9C7AF5F9ECA176D5CACD993CEDD4B;221.
+(rerunfilecheck)             Checksum: 91B1E1D9BF0038360432B61424D42D3E;280.
  ) 
 Here is how much of TeX's memory you used:
- 7457 strings out of 492609
- 106936 string characters out of 6131463
- 214164 words of memory out of 5000000
- 11257 multiletter control sequences out of 15000+600000
+ 7459 strings out of 492609
+ 106966 string characters out of 6131463
+ 215164 words of memory out of 5000000
+ 11258 multiletter control sequences out of 15000+600000
  18211 words of font info for 42 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  32i,6n,28p,798b,363s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on /home/mario/Scrivania/progettoLSO/Documentazione/fronteSpizio.pdf (4 pages, 81293 bytes).
+Output written on /home/mario/Scrivania/progettoLSO/Documentazione/fronteSpizio.pdf (4 pages, 82356 bytes).
 PDF statistics:
- 80 PDF objects out of 1000 (max. 8388607)
- 66 compressed objects within 1 object stream
- 11 named destinations out of 1000 (max. 500000)
- 38 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 86 PDF objects out of 1000 (max. 8388607)
+ 72 compressed objects within 1 object stream
+ 12 named destinations out of 1000 (max. 500000)
+ 46 words of extra memory for PDF output out of 10000 (max. 10000000)
 

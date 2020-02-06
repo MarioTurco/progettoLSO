@@ -67,18 +67,16 @@
 \end{center}
 \end{titlepage}
 
-
 \thispagestyle{empty}\null\newpage
 \tableofcontents
 \newpage
 \pagenumbering{arabic}
-
-\section{Modalità di compilazione}
+\section{Istruzioni}
+\subsection{Modalità di compilazione}
 \paragraph{}
 Il progetto è provvisto di un file makefile il quale è in grado di compilare autonomamente l'intero progetto.
 Per utilizzare il make file aprire la cartella del progetto tramite la console di sistema e digitare "make".\\
-In alternativa è possibile compilare manualemente il client ed il server con i seguenti comandi:\\
-
+In alternativa è possibile compilare manualemente il client ed il server con i seguenti comandi:
 \begin{Verbatim}[fontsize=\small]
     gcc -o server server.c boardUtility.c parser.c list.c -lpthread
     gcc -o client client.c boardUtility.c parser.c list.c -lpthread
@@ -98,6 +96,7 @@ Una volta compilato il progetto è possibile avviare il cient digitando da conso
 \begin{verbatim}
     ./client ip porta
 \end{verbatim}
-Dove \textit{ip} andrà sostituito con l'ip o l'indirizzo URL del server e \textit{porta} andrà sostituito con la porta del server.
-
+Dove \textit{ip} andrà sostituito con l'ip o l'indirizzo URL del server e \textit{porta} andrà sostituito con la porta del server.\\
+Una volta avviato il client comprarià il menu con le scelte 3 possibili: accedi, registrati ed esci.\\
+Una volta effettuata la registrazione dell'utente è possibile effettuare l'accesso al programma al seguito del quale verranno mostrate sia la mappa dei gioco si le istruzioni di gioco.
 \end{document}

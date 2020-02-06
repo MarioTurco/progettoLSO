@@ -15,9 +15,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 /*
-
 TODO vanno incollate di nuovo tutte le firme perchè molto probabilmente molte sono cambiate e/o ne mancano un paio
-
 */
 //retituisce 1 se c'è almeno un client connesso
 int almenoUnClientConnesso();

@@ -12,7 +12,6 @@ Players initPlayerNode(char *name, int sockDes) {
   L->next = NULL;
   return L;
 }
-
 PlayerStats initStats(int deploy[], int score, int position[], int flag) {
   PlayerStats L = (PlayerStats)malloc(sizeof(struct Data));
   L->deploy[0] = deploy[0];
@@ -23,7 +22,6 @@ PlayerStats initStats(int deploy[], int score, int position[], int flag) {
   L->position[1] = position[1];
   return L;
 }
-
 Obstacles initObstacleNode(int x, int y) {
   Obstacles L = (Obstacles)malloc(sizeof(struct TList2));
   L->x = x;
@@ -31,12 +29,10 @@ Obstacles initObstacleNode(int x, int y) {
   L->next = NULL;
   return L;
 }
-
 Obstacles addObstacle(Obstacles L, int x, int y) {
   Obstacles tmp = initObstacleNode(x, y);
-  if (L != NULL) {
+  if (L != NULL)
     tmp->next = L;
-  }
   return tmp;
 }
 int dimensioneLista(Players L) {
@@ -57,15 +53,12 @@ int isAlreadyLogged(Players L, char *name) {
   }
   return ret;
 }
-
 Players addPlayer(Players L, char *name, int sockDes) {
   Players tmp = initPlayerNode(name, sockDes);
-  if (L != NULL) {
+  if (L != NULL)
     tmp->next = L;
-  }
   return tmp;
 }
-
 Players removePlayer(Players L, int sockDes) {
   if (L != NULL) {
     if (L->sockDes == sockDes) {
@@ -77,21 +70,18 @@ Players removePlayer(Players L, int sockDes) {
   }
   return L;
 }
-
 void freePlayers(Players L) {
   if (L != NULL) {
     freePlayers(L->next);
     free(L);
   }
 }
-
 void freeObstacles(Obstacles L) {
   if (L != NULL) {
     freeObstacles(L->next);
     free(L);
   }
 }
-
 void printPlayers(Players L) {
   if (L != NULL) {
     printf("%s ->", L->name);
@@ -99,7 +89,6 @@ void printPlayers(Players L) {
   }
   printf("\n");
 }
-
 void printObstacles(Obstacles L) {
   if (L != NULL) {
     printf("X:%d Y:%d ->", L->x, L->y);

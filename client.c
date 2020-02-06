@@ -103,44 +103,6 @@ int gestisci() {
     }
   }
 }
-char getInput() {
-  char input;
-  int done = 0;
-  printf("Inserisci comando: ");
-  while (!done) {
-    scanf("%c", &input);
-    fflush(stdin);
-    if (isCorrect(input))
-      done = 1;
-  }
-  return input;
-}
-
-int isCorrect(char input) {
-  switch (input) {
-  case 'w': // muovi avanti
-  case 'W':
-  case 'a': // muovi sinistra
-  case 'A':
-  case 's': // muovi sotto
-  case 'S':
-  case 'd': // muovi destra
-  case 'D':
-  case 'e': // esci
-  case 'E':
-  case 't': // stampa timer
-  case 'T':
-  case 'P': // prendi pacco
-  case 'p':
-  case 'c': // consegna
-  case 'C':
-    return 1;
-    break;
-  default:
-    return 0;
-    break;
-  }
-}
 int serverCaduto() {
   char msg = 'y';
   if (read(socketDesc, &msg, sizeof(char)) == 0)
@@ -164,15 +126,12 @@ void play() {
     if (read(socketDesc, deploy, sizeof(deploy)) < 1) {
       printf("Impossibile comunicare con il server\n"), exit(-1);
     }
-
     if (read(socketDesc, position, sizeof(position)) < 1) {
       printf("Impossibile comunicare con il server\n"), exit(-1);
     }
-
     if (read(socketDesc, &score, sizeof(score)) < 1) {
       printf("Impossibile comunicare con il server\n"), exit(-1);
     }
-
     if (read(socketDesc, &hasApack, sizeof(hasApack)) < 1) {
       printf("Impossibile comunicare con il server\n"), exit(-1);
     }
@@ -233,29 +192,21 @@ int tryLogin() {
   write(socketDesc, &msg, sizeof(int));
   system("clear");
   printf("Inserisci i dati per il Login\n");
-
   char username[20];
   char password[20];
-
   printf("Inserisci nome utente(MAX 20 caratteri): ");
   scanf("%s", username);
   printf("\nInserisci password(MAX 20 caratteri):");
   scanf("%s", password);
-
   int dimUname = strlen(username), dimPwd = strlen(password);
-
   if (write(socketDesc, &dimUname, sizeof(dimUname)) < 0)
     return 0;
-
   if (write(socketDesc, &dimPwd, sizeof(dimPwd)) < 0)
     return 0;
-
   if (write(socketDesc, username, dimUname) < 0)
     return 0;
-
   if (write(socketDesc, password, dimPwd) < 0)
     return 0;
-
   char validate;
   int ret;
   read(socketDesc, &validate, 1);
@@ -263,27 +214,13 @@ int tryLogin() {
     ret = 1;
     printf("Accesso effettuato\n");
     sleep(1);
-
   } else if (validate == 'n') {
     printf("Credenziali Errate o Login già effettuato\n");
     ret = 0;
     sleep(1);
   }
-
   return ret;
 }
-
-// TODO da modificare/cancellare
-char getUserInput() {
-  fflush(stdin);
-  char c;
-  c = getchar();
-  int daIgnorare;
-  while ((daIgnorare = getchar()) != '\n' && daIgnorare != EOF) {
-  }
-  return c;
-}
-
 int registrati() {
   int msg = 2;
   write(socketDesc, &msg, sizeof(int));

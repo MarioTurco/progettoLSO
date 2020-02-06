@@ -18,7 +18,6 @@ struct Coord {
   int x;
   int y;
 };
-
 typedef struct Coord *Point;
 void rimuoviPaccoDaArray(int posizione[2], Point packsCoords[]);
 void printMenu();

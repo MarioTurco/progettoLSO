@@ -4,7 +4,6 @@
 #include <stdlib.h>
 #include <time.h>
 #include <unistd.h>
-
 void printMenu() {
   system("clear");
   printf("\t Cosa vuoi fare?\n");
@@ -238,7 +237,6 @@ void riempiGrigliaConGliOstacoli(char grigliaDiGioco[ROWS][COLUMNS],
     }
   }
 }
-/*Inserisci il player in una posizione casuale*/
 void inserisciPlayerNellaGrigliaInPosizioneCasuale(
     char grigliaDiGioco[ROWS][COLUMNS], char grigliaOstacoli[ROWS][COLUMNS],
     int posizione[2]) {
@@ -253,7 +251,6 @@ void inserisciPlayerNellaGrigliaInPosizioneCasuale(
   posizione[0] = y;
   posizione[1] = x;
 }
-/*Genera sia la griglia con i pacchi che la griglia con gli ostacoli*/
 void inizializzaGiocoSenzaPlayer(char grigliaDiGioco[ROWS][COLUMNS],
                                  char grigliaConOstacoli[ROWS][COLUMNS],
                                  Point packsCoords[]) {

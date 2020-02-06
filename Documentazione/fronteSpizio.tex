@@ -103,7 +103,7 @@ Una volta effettuata la registrazione dell'utente è possibile effettuare l'acce
 \section{Comunicazione tra client e server}
 Di seguito verranno illustrate le modalità di comunicazione tra client e server.
 \subsection{Informazioni preliminari sul server}
-Il socket del server viene configurato come PF\_NET e con trasmissione dati di tipo SOCK\_STREAM.\\
+Il socket del server viene configurato con famiglia di protoccoli PF\_NET, con tipo ci trasmissione dati SOCK\_STREAM e con protocollo TCP.\\
 È importante notare come il server riesca a gestire in modo concorrente più client tramite l'uso di un thread dedicato ad ogni client.
 
 

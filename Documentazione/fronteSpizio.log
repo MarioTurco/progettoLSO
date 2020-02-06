@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2020.2.4)  7 FEB 2020 00:20
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2020.2.4)  7 FEB 2020 00:31
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -425,7 +425,7 @@ LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 43.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <24.88> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 43.
-<fiilogo.png, id=40, 105.39375pt x 103.88812pt>
+<fiilogo.png, id=44, 105.39375pt x 103.88812pt>
 File: fiilogo.png Graphic file (type png)
 <use fiilogo.png>
 Package pdftex.def Info: fiilogo.png  used on input line 49.
@@ -469,32 +469,32 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.2}) has b
 <to be read again> 
                    \relax 
 l.189 \subsection
-                 {Configurazione del client} [2] [3] (/home/mario/Scrivania/progettoLSO/Documentazione/fronteSpizio.lol)
+                 {Configurazione del client} [2] [3] (/home/mario/Scrivania/progettoLSO/Documentazione/fronteSpizio.lol [4])
 \tf@lol=\write6
 \openout6 = `fronteSpizio.lol'.
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 284.
- [4]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 284.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 286.
+ [5]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 286.
  (/home/mario/Scrivania/progettoLSO/Documentazione/fronteSpizio.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 284.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 284.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 286.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 286.
 Package rerunfilecheck Info: File `fronteSpizio.out' has not changed.
-(rerunfilecheck)             Checksum: 7B6AF707EFDB4C8E930FFEB73755DA45;590.
+(rerunfilecheck)             Checksum: 931361A124E14E131836D60F065B5063;669.
  ) 
 Here is how much of TeX's memory you used:
- 9933 strings out of 492609
- 138972 string characters out of 6131463
+ 9936 strings out of 492609
+ 139018 string characters out of 6131463
  554446 words of memory out of 5000000
- 13578 multiletter control sequences out of 15000+600000
+ 13579 multiletter control sequences out of 15000+600000
  26913 words of font info for 53 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 32i,5n,49p,798b,1195s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 32i,6n,49p,798b,1195s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on /home/mario/Scrivania/progettoLSO/Documentazione/fronteSpizio.pdf (7 pages, 96763 bytes).
+Output written on /home/mario/Scrivania/progettoLSO/Documentazione/fronteSpizio.pdf (8 pages, 97643 bytes).
 PDF statistics:
- 273 PDF objects out of 1000 (max. 8388607)
- 255 compressed objects within 3 object streams
- 133 named destinations out of 1000 (max. 500000)
- 78 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 283 PDF objects out of 1000 (max. 8388607)
+ 264 compressed objects within 3 object streams
+ 135 named destinations out of 1000 (max. 500000)
+ 86 words of extra memory for PDF output out of 10000 (max. 10000000)
 

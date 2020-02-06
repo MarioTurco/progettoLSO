@@ -232,7 +232,9 @@ Infine, al rigo 11 decidiamo di ritoranre soltanto il primo indirizzo convertito
 \pagebreak
 \subsection{Comunicazione tra client e server}
 La comunicazione tra client e server avviene tramite write e read sul socket.\\
-Il comportamento del server è determinato dalle richieste del client le quali sono codificate tramite numeri interi. In particolare, una volta effettuata la connessione,
+Il comportamento del server e del client è determinato da particolari messaggi inviati e/o ricevuti che codificano, tramite interi o caratteri, la richiesta da parte del client di usufruire di un determinato servizio e la relativa risposta del server.
+ \subsubsection{Prima comunicazione}
+ In particolare, una volta effettuata la connessione,
 il server attenderà un messaggio dal client per poter avviare una delle tre possibili procedure, ovvero login, registrazione ed uscita ( rispettivamente codici: 1,2,3).\\
 Di seguito sono riportate le realtive funzioni di gestione che entrano in esecuzione subito dopo aver stabilito la connessione
 tra client e server.

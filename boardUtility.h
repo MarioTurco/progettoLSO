@@ -54,7 +54,6 @@ void riempiGrigliaConPacchiInPosizioniGenerateCasualmente(
 void printGrid(char grigliaDaStampare[ROWS][COLUMNS], PlayerStats stats);
 void start(char grigliaDiGioco[ROWS][COLUMNS],
            char grigliaOstacoli[ROWS][COLUMNS]);
-void printObs(char grigliaOstacoli[ROWS][COLUMNS]);
 void riempiGrigliaConGliOstacoli(char grigliaDiGioco[ROWS][COLUMNS],
                                  char grigliaOstacoli[ROWS][COLUMNS]);
 void generaPosizioniRaccolta(char grigliaDiGioco[ROWS][COLUMNS],

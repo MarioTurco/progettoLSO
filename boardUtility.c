@@ -189,7 +189,6 @@ void scegliPosizioneRaccolta(Point coord[], int deploy[]) {
 void generaPosizioniRaccolta(char grigliaDiGioco[ROWS][COLUMNS],
                              char grigliaOstacoli[ROWS][COLUMNS],
                              Point coord[]) {
-
   int x, y;
   srand(time(0));
   int i = 0;
@@ -209,7 +208,6 @@ void generaPosizioniRaccolta(char grigliaDiGioco[ROWS][COLUMNS],
       i--;
   }
 }
-
 /*Inserisci dei pacchi nella griglia di gioco nella posizione casuale */
 void riempiGrigliaConPacchiInPosizioniGenerateCasualmente(
     char grigliaDiGioco[ROWS][COLUMNS], Point packsCoords[]) {
@@ -228,18 +226,6 @@ void riempiGrigliaConPacchiInPosizioniGenerateCasualmente(
     } else
       i--;
   }
-}
-/*Stampa a schermo la griglia degli ostacoli */
-void printObs(char grigliaOstacoli[ROWS][COLUMNS]) {
-  int i = 0, j = 0;
-  for (i = 0; i < 50; i++) {
-    printf("(");
-    for (j = 0; j < 2; j++) {
-      printf("%d,", grigliaOstacoli[i][j]);
-    }
-    printf("); ");
-  }
-  printf("\n");
 }
 /*Inserisci gli ostacoli nella griglia di gioco */
 void riempiGrigliaConGliOstacoli(char grigliaDiGioco[ROWS][COLUMNS],

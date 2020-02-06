@@ -5,10 +5,25 @@
 \usepackage{setspace}
 \usepackage{hyperref}
 \usepackage{fancyvrb}
+\usepackage{listings}
+\usepackage{xcolor}
+\definecolor{RoyalBlue}{cmyk}{1, 0.50, 0, 0}
 \hypersetup{
     colorlinks=true, %set true if you want colored links
     linktoc=all,     %set to all if you want both sections and subsections linked
     linkcolor=black,  %choose some color if you want links to stand out
+}
+\lstset{language=C,
+    keywordstyle=\color{RoyalBlue},
+    basicstyle=\scriptsize\ttfamily,
+    commentstyle=\ttfamily\itshape\color{gray},
+    stringstyle=\ttfamily,
+    showstringspaces=false,
+    breaklines=true,
+    frameround=ffff,
+    frame=single,
+    rulecolor=\color{black},
+    numbers = left
 }
 
 \begin{document} 
@@ -103,11 +118,52 @@ Una volta effettuata la registrazione dell'utente è possibile effettuare l'acce
 \section{Comunicazione tra client e server}
 Di seguito verranno illustrate le modalità di comunicazione tra client e server.
 \subsection{Informazioni preliminari sul server}
-Il socket del server viene configurato con famiglia di protoccoli PF\_NET, con tipo ci trasmissione dati SOCK\_STREAM e con protocollo TCP.\\
-È importante notare come il server riesca a gestire in modo concorrente più client tramite l'uso di un thread dedicato ad ogni client. 
+Il socket del server viene configurato con famiglia di protoccoli PF\_NET, con tipo ci trasmissione dati SOCK\_STREAM e con protocollo TCP. Mostriamo di seguito il codice sorgente:
+\begin{lstlisting}
+void configuraSocket(struct sockaddr_in mio_indirizzo) {
+  if ((socketDesc = socket(PF_INET, SOCK_STREAM, 0)) < 0) {
+    perror("Impossibile creare socket");
+    exit(-1);
+  }
+  if (setsockopt(socketDesc, SOL_SOCKET, SO_REUSEADDR, &(int){1}, sizeof(int)) < 0)
+    perror("Impossibile impostare il riutilizzo dell'indirizzo ip e della "
+           "porta\n");
+  if ((bind(socketDesc, (struct sockaddr *)&mio_indirizzo,
+            sizeof(mio_indirizzo))) < 0) {
+    perror("Impossibile effettuare bind");
+    exit(-1);
+  }
+}
+\end{lstlisting}
+È importante notare anche come il server riesca a gestire in modo concorrente più client tramite l'uso di un thread dedicato ad ogni client. 
 Una volta aver configurato il socket, infatti,  il server si mette in ascolto per nuove connessioni in entrata ed ogni volta che
- viene stabilita una nuova connessione viene avviato un thread per gestire tale connessione.
-
+viene stabilita una nuova connessione viene avviato un thread per gestire tale connessione. Di seguito il relativo codice: 
+\begin{lstlisting}
+void startListening()
+{
+    pthread_t tid;
+    int clientDesc;
+    int *puntClientDesc;
+    while (1)
+    {
+      if (listen(socketDesc, 10) < 0)
+        perror("Impossibile mettersi in ascolto"), exit(-1);
+      printf("In ascolto..\n");
+      if ((clientDesc = accept(socketDesc, NULL, NULL)) < 0)
+      {
+        perror("Impossibile effettuare connessione\n");
+        exit(-1);
+      }
+      printf("Nuovo client connesso\n");
+      puntClientDesc = (int *)malloc(sizeof(int));
+      *puntClientDesc = clientDesc;
+      pthread_create(&tid, NULL, gestisci, (void *)puntClientDesc);
+    }
+    close(clientDesc);
+    quitServer();
+}
+\end{lstlisting}
+In particolare al rigo 19 notiamo la creazione di un nuovo thread per gestire la connessione in entrata.
 
 
 \end{document}

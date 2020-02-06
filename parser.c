@@ -8,43 +8,30 @@
 #include <sys/types.h>
 #include <unistd.h>
 #define MAX_BUF 200
-
 int openFileRDWRAPP(char *file) {
   int fileDes = open(file, O_RDWR | O_CREAT | O_APPEND, S_IRUSR | S_IWUSR);
-
-  if (fileDes < 0) {
-    perror("error while opening file");
-    exit(-1);
-  }
+  if (fileDes < 0)
+    perror("Errore apertura file\n"), exit(-1);
   return fileDes;
 }
-
 int openFileRDON(char *file) {
   int fileDes = open(file, O_RDONLY);
-
-  if (fileDes < 0) {
-    perror("error while opening file");
-    exit(-1);
-  }
+  if (fileDes < 0)
+    perror("Errore apertura file\n"), exit(-1);
   return fileDes;
 }
-
 int appendPlayer(char *name, char *pwd, char *file) {
   if (isRegistered(name, file))
     return 0;
   int fileDes = openFileRDWRAPP(file);
-
   write(fileDes, name, strlen(name));
   write(fileDes, " ", 1);
   write(fileDes, pwd, strlen(pwd));
   write(fileDes, "\n", 1);
-
   close(fileDes);
   return 1;
 }
-
 int isRegistered(char *name, char *file) {
-
   char command[MAX_BUF] = "cat  ";
   strcat(command, file);
   char toApp[] = " |cut -d\" \" -f1|grep \"^";
@@ -55,21 +42,17 @@ int isRegistered(char *name, char *file) {
   int ret = 0;
   system(command);
   int fileDes = openFileRDON("tmp");
-
   struct stat info;
   fstat(fileDes, &info);
   if ((int)info.st_size > 0)
     ret = 1;
-
   close(fileDes);
   system("rm tmp");
   return ret;
 }
-
 int validateLogin(char *name, char *pwd, char *file) {
   if (!isRegistered(name, file))
     return 0;
-
   char command[MAX_BUF] = "cat  ";
   strcat(command, file);
   char toApp[] = " |grep \"^";
@@ -82,17 +65,14 @@ int validateLogin(char *name, char *pwd, char *file) {
   int ret = 0;
   system(command);
   int fileDes = openFileRDON("tmp");
-
   struct stat info;
   fstat(fileDes, &info);
   if ((int)info.st_size > 0)
     ret = 1;
-
   close(fileDes);
   system("rm tmp");
   return ret;
 }
-
 void premiEnterPerContinuare() {
   fflush(stdin);
   printf("Premi Invio per continuare\n");

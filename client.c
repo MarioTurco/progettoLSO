@@ -95,22 +95,18 @@ int gestisci() {
     } else if (choice == '2') {
       registrati();
     } else if (choice == '1') {
-      if (tryLogin()) {
+      if (tryLogin())
         play();
-      }
-    } else {
+    } else
       printf("Input errato, inserire 1,2 o 3\n");
-    }
   }
 }
 int serverCaduto() {
   char msg = 'y';
   if (read(socketDesc, &msg, sizeof(char)) == 0)
     return 1;
-  else {
-    msg = 'y';
+  else
     write(socketDesc, &msg, sizeof(msg));
-  }
   return 0;
 }
 void play() {
@@ -120,21 +116,16 @@ void play() {
   while (!exitFlag) {
     if (serverCaduto())
       serverCrashHandler();
-    if (read(socketDesc, grigliaDiGioco, sizeof(grigliaDiGioco)) < 1) {
+    if (read(socketDesc, grigliaDiGioco, sizeof(grigliaDiGioco)) < 1)
       printf("Impossibile comunicare con il server\n"), exit(-1);
-    }
-    if (read(socketDesc, deploy, sizeof(deploy)) < 1) {
+    if (read(socketDesc, deploy, sizeof(deploy)) < 1)
       printf("Impossibile comunicare con il server\n"), exit(-1);
-    }
-    if (read(socketDesc, position, sizeof(position)) < 1) {
+    if (read(socketDesc, position, sizeof(position)) < 1)
       printf("Impossibile comunicare con il server\n"), exit(-1);
-    }
-    if (read(socketDesc, &score, sizeof(score)) < 1) {
+    if (read(socketDesc, &score, sizeof(score)) < 1)
       printf("Impossibile comunicare con il server\n"), exit(-1);
-    }
-    if (read(socketDesc, &hasApack, sizeof(hasApack)) < 1) {
+    if (read(socketDesc, &hasApack, sizeof(hasApack)) < 1)
       printf("Impossibile comunicare con il server\n"), exit(-1);
-    }
     timer = getTimer();
     giocatore = initStats(deploy, score, position, hasApack);
     printGrid(grigliaDiGioco, giocatore);
@@ -144,11 +135,10 @@ void play() {
       printf("Disconnessione in corso...\n");
       exit(0);
     }
-    if (send == 't' || send == 'T') {
+    if (send == 't' || send == 'T')
       printTimer();
-    } else if (send == 'l' || send == 'L') {
+    else if (send == 'l' || send == 'L')
       printPlayerList();
-    }
   }
 }
 void printPlayerList() {
@@ -175,16 +165,14 @@ void printTimer() {
   int timer;
   if (!serverCaduto(socketDesc)) {
     read(socketDesc, &timer, sizeof(timer));
-    // system("clear");
     printf("\t\tTempo restante: %d...\n", timer);
     sleep(1);
   }
 }
 int getTimer() {
   int timer;
-  if (!serverCaduto(socketDesc)) {
+  if (!serverCaduto(socketDesc))
     read(socketDesc, &timer, sizeof(timer));
-  }
   return timer;
 }
 int tryLogin() {
@@ -213,12 +201,11 @@ int tryLogin() {
   if (validate == 'y') {
     ret = 1;
     printf("Accesso effettuato\n");
-    sleep(1);
   } else if (validate == 'n') {
     printf("Credenziali Errate o Login già effettuato\n");
     ret = 0;
-    sleep(1);
   }
+  sleep(1);
   return ret;
 }
 int registrati() {
@@ -240,24 +227,20 @@ int registrati() {
     return 0;
   if (write(socketDesc, password, dimPwd) < 0)
     return 0;
-
   char validate;
   int ret;
   read(socketDesc, &validate, sizeof(char));
   if (validate == 'y') {
     ret = 1;
     printf("Registrato con successo\n");
-    sleep(1);
   }
   if (validate == 'n') {
     ret = 0;
     printf("Registrazione fallita\n");
-    sleep(1);
   }
-
+  sleep(1);
   return ret;
 }
-
 char *ipResolver(char **argv) {
   char *ipAddress;
   struct hostent *hp;

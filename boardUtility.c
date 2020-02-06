@@ -12,7 +12,6 @@ void printMenu() {
   printf("\t2 Registrati\n");
   printf("\t3 Esci\n");
 }
-
 int colpitoOstacolo(char grigliaOstacoli[ROWS][COLUMNS], int posizione[2]) {
   if (grigliaOstacoli[posizione[0]][posizione[1]] == 'O')
     return 1;
@@ -42,7 +41,6 @@ int colpitoPlayer(char grigliaDiGioco[ROWS][COLUMNS], int posizione[2]) {
     return 1;
   return 0;
 }
-
 int isOnCorrectDeployPoint(PlayerStats giocatore, Point deployCoords[]) {
   int i = 0;
   for (i = 0; i < numberOfPackages; i++) {
@@ -55,21 +53,16 @@ int isOnCorrectDeployPoint(PlayerStats giocatore, Point deployCoords[]) {
   }
   return 0;
 }
-
 int getHiddenPack(Point packsCoords[]) {
   int i = 0;
-
   for (i = 0; i < numberOfPackages; i++) {
     if (packsCoords[i]->x == -1 && packsCoords[i]->y == -1)
       return i;
   }
-
   return -1;
 }
-
 int isOnAPack(PlayerStats giocatore, Point packsCoords[]) {
   int i = 0;
-
   for (i = 0; i < numberOfPackages; i++) {
     if (giocatore->position[0] == packsCoords[i]->x &&
         giocatore->position[1] == packsCoords[i]->y)
@@ -77,10 +70,8 @@ int isOnAPack(PlayerStats giocatore, Point packsCoords[]) {
   }
   return 0;
 }
-
 int isOnADeployPoint(PlayerStats giocatore, Point deployCoords[]) {
   int i = 0;
-
   for (i = 0; i < numberOfPackages; i++) {
     if (giocatore->position[0] == deployCoords[i]->x &&
         giocatore->position[1] == deployCoords[i]->y)
@@ -88,8 +79,6 @@ int isOnADeployPoint(PlayerStats giocatore, Point deployCoords[]) {
   }
   return 0;
 }
-
-/*Svuota la griglia di gioco e la riempe solo di '-' */
 void inizializzaGrigliaVuota(char griglia[ROWS][COLUMNS]) {
   int i = 0, j = 0;
   for (i = 0; i < ROWS; i++) {
@@ -98,7 +87,6 @@ void inizializzaGrigliaVuota(char griglia[ROWS][COLUMNS]) {
     }
   }
 }
-
 PlayerStats gestisciP(char grigliaDiGioco[ROWS][COLUMNS], PlayerStats giocatore,
                       Point deployCoords[], Point packsCoords[]) {
   int nuovoDeploy[2];
@@ -108,12 +96,14 @@ PlayerStats gestisciP(char grigliaDiGioco[ROWS][COLUMNS], PlayerStats giocatore,
     giocatore->hasApack = 1;
     rimuoviPaccoDaArray(giocatore->position, packsCoords);
   }
-  PlayerStats nuoveStats = initStats(nuovoDeploy, giocatore->score,
-                                     giocatore->position, giocatore->hasApack);
-  return nuoveStats;
+  giocatore->deploy[0] = nuovoDeploy[0];
+  giocatore->deploy[1] = nuovoDeploy[1];
+  // PlayerStats nuoveStats = initStats(nuovoDeploy, giocatore->score,
+  //                                   giocatore->position,
+  //                                   giocatore->hasApack);
+  // return nuoveStats;
+  return giocatore;
 }
-
-/* stampa a schermo la griglia passata in input */
 void printGrid(char grigliaDaStampare[ROWS][COLUMNS], PlayerStats stats) {
   system("clear");
   printf("\n\n");
@@ -154,7 +144,6 @@ void printGrid(char grigliaDaStampare[ROWS][COLUMNS], PlayerStats stats) {
     printf("\n");
   }
 }
-
 // aggiunge alla griglia gli ostacoli visti fino ad ora dal client
 void mergeGridAndList(char grid[ROWS][COLUMNS], Obstacles top) {
   while (top) {
@@ -162,24 +151,21 @@ void mergeGridAndList(char grid[ROWS][COLUMNS], Obstacles top) {
     top = top->next;
   }
 }
-
 /* Genera la posizione degli ostacoli */
 void generaPosizioneOstacoli(char grigliaDiGioco[ROWS][COLUMNS],
                              char grigliaOstacoli[ROWS][COLUMNS]) {
-
   int x, y, i;
   inizializzaGrigliaVuota(grigliaOstacoli);
   srand(time(0));
   for (i = 0; i < numberOfObstacles; i++) {
     x = rand() % COLUMNS;
     y = rand() % ROWS;
-    if (grigliaDiGioco[y][x] == '-') {
+    if (grigliaDiGioco[y][x] == '-')
       grigliaOstacoli[y][x] = 'O';
-    } else
+    else
       i--;
   }
 }
-
 void rimuoviPaccoDaArray(int posizione[2], Point packsCoords[]) {
   int i = 0, found = 0;
   while (i < numberOfPackages && !found) {
@@ -191,9 +177,7 @@ void rimuoviPaccoDaArray(int posizione[2], Point packsCoords[]) {
     }
     i++;
   }
-  return;
 }
-
 // sceglie una posizione di raccolta tra quelle disponibili
 void scegliPosizioneRaccolta(Point coord[], int deploy[]) {
   int index = 0;
@@ -202,7 +186,6 @@ void scegliPosizioneRaccolta(Point coord[], int deploy[]) {
   deploy[0] = coord[index]->x;
   deploy[1] = coord[index]->y;
 }
-
 /*genera posizione di raccolta di un pacco*/
 void generaPosizioniRaccolta(char grigliaDiGioco[ROWS][COLUMNS],
                              char grigliaOstacoli[ROWS][COLUMNS],

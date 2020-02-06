@@ -33,7 +33,6 @@ void clientCrashHandler();
 void serverCrashHandler();
 int serverCaduto();
 void esciDalServer();
-char getInput();
 int isCorrect(char);
 
 int socketDesc;
@@ -273,4 +272,13 @@ void serverCrashHandler() {
   signal(SIGPIPE, SIG_IGN);
   premiEnterPerContinuare();
   exit(0);
+}
+char getUserInput() {
+  fflush(stdin);
+  char c;
+  c = getchar();
+  int daIgnorare;
+  while ((daIgnorare = getchar()) != '\n' && daIgnorare != EOF) {
+  }
+  return c;
 }

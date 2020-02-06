@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2020.2.4)  7 FEB 2020 00:52
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2020.2.4)  7 FEB 2020 00:58
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -434,13 +434,9 @@ LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <17.28> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 53.
  [1
 
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map} </home/mario/Scrivania/progettoLSO/Documentazione/fiilogo.png>]pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has been already used, duplicate ignored
-<to be read again> 
-                   \relax 
-l.106 \thispagestyle{empty}\null\newpage
-                                         [1]
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map} </home/mario/Scrivania/progettoLSO/Documentazione/fiilogo.png>]
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <14.4> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 107.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 106.
  (/home/mario/Scrivania/progettoLSO/Documentazione/fronteSpizio.toc
 LaTeX Font Info:    Try loading font information for U+msa on input line 4.
  (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
@@ -453,7 +449,13 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 \tf@toc=\write5
 \openout5 = `fronteSpizio.toc'.
 
- [2]
+pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.107 \clearpage
+                \null\newpage [1] [2
+
+]
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 111.
 LaTeX Font Info:    Try loading font information for OT1+pcr on input line 116.
@@ -496,7 +498,7 @@ Here is how much of TeX's memory you used:
  1141 hyphenation exceptions out of 8191
  32i,5n,49p,798b,1195s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on /home/mario/Scrivania/progettoLSO/Documentazione/fronteSpizio.pdf (8 pages, 98431 bytes).
+Output written on /home/mario/Scrivania/progettoLSO/Documentazione/fronteSpizio.pdf (8 pages, 98485 bytes).
 PDF statistics:
  291 PDF objects out of 1000 (max. 8388607)
  272 compressed objects within 3 object streams

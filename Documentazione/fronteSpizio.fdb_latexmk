@@ -1,7 +1,7 @@
 # Fdb version 3
-["pdflatex"] 1581001231 "fronteSpizio.tex" "/home/mario/Scrivania/progettoLSO/Documentazione/fronteSpizio.pdf" "fronteSpizio" 1581001443
+["pdflatex"] 1581001626 "fronteSpizio.tex" "/home/mario/Scrivania/progettoLSO/Documentazione/fronteSpizio.pdf" "fronteSpizio" 1581001669
   "/etc/texmf/web2c/texmf.cnf" 1580827539 475 c0e671620eb5563b2130f56340a5fde8 ""
-  "/home/mario/Scrivania/progettoLSO/Documentazione/fronteSpizio.aux" 1581001231 1545 c979ea76a039451836138ee18793d090 ""
+  "/home/mario/Scrivania/progettoLSO/Documentazione/fronteSpizio.aux" 1581001626 1687 3f5256ae547114b044680acc49e7e39a ""
   "/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc" 1165713224 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1511824771 3332 103109f5612ad95229751940c61aada0 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/adobe/courier/pcrr7t.tfm" 1136768653 960 379cc0019370a9e0208a0a3f949f847a ""
@@ -86,15 +86,15 @@
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1580857080 4549418 4593509275c90822931a1b14bc17851e ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1580857114 4263725 f645a5b11313ec05049d452aa9ba74bc ""
   "fiilogo.png" 1580914756 17967 ba4e890dd65294e9b70f63a8b1e64b87 ""
-  "fronteSpizio.aux" 1581001231 1545 c979ea76a039451836138ee18793d090 "pdflatex"
-  "fronteSpizio.out" 1581001231 280 91b1e1d9bf0038360432b61424d42d3e "pdflatex"
-  "fronteSpizio.tex" 1581001442 3472 da32273460371f624775f8bb87acd753 ""
-  "fronteSpizio.toc" 1581001231 565 0e0278a2e1e513a2964856ca4afc5cda "pdflatex"
+  "fronteSpizio.aux" 1581001626 1687 3f5256ae547114b044680acc49e7e39a "pdflatex"
+  "fronteSpizio.out" 1581001626 360 e7ffca5a57e427b27f5c781571e2dd82 "pdflatex"
+  "fronteSpizio.tex" 1581001669 3540 7ac83c829048a605746d2423da8787d7 ""
+  "fronteSpizio.toc" 1581001626 667 4b1b3b2c8b52cd96f7c69c5c9f9908af "pdflatex"
   (generated)
-  "/home/mario/Scrivania/progettoLSO/Documentazione/fronteSpizio.pdf"
-  "fronteSpizio.pdf"
-  "/home/mario/Scrivania/progettoLSO/Documentazione/fronteSpizio.log"
   "fronteSpizio.log"
-  "fronteSpizio.toc"
+  "/home/mario/Scrivania/progettoLSO/Documentazione/fronteSpizio.log"
   "fronteSpizio.aux"
+  "/home/mario/Scrivania/progettoLSO/Documentazione/fronteSpizio.pdf"
+  "fronteSpizio.toc"
   "fronteSpizio.out"
+  "fronteSpizio.pdf"

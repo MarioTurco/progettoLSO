@@ -38,7 +38,6 @@ int isCorrect(char);
 /*/////////////////////////////*/
 int socketDesc;
 char grigliaDiGioco[ROWS][COLUMNS];
-pthread_t tid;
 /*//////////////////////////////*/
 int main(int argc, char **argv) {
   signal(SIGINT, clientCrashHandler); /* CTRL-C */

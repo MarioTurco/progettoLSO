@@ -283,20 +283,15 @@ void clonaGriglia(char destinazione[ROWS][COLUMNS],
       destinazione[i][j] = source[i][j];
     }
   }
-
-  return;
 }
-
 void clientCrashHandler(int signalNum) {
   char msg[0];
   int socketClientCrashato;
   int flag = 1;
   // TODO eliminare la lista degli ostacoli dell'utente
-  // elimina il client dalla lista dei client connessi
   if (onLineUsers != NULL) {
     Players prec = onLineUsers;
     Players top = prec->next;
-    // controlla se è crashato il top
     while (top != NULL && flag) {
       if (write(top->sockDes, msg, sizeof(msg)) < 0) {
         socketClientCrashato = top->sockDes;
@@ -322,15 +317,13 @@ void disconnettiClient(int clientDescriptor) {
   write(clientDescriptor, &msg, sizeof(msg));
   close(clientDescriptor);
 }
-
 int clientDisconnesso(int clientSocket) {
   char msg[1] = {'u'}; // UP?
-  if (write(clientSocket, msg, sizeof(msg)) < 0) {
+  if (write(clientSocket, msg, sizeof(msg)) < 0)
     return 1;
-  }
-  if (read(clientSocket, msg, sizeof(char)) < 0) {
+  if (read(clientSocket, msg, sizeof(char)) < 0)
     return 1;
-  } else
+  else
     return 0;
 }
 int registraClient(int clientDesc) {
@@ -350,14 +343,12 @@ int registraClient(int clientDesc) {
     write(clientDesc, &risposta, sizeof(char));
     printf("Impossibile registrare utente, riprovare\n");
   } else {
-
     risposta = 'y';
     write(clientDesc, &risposta, sizeof(char));
     printf("Utente registrato con successo\n");
   }
   return ret;
 }
-
 void quitServer() {
   printf("Chiusura server in corso..\n");
   close(socketDesc);

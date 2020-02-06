@@ -5,6 +5,7 @@
 \usepackage{setspace}
 \usepackage{hyperref}
 \usepackage{fancyvrb}
+\usepackage{multicol}
 \usepackage{listings}
 \usepackage{xcolor}
 \definecolor{RoyalBlue}{cmyk}{1, 0.50, 0, 0}
@@ -28,58 +29,75 @@
 
 \begin{document} 
 \begin{titlepage}
-
-\begin{center}
-    {\bfseries\Huge Università degli Studi di Napoli\\}
-\end{center} 
-
-\begin{figure}[h]
-    \begin{center}
-        
-\includegraphics[width=0.25\textwidth]{fiilogo.png}    %inserire nella stessa cartella del tex il logo dell'università e inserire il nome al posto di logo.jpg
-    \end{center}
-\end{figure}
+  \pagestyle{empty}
+  \begin{center}
   
-\begin{center}
-    \bf{Scuola Politecnica e delle Scienze di Base}
-\end{center}
-\begin{center}
-    \bf{Area Didattica di Scienze Matematiche Fisiche e Naturali}
-\end{center}
-\vspace{5pt}
-\begin{center}
-    \textbf{Dipartimento di Ingegneria Elettrica e delle Tecnologie dell'Informazione}
-\end{center}
-\vspace{40pt}
-\begin{center}
-    {\emph{\Large{\bf{Progetto sistemi operativi}}}}\\
+  % TO EDIT ACCORDINGLY TO...
+  % -----------------------------------------------------------------------------------------------
+  %
+  
+  % ... University Name
+  {\bfseries\Huge Università degli Studi di Napoli\\}
+  \vspace{2.54mm}
+  {\bfseries\Huge Federico II\\}
+  \vspace{5mm}
+  
+  % ... Logo
+  \centerline{\mbox{\includegraphics[width=36mm]{fiilogo.png}}}
+  
+  % ... Departement
+  \medskip
+  {\bfseries\LARGE Dipartimento di Ingegneria Elettrica e\\}
+  \vspace{2.54mm}
+  {\bfseries\LARGE delle Tecnologie dell'Informazione\\}
+  \vspace{2.54mm}
+  
+  % ... Degree Class
+  {\emph{\large Classe delle Lauree Magistrali in Ingegneria Elettronica,\\}}
+  {\emph{\large Classe n. LM-29\\}}
+  \vspace{2.54mm}
+  
+  % ... Degree Course
+  {\large Corso di Laurea Magistrale in Ingegneria Elettronica\\}
+  \vspace{5mm}
+  
+  % Change the name of Departement, Class and Cource in English?
+  
+  %
+  % -----------------------------------------------------------------------------------------------
+  %
+  
+  \vfill
+  {\Large Thesis\\}
+  \vspace{4mm}
+  {\emph{\LARGE Title according to the official assignment\\}}		% Thesis title
+  \vspace{4mm}
+  
+  \vfill
+  
+  \begin{multicols}{2}
+    {\large Supervisor:\\}
+    Prof. Surname Name\\
+    \vspace{5mm}
     
-\end{center}
-\vspace{15pt}
+    {\large Co-Supervisor:\\}
+    Title Surname Name\\
+    \vspace{5mm}
+    
+    {\large Candidate:\\}
+    Surname Name\\
+    Matr. xxx/yyy\\
+    \vspace{10mm}
+  \end{multicols}
+  
+  \vfill
+  
+  % Fill the year
+  {\large Academic Year\\ 2016/2017}
+  
+  \end{center}
+  
 
-
-\begin{center}
-    {{ \textit{Traccia A}}}
-\end{center}
-\vspace{25mm}
-\par
-\noindent
-\begin{minipage}[t]{0.47\textwidth}
-    \textbf{Professore:}\\
-    Alberto Finzi\\   
-\end{minipage}
-\hfill
-\begin{minipage}[t]{0.47\textwidth}\raggedleft
-    \textbf{Candidati:}\\
-    Mario Turco\\ 
-    Matr. $N860002503$\\
-    Francesco Longobardi\\
-    Matr.  $N860002468$\\
-\end{minipage}
-\vspace{5.5mm}
-\begin{center}
-    {\large{\bf Anno Accademico 2019/2020}} 
-\end{center}
 \end{titlepage}
 
 \thispagestyle{empty}\null\newpage

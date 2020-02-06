@@ -35,10 +35,10 @@ int serverCaduto();
 void esciDalServer();
 char getInput();
 int isCorrect(char);
-/*/////////////////////////////*/
+
 int socketDesc;
 char grigliaDiGioco[ROWS][COLUMNS];
-/*//////////////////////////////*/
+
 int main(int argc, char **argv) {
   signal(SIGINT, clientCrashHandler); /* CTRL-C */
   signal(SIGHUP, clientCrashHandler); /* Chiusura della console */
@@ -46,15 +46,13 @@ int main(int argc, char **argv) {
   signal(SIGTSTP, clientCrashHandler); /* CTRL-Z*/
   signal(SIGTERM, clientCrashHandler); /* generato da 'kill' */
   signal(SIGPIPE, serverCrashHandler);
-
   char bufferReceive[2];
-  if (argc != 3)
-    perror("Inserire indirizzo ip/url e porta (./client 127.0.0.1 5200)"),
-        exit(-1);
-
+  if (argc != 3) {
+    perror("Inserire indirizzo ip/url e porta (./client 127.0.0.1 5200)");
+    exit(-1);
+  }
   if ((socketDesc = connettiAlServer(argv)) < 0)
     exit(-1);
-
   gestisci(socketDesc);
   close(socketDesc);
   exit(0);
@@ -73,25 +71,19 @@ int connettiAlServer(char **argv) {
   mio_indirizzo.sin_family = AF_INET;
   mio_indirizzo.sin_port = htons(porta);
   inet_aton(indirizzoServer, &mio_indirizzo.sin_addr);
-
   if ((socketDesc = socket(PF_INET, SOCK_STREAM, 0)) < 0)
     perror("Impossibile creare socket"), exit(-1);
-
   else
     printf("Socket creato\n");
-
   if (connect(socketDesc, (struct sockaddr *)&mio_indirizzo,
               sizeof(mio_indirizzo)) < 0)
     perror("Impossibile connettersi"), exit(-1);
-
   else
     printf("Connesso a %s\n", indirizzoServer);
   return socketDesc;
 }
-
 int gestisci() {
   char choice;
-  int msg;
   while (1) {
     printMenu();
     scanf("%c", &choice);
@@ -107,12 +99,10 @@ int gestisci() {
         play();
       }
     } else {
-      printf("Wrong input\n");
-      // sleep(1);
+      printf("Input errato, inserire 1,2 o 3\n");
     }
   }
 }
-
 char getInput() {
   char input;
   int done = 0;

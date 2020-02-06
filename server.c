@@ -38,7 +38,6 @@ int valoreTimerValido();
 int almenoUnPlayerGenerato();
 int almenoUnaMossaFatta();
 void sendTimerValue(int clientDesc);
-void *threadGenerazioneNuoviPlayer(void *args);
 void startProceduraGenrazioneMappa();
 void *threadGenerazioneMappa(void *args);
 void *fileWriter(void *);
@@ -215,7 +214,6 @@ void play(int clientDesc, char name[]) {
   int destinazione[2] = {-1, -1};
   PlayerStats giocatore = initStats(destinazione, 0, posizione, 0);
   Obstacles listaOstacoli = NULL;
-  // pthread_t tidGenerazionePlayer;
   char inputFromClient;
   int punteggio = 0;
   if (timer != 0) {
@@ -224,8 +222,6 @@ void play(int clientDesc, char name[]) {
         giocatore->position);
     playerGenerati++;
   }
-  // pthread_create(&tidGenerazionePlayer, NULL, threadGenerazioneNuoviPlayer,
-  //                (void *)giocatore);
   while (true) {
     if (clientDisconnesso(clientDesc)) {
       freeObstacles(listaOstacoli);
@@ -293,27 +289,7 @@ void clonaGriglia(char destinazione[ROWS][COLUMNS],
 
   return;
 }
-// TODO da cancellare, non serve più
-/*void *threadGenerazioneNuoviPlayer(void *args) {
-  timerCount = TIME_LIMIT_IN_SECONDS;
-  PlayerStats giocatore = (PlayerStats)args;
-  while (1) {
-    if (timerCount == TIME_LIMIT_IN_SECONDS + 1) {
-      inserisciPlayerNellaGrigliaInPosizioneCasuale(
-          grigliaDiGiocoConPacchiSenzaOstacoli, grigliaOstacoliSenzaPacchi,
-          giocatore->position);
-      giocatore->score = 0;
-      giocatore->hasApack = 0;
-      giocatore->deploy[0] = -1;
-      giocatore->deploy[1] = -1;
-      playerGenerati++;
-      if (playerGenerati == numeroClientLoggati) {
-        timerCount = TIME_LIMIT_IN_SECONDS;
-        playerGenerati = 0;
-      }
-    }
-  }
-}*/
+
 void clientCrashHandler(int signalNum) {
   char msg[0];
   int socketClientCrashato;

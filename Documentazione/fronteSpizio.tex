@@ -8,13 +8,16 @@
 \usepackage{multicol}
 \usepackage{listings}
 \usepackage{caption}
-%\usepackage[showframe]{geometry}
+\usepackage{geometry}
 \usepackage{xcolor}
 \definecolor{RoyalBlue}{cmyk}{1, 0.50, 0, 0}
 \hypersetup{
     colorlinks=true, %set true if you want colored links
     linktoc=all,     %set to all if you want both sections and subsections linked
     linkcolor=black,  %choose some color if you want links to stand out
+}
+\geometry{
+  bottom=10mm
 }
 \lstset{language=C,
     keywordstyle=\color{RoyalBlue},
@@ -30,17 +33,19 @@
     extendedchars=true,                      %questo rigo ed il successivo servono per usare le lettere à è ù nel codice
     literate={à}{{\'a}}1 {è}{{\'a}}1 {ù}{{\'u}}1 
 }
-\setlength{\headsep}{5pt}
-\setlength{\voffset}{-0.75in}
 
 \renewcommand\lstlistlistingname{Listati}
 \renewcommand\lstlistingname{Listato}
 \def\lstlistingautorefname{List.}
 \captionsetup[lstlisting]{font={small,tt}}
+
+\pagestyle{headings}
 \begin{document} 
 
+\setlength{\headsep}{20pt}
+\setlength{\voffset}{-0.55in}
+\setlength{\footskip}{10pt}
 \begin{titlepage}
-  \pagestyle{empty}
   \begin{center}
   
   % TO EDIT ACCORDINGLY TO...
@@ -153,12 +158,12 @@ Il socket del server viene configurato con famiglia di protoccoli PF\_NET, con t
 È importante notare anche come il server riesca a gestire in modo concorrente più client tramite l'uso di un thread dedicato ad ogni client. 
 Una volta aver configurato il socket, infatti,  il server si mette in ascolto per nuove connessioni in entrata ed ogni volta che
 viene stabilita una nuova connessione viene avviato un thread per gestire tale connessione. Di seguito il relativo codice: 
-\pagebreak
+
 \lstinputlisting[caption={Procedura di ascolto del server}, firstline={134}, lastline={172}]{../server.c}
 
 In particolare al rigo 35 notiamo la creazione di un nuovo thread per gestire la connessione in entrata a cui passiamo il descrittore del client di cui si deve occupare.
 Dal rigo 19 al rigo 31, estraiamo invece l'indirizzo ip del client per scriverlo sul file di log.
-\pagebreak
+
 \subsection{Configurazione del client}
 Il cliente invece viene configurato e si connette al server tramite la seguente funzione:
 \lstinputlisting[caption={Configurazione e connessione del client}, firstline={65}, lastline={83}]{../client.c}
@@ -182,7 +187,7 @@ tra client e server.
 \lstinputlisting[caption={Prima comunicazione del server}, label={alg:serverPreLogin}, firstline={228}, lastline={254}]{../server.c}
 Si noti come il server riceva, al rigo 9, il messaggio codificato da parte del client e metta in esecuzione la funzione corrispondente.
 \lstinputlisting[caption={Prima comunicazione del client}, firstline={84}, lastline={102}, label={alg:clientPreLogin} ]{../client.c}
-
+\pagebreak
 \section{Comunicazione durante la partita}
 \paragraph{}
 Una volta effettuato il login, il client potrà iniziare a giocare tramite la funzione play (Vedi \autoref{alg:playServer} e \autoref{alg:playclient})
@@ -239,7 +244,7 @@ Al rigo 3 c'è anche da giustificare la variabile "cambiato" che non è nient'al
 \paragraph{}
 Per completezza si riporta anche la funzionione iniziale del thread di generazione mappa
 \lstinputlisting[caption={Generazione nuova mappa e posizione players}, firstline={441}, lastline={453}]{../server.c}
-\pagebreak
+
 \subsection{Gestione del file di Log}
 \paragraph{}
 Una delle funzionalità del server è quella di creare un file di log con varie informazioni durante la sua esecuzione.
@@ -251,7 +256,7 @@ Riportiamo di seguito il codice:
 Analizzando il codice si può notare l'uso open per aprire in append o, in caso di assenza del file, di creare
 il file di log ed i vari write per scrivere sul suddetto file; possiamo anche notare come la sezione critica, ovvero 
 la scrittura su uno stesso file da parte di più thread, è gestita tramite un mutex.
-\pagebreak
+
 \subsection{Modifica della mappa di gioco da parte di più thread}
 La mappa di gioco è la stessa per tutti i player e c'è il rischio che lo spostamento dei player e/o la raccolta ed il deposito di pacchi possano provocare problemi
 a causa della race condition che si viene a creare tra i thread. Tutto ciò è stato risolto con una serie di semplici accorgimenti implementativi.
@@ -265,7 +270,7 @@ quindi evita che due player si trovino nella stessa poszione.
 \paragraph{}
 Questi due accorgimenti, assieme, evitano qualsiasi tipo di conflitto tra i player: due player non potranno mai trovarsi nella stessa posizione
 e, di conseguenza non potranno mai raccogliere lo stesso pacco o depositare due pacchi nella stessa posizione contemporaneamente.
-\pagebreak
+
 \subsection{Gestione del login}
 La gestione del login è il quarto ed ultimo dettagli implementativo giusdicato abbastanza interessante poichè
 fa uso della system call system() per utilizzare le chiamate di sistema unix studiate durante la prima parte del corso.

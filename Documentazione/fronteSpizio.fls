@@ -94,6 +94,8 @@ INPUT c:/texlive/2019/texmf-dist/tex/latex/caption/caption.sty
 INPUT c:/texlive/2019/texmf-dist/tex/latex/caption/caption.sty
 INPUT c:/texlive/2019/texmf-dist/tex/latex/caption/caption3.sty
 INPUT c:/texlive/2019/texmf-dist/tex/latex/caption/caption3.sty
+INPUT c:/texlive/2019/texmf-dist/tex/latex/geometry/geometry.sty
+INPUT c:/texlive/2019/texmf-dist/tex/latex/geometry/geometry.sty
 INPUT c:/texlive/2019/texmf-dist/tex/latex/xcolor/xcolor.sty
 INPUT c:/texlive/2019/texmf-dist/tex/latex/xcolor/xcolor.sty
 INPUT c:/texlive/2019/texmf-dist/tex/latex/graphics-cfg/color.cfg
@@ -171,6 +173,9 @@ INPUT c:/texlive/2019/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm10.tfm
 INPUT c:/texlive/2019/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm7.tfm
 INPUT c:/texlive/2019/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm5.tfm
 OUTPUT c:/Users/mario/Desktop/progettoLSO/Documentazione/fronteSpizio.toc
+INPUT c:/texlive/2019/texmf-dist/fonts/tfm/adobe/times/ptmro7t.tfm
+INPUT c:/texlive/2019/texmf-dist/fonts/vf/adobe/times/ptmro7t.vf
+INPUT c:/texlive/2019/texmf-dist/fonts/tfm/adobe/times/ptmro8r.tfm
 INPUT c:/texlive/2019/texmf-dist/fonts/vf/adobe/times/ptmb7t.vf
 INPUT c:/texlive/2019/texmf-dist/fonts/tfm/adobe/times/ptmb8r.tfm
 INPUT c:/texlive/2019/texmf-dist/fonts/vf/adobe/times/ptmb7t.vf
@@ -198,12 +203,12 @@ INPUT c:/Users/mario/Desktop/progettoLSO/Documentazione/../server.c
 INPUT c:/Users/mario/Desktop/progettoLSO/Documentazione/../server.c
 INPUT c:/Users/mario/Desktop/progettoLSO/Documentazione/../server.c
 INPUT c:/Users/mario/Desktop/progettoLSO/Documentazione/../server.c
+INPUT c:/Users/mario/Desktop/progettoLSO/Documentazione/../server.c
+INPUT c:/Users/mario/Desktop/progettoLSO/Documentazione/../server.c
 INPUT c:/texlive/2019/texmf-dist/fonts/vf/adobe/times/ptmr7t.vf
 INPUT c:/texlive/2019/texmf-dist/fonts/tfm/adobe/times/ptmr8r.tfm
 INPUT c:/texlive/2019/texmf-dist/fonts/vf/adobe/courier/pcrr7t.vf
 INPUT c:/texlive/2019/texmf-dist/fonts/tfm/adobe/courier/pcrr8r.tfm
-INPUT c:/Users/mario/Desktop/progettoLSO/Documentazione/../server.c
-INPUT c:/Users/mario/Desktop/progettoLSO/Documentazione/../server.c
 INPUT c:/Users/mario/Desktop/progettoLSO/Documentazione/../client.c
 INPUT c:/Users/mario/Desktop/progettoLSO/Documentazione/../client.c
 INPUT c:/Users/mario/Desktop/progettoLSO/Documentazione/../client.c
@@ -299,5 +304,6 @@ INPUT c:/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb
 INPUT c:/texlive/2019/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb
 INPUT c:/texlive/2019/texmf-dist/fonts/type1/urw/courier/ucrro8a.pfb
 INPUT c:/texlive/2019/texmf-dist/fonts/type1/urw/times/utmb8a.pfb
+INPUT c:/texlive/2019/texmf-dist/fonts/type1/urw/times/utmr8a.pfb
 INPUT c:/texlive/2019/texmf-dist/fonts/type1/urw/times/utmr8a.pfb
 INPUT c:/texlive/2019/texmf-dist/fonts/type1/urw/times/utmri8a.pfb

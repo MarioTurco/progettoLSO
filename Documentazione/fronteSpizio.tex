@@ -164,7 +164,7 @@ Al rigo 4 notiamo invece la risoluzione dell'url da parte della funzione ipResol
 \lstinputlisting[caption={Risoluzione url del client}, firstline={249}, lastline={260}]{../client.c}
 Al rigo 4, tramite l'url o l'indirizzo ip viene riempita la struttura hostent da cui poi possiamo estrarre l'indirizzo ip presente nel campo 
 h\_addr\_list  che, in effetti, è un array che contiene i vari indirizzi ip associati a quell'host.\\
-Infine, al rigo 11 decidiamo di ritoranre soltanto il primo indirizzo convertito in ascii.
+Infine, al rigo 11 decidiamo di ritoranre soltanto il primo indirizzo convertito in Internet dot notation.
 \pagebreak
 \subsection{Comunicazione tra client e server}
 La comunicazione tra client e server avviene tramite write e read sul socket.\\

@@ -137,7 +137,9 @@ void play() {
       sleep(1);
     } else {
       if (send == 'e' || send == 'E')
-        printf("Disconnessione in corso...\n"), exit(0);
+        printf("Disconnessione in corso...\n");
+        esciDalServer();
+        exit(0);
       if (send == 't' || send == 'T')
         printTimer();
       else if (send == 'l' || send == 'L')

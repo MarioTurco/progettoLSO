@@ -245,10 +245,13 @@ INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam7.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm10.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm7.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/adobe/times/ptmr7t.tfm
+INPUT /home/mario/Scrivania/progettoLSO/Documentazione/../server.c
 INPUT /usr/share/texlive/texmf-dist/fonts/vf/adobe/times/ptmr7t.vf
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/adobe/times/ptmr8r.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/vf/adobe/times/ptmr7t.vf
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/adobe/times/ptmr8r.tfm
+INPUT /home/mario/Scrivania/progettoLSO/Documentazione/../server.c
+INPUT /home/mario/Scrivania/progettoLSO/Documentazione/../server.c
 INPUT /home/mario/Scrivania/progettoLSO/Documentazione/../client.c
 INPUT /home/mario/Scrivania/progettoLSO/Documentazione/../client.c
 INPUT /home/mario/Scrivania/progettoLSO/Documentazione/../client.c

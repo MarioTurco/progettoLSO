@@ -145,7 +145,7 @@ Di seguito verranno illustrate le modalità di comunicazione tra client e server
 \subsection{Configurazione del server}
 Il socket del server viene configurato con famiglia di protoccoli PF\_NET, con tipo di trasmissione dati SOCK\_STREAM e con protocollo TCP. Mostriamo di seguito il codice sorgente:
 \lstinputlisting[caption= {Configurazione indirizzo del server}, firstline={132}, lastline={139}]{../server.c}
-\lstinputlisting[caption={Configurazione socket del server}, firstline={414}, lastline={428}]{../server.c}
+\lstinputlisting[caption={Configurazione socket del server}, firstline={413}, lastline={428}]{../server.c}
 È importante notare anche come il server riesca a gestire in modo concorrente più client tramite l'uso di un thread dedicato ad ogni client. 
 Una volta aver configurato il socket, infatti,  il server si mette in ascolto per nuove connessioni in entrata ed ogni volta che
 viene stabilita una nuova connessione viene avviato un thread per gestire tale connessione. Di seguito il relativo codice: 
@@ -223,7 +223,7 @@ quando un client raccoglierà il numero massimo di pacchi.
 \paragraph{}
 Subito dopo aver configurato il socket, il server inizia la procedura di avvio del timer (Vedi \autoref{alg:sorgenteServer} rigo 89 e 144) che farà partire un thread il quale si occuperà
 di decrementare e resettare correttamente il timer (definito come variabile globale del server).
-\lstinputlisting[caption={Funzione di gestione del timer}, firstline={386}, lastline={412}]{../server.c}
+\lstinputlisting[caption={Funzione di gestione del timer}, firstline={385}, lastline={412}]{../server.c}
 Analizzando il codice della funzione di modifica del timer si può notare un dettaglio abbastanza interessante: 
 il thread che esegue la funzione del timer è legato ad un altro thread, ovvero quello della generazione di una nuova mappa.
 Oltre ad un thread per gestire ogni client abbiamo quindi anche un altro thread che va a gestire il tempo ,
@@ -233,7 +233,9 @@ Si noti anche come, tramite il pthread\_join, il timer attenda la terminazione d
 se non c'è almeno un giocatore loggato, se questo non è stato posizionato sulla mappa e se questo non ha effettuato la prima mossa.
 Al rigo 2 c'è anche da giustificare la variabile "cambiato" che non è nient'altro che un flag, il quale impedisce al server di stampare in stdout il valore del timer nel caso in cui esso sia stato appena resettato e non sia ancora iniziato il conto alla rovescia. Ciò evita che, prima che inizi il conto alla rovescia, il server continui a stampare il valore massimo del timer }
 \paragraph{}
-
+Per completezza si riporta anche il la funzionione iniziale del thread di generazione mappa
+\lstinputlisting[caption={Generazione nuova mappa e posizione players}, firstline={353}, lastline={364}]{../server.c}
+\pagebreak
 
 \appendix
 \section{Codici sorgente}

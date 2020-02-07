@@ -1,7 +1,7 @@
-#include <arpa/inet.h>
 #include "boardUtility.h"
 #include "list.h"
 #include "parser.h"
+#include <arpa/inet.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <netinet/in.h> //conversioni
@@ -108,13 +108,13 @@ void startListening() {
     }
     printf("Nuovo client connesso\n");
     struct sockaddr_in address;
-    socklen_t size=sizeof(struct sockaddr_in);
-    if(getpeername(clientDesc,(struct sockaddr *)&address,&size)<0){
-        perror("Impossibile ottenere l'indirizzo del client");
-        exit(-1);
+    socklen_t size = sizeof(struct sockaddr_in);
+    if (getpeername(clientDesc, (struct sockaddr *)&address, &size) < 0) {
+      perror("Impossibile ottenere l'indirizzo del client");
+      exit(-1);
     }
     char clientAddr[20];
-    strcpy(clientAddr,inet_ntoa(address.sin_addr));
+    strcpy(clientAddr, inet_ntoa(address.sin_addr));
     Args args = (Args)malloc(sizeof(struct argsToSend));
     args->userName = (char *)calloc(MAX_BUF, 1);
     strcpy(args->userName, clientAddr);
@@ -359,7 +359,6 @@ void *threadGenerazioneMappa(void *args) {
       grigliaDiGiocoConPacchiSenzaOstacoli, packsCoords);
   generaPosizioneOstacoli(grigliaDiGiocoConPacchiSenzaOstacoli,
                           grigliaOstacoliSenzaPacchi);
-  timerCount = TIME_LIMIT_IN_SECONDS;
   printf("Mappa generata\n");
   pthread_exit(NULL);
 }
@@ -543,7 +542,7 @@ void *fileWriter(void *args) {
     pthread_mutex_lock(&LogMutex);
     write(fDes, message, strlen(message));
     pthread_mutex_unlock(&LogMutex);
-  } else if (info->flag == 2){
+  } else if (info->flag == 2) {
     char message[MAX_BUF] = "\"";
     strcat(message, info->userName);
     strcat(message, "\" connected at ");

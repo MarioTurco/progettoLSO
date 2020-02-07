@@ -186,17 +186,16 @@ La funzione play del server consiste di un ciclo infinito nel quale il server in
 \begin{itemize}
   \setlength\itemsep{0.2mm}
   \item La griglia di gioco (Rigo 26)
-  \item Il player con le relative informazioni (Rigo 28 a 31)
-  \item Il timer (Rigo 32 )
-  \item Un messaggio che notifica al client se è iniziato un nuovo turno oppure no
+  \item Il player con le relative informazioni (Righi 28 a 31)
+  \item Un messaggio che notifica al client se è iniziato un nuovo turno oppure no (Righi 40,43,46,53)
 \end{itemize}
-Dopodichè il thread del server rimane in attesa di ricevere l'input del client per spostare il giocaore sulla mappa tramite la relativa funzione. (Rigo 34)
-Oltre questo, la funzione play del server si occupa anche di generare la posizione del player appena entra in partita e generare la nuova posizione del player (Rigo 52 a 66) quando viene effettuato il cambio di mappa (allo scadere del tempo o alla raggiunta del massimo punteggio).
+Dopodichè il thread del server rimane in attesa di ricevere l'input del client per spostare il giocaore sulla mappa tramite la relativa funzione. (Rigo 33) (Vedi \autoref{alg:sorgenteServer} Rigo 430 e \autoref{alg:boardUtility} Rigo 296, 331,367, 405 )
+Oltre questo, la funzione play del server si occupa anche di generare la posizione del player appena entra in partita e generare la nuova posizione  (Righi 56 a 65) quando viene effettuato il cambio di mappa (allo scadere del tempo o al raggiungimento del massimo punteggio).
 
 \subsection{Funzione core del client}
-Dall'altro lato, la funzione play del client, è stata mantenuta volutamente semplice.
-Lo scopo del client è unicamente quello di ricevere i dati forniti dal server, stampare la mappa di gioco e leggere l'input da inviare al server.
-Unica eccezzione è il rigo 30  del client che non richiede la ricezione di ulteriori dati dal server: al rigo 30, infatti si avvia la procedura di disconnessione del client .
+Dall'altro lato, la funzione play del client, è stata mantenuta il puù semplice possibile.
+Lo scopo del client è unicamente quello di ricevere i dati forniti dal server, stampare la mappa di gioco e ed inviare un input al server che rappresenta la volontà del giocatore di muoversi, vedere la lista degli utenti, uscire o stampare il timer.
+Unica eccezzione è il rigo 30  del client che non richiede la ricezione di ulteriori dati dal server: al rigo 30, infatti si avvia la procedura di disconnessione del client (Vedi \autoref{alg:sorgenteClient} \bf{rigo 59}).
 \pagebreak
 \lstinputlisting[caption={Funzione play del server}, label={alg:playServer}, firstline={202}, lastline={269}]{../server.c}
 
@@ -206,18 +205,18 @@ Unica eccezzione è il rigo 30  del client che non richiede la ricezione di ulte
 \section{Codici sorgente}
 Di seguito sono riportati tutti i codici sorgenti integrali del progetto.
 \subsection{Codice sorgente del client}
-\lstinputlisting[caption ={ Codice sorgente del client}]{../client.c}
+\lstinputlisting[caption ={ Codice sorgente del client}, label={alg:sorgenteClient}]{../client.c}
 \subsection{Codice sorgente del server}
-\lstinputlisting[caption ={Codice sorgente del server} ]{../server.c}
+\lstinputlisting[caption ={Codice sorgente del server}, label={alg:sorgenteServer} ]{../server.c}
 \subsection{Codice sorgente boardUtility}
 \lstinputlisting[caption ={Codice header utility del gioco 1} ]{../boardUtility.h}
-\lstinputlisting[caption ={Codice sorgente utility del gioco 1} ]{../boardUtility.c}
+\lstinputlisting[caption ={Codice sorgente utility del gioco 1}, label={alg:boardUtility} ]{../boardUtility.c}
 \subsection{Codice sorgente list}
 \lstinputlisting[caption ={Codice header utility del gioco 2} ]{../list.h}
-\lstinputlisting[caption ={Codice sorgente utility del gioco 2} ]{../list.c}
+\lstinputlisting[caption ={Codice sorgente utility del gioco 2}, label={alg:list} ]{../list.c}
 \subsection{Codice sorgente parser}
 \lstinputlisting[caption ={Codice header utility del gioco 3} ]{../parser.h}
-\lstinputlisting[caption ={Codice sorgente utility del gioco 3} ]{../parser.c}
+\lstinputlisting[caption ={Codice sorgente utility del gioco 3}, label={alg:parser} ]{../parser.c}
 \pagebreak
 \lstlistoflistings
 

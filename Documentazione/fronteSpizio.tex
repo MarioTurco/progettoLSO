@@ -8,6 +8,7 @@
 \usepackage{multicol}
 \usepackage{listings}
 \usepackage{caption}
+%\usepackage[showframe]{geometry}
 \usepackage{xcolor}
 \definecolor{RoyalBlue}{cmyk}{1, 0.50, 0, 0}
 \hypersetup{
@@ -29,6 +30,9 @@
     extendedchars=true,                      %questo rigo ed il successivo servono per usare le lettere à è ù nel codice
     literate={à}{{\'a}}1 {è}{{\'a}}1 {ù}{{\'u}}1 
 }
+\setlength{\headsep}{5pt}
+\setlength{\voffset}{-0.75in}
+
 \renewcommand\lstlistlistingname{Listati}
 \renewcommand\lstlistingname{Listato}
 \def\lstlistingautorefname{List.}
@@ -144,16 +148,16 @@ Una volta effettuata la registrazione dell'utente è possibile effettuare l'acce
 Di seguito verranno illustrate le modalità di comunicazione tra client e server.
 \subsection{Configurazione del server}
 Il socket del server viene configurato con famiglia di protoccoli PF\_NET, con tipo di trasmissione dati SOCK\_STREAM e con protocollo TCP. Mostriamo di seguito il codice sorgente:
-\lstinputlisting[caption= {Configurazione indirizzo del server}, firstline={132}, lastline={139}]{../server.c}
-\lstinputlisting[caption={Configurazione socket del server}, firstline={413}, lastline={428}]{../server.c}
+\lstinputlisting[caption= {Configurazione indirizzo del server}, firstline={173}, lastline={181}]{../server.c}
+\lstinputlisting[caption={Configurazione socket del server}, firstline={517}, lastline={534}]{../server.c}
 È importante notare anche come il server riesca a gestire in modo concorrente più client tramite l'uso di un thread dedicato ad ogni client. 
 Una volta aver configurato il socket, infatti,  il server si mette in ascolto per nuove connessioni in entrata ed ogni volta che
 viene stabilita una nuova connessione viene avviato un thread per gestire tale connessione. Di seguito il relativo codice: 
 \pagebreak
-\lstinputlisting[caption={Procedura di ascolto del server}, firstline={97}, lastline={131}]{../server.c}
+\lstinputlisting[caption={Procedura di ascolto del server}, firstline={134}, lastline={172}]{../server.c}
 
-In particolare al rigo 31 notiamo la creazione di un nuovo thread per gestire la connessione in entrata a cui passiamo il descrittore del client di cui si deve occupare.
-Dal rigo 16 al rigo 27, estraiamo invece l'indirizzo ip del client per scriverlo sul file di log.
+In particolare al rigo 35 notiamo la creazione di un nuovo thread per gestire la connessione in entrata a cui passiamo il descrittore del client di cui si deve occupare.
+Dal rigo 19 al rigo 31, estraiamo invece l'indirizzo ip del client per scriverlo sul file di log.
 \pagebreak
 \subsection{Configurazione del client}
 Il cliente invece viene configurato e si connette al server tramite la seguente funzione:
@@ -175,8 +179,8 @@ Il comportamento del server e del client è determinato da particolari messaggi 
 il server attenderà un messaggio dal client per poter avviare una delle tre possibili procedure, ovvero login, registrazione ed uscita ( rispettivamente codici: 1,2,3).\\
 Di seguito sono riportate le realtive funzioni di gestione che entrano in esecuzione subito dopo aver stabilito la connessione
 tra client e server.
-\lstinputlisting[caption={Prima comunicazione del server}, label={alg:serverPreLogin}, firstline={180}, lastline={201}]{../server.c}
-Si noti come il server riceva, al rigo 7, il messaggio codificato da parte del client e metta in esecuzione la funzione corrispondente.
+\lstinputlisting[caption={Prima comunicazione del server}, label={alg:serverPreLogin}, firstline={228}, lastline={254}]{../server.c}
+Si noti come il server riceva, al rigo 9, il messaggio codificato da parte del client e metta in esecuzione la funzione corrispondente.
 \lstinputlisting[caption={Prima comunicazione del client}, firstline={84}, lastline={102}, label={alg:clientPreLogin} ]{../client.c}
 
 \section{Comunicazione durante la partita}
@@ -187,9 +191,9 @@ che rappresentano il cuore della comunicazione tra client e server.
 La funzione play del server consiste di un ciclo nel quale il server invia al client tre informazioni importanti:
 \begin{itemize}
   \setlength\itemsep{0.2mm}
-  \item La griglia di gioco (Rigo 26)
-  \item Il player con le relative informazioni (Righi 28 a 31)
-  \item Un messaggio che notifica al client se è iniziato un nuovo turno oppure no (Righi 40,43,46,53)
+  \item La griglia di gioco (Rigo 32)
+  \item Il player con le relative informazioni (Righi 34 a 37)
+  \item Un messaggio che notifica al client se è iniziato un nuovo turno oppure no (Righi 52,57,62,71)
 \end{itemize}
 Dopodichè il thread del server rimane in attesa di ricevere l'input del client per spostare il giocaore sulla mappa tramite la relativa funzione. (Rigo 33) (Vedi \autoref{alg:sorgenteServer} Rigo 430 e \autoref{alg:boardUtility} Rigo 296, 331,367, 405 )
 Oltre questo, la funzione play del server si occupa anche di generare la posizione del player appena entra in partita, generare la nuova posizione  (Righi 56 a 65) quando viene effettuato il cambio di mappa ed inviare il tempo rimanente o la lista degli utente loggati su richiesta del client. 
@@ -204,14 +208,14 @@ inizializziamo una nuova matrice temporanea
 a cui aggiungiamo gli ostacoli già scoperti dal client (rigo 24) prima di mandarla al client stesso.
 \\In questo modo ci assicuriamo che ogni client visualizzi soltanto gli ostacoli che ha già scoperto.
 
+
+\lstinputlisting[caption={Funzione play del server}, label={alg:playServer}, firstline={255}, lastline={342}]{../server.c}
+
 \subsection{Funzione core del client}
 Dall'altro lato, la funzione play del client, è stata mantenuta il puù semplice possibile.
 Lo scopo del client è unicamente quello di ricevere i dati forniti dal server, stampare la mappa di gioco e ed inviare un input al server che rappresenta la volontà del giocatore di muoversi, vedere la lista degli utenti, uscire o stampare il timer.
 Unica eccezzione è il rigo 30  del client che non richiede la ricezione di ulteriori dati dal server: al rigo 23, infatti si avvia la procedura di disconnessione del client (Vedi \autoref{alg:sorgenteClient} rigo 59).
-\pagebreak
-\lstinputlisting[caption={Funzione play del server}, label={alg:playServer}, firstline={202}, lastline={269}]{../server.c}
 
-\pagebreak
 \lstinputlisting[caption={Funzione play del client}, label={alg:playclient}, firstline={111}, lastline={149}]{../client.c}
 \pagebreak
 \section{Dettagli implementativi degni di nota}
@@ -221,9 +225,9 @@ In questa sezione verranno trattati alcuni dettagli implementativi da noi giudic
 Lo svolgimento della partite è legato al timer:  ogni round durerà un numero finito di secondi od oppure terminarà
 quando un client raccoglierà il numero massimo di pacchi.
 \paragraph{}
-Subito dopo aver configurato il socket, il server inizia la procedura di avvio del timer (Vedi \autoref{alg:sorgenteServer} rigo 89 e 144) che farà partire un thread il quale si occuperà
+Subito dopo aver configurato il socket, il server inizia la procedura di avvio del timer (Vedi \autoref{alg:sorgenteServer} rigo 126 e 187) che farà partire un thread il quale si occuperà
 di decrementare e resettare correttamente il timer (definito come variabile globale del server).
-\lstinputlisting[caption={Funzione di gestione del timer}, firstline={385}, lastline={412}]{../server.c}
+\lstinputlisting[caption={Funzione di gestione del timer}, firstline={478}, lastline={515}]{../server.c}
 Analizzando il codice della funzione di modifica del timer si può notare un dettaglio abbastanza interessante: 
 il thread che esegue la funzione del timer è legato ad un altro thread, ovvero quello della generazione di una nuova mappa.
 Oltre ad un thread per gestire ogni client abbiamo quindi anche un altro thread che va a gestire il tempo ,
@@ -231,10 +235,10 @@ il quale attraverso un altro thread riesce a controllare la generazione della ma
 Si noti anche come, tramite il pthread\_join, il timer attenda la terminazione del secondo thread prima di resettare il timer e ricominciare il contro alla rovescia.
 \footnote{Altro dettaglio meno importante, ma comunque degno di nota è il fatto che il timer non inizia il conto alla rovescia
 se non c'è almeno un giocatore loggato, se questo non è stato posizionato sulla mappa e se questo non ha effettuato la prima mossa.
-Al rigo 2 c'è anche da giustificare la variabile "cambiato" che non è nient'altro che un flag, il quale impedisce al server di stampare in stdout il valore del timer nel caso in cui esso sia stato appena resettato e non sia ancora iniziato il conto alla rovescia. Ciò evita che, prima che inizi il conto alla rovescia, il server continui a stampare il valore massimo del timer }
+Al rigo 3 c'è anche da giustificare la variabile "cambiato" che non è nient'altro che un flag, il quale impedisce al server di stampare in stdout il valore del timer nel caso in cui esso sia stato appena resettato e non sia ancora iniziato il conto alla rovescia. Ciò evita che, prima che inizi il conto alla rovescia, il server continui a stampare il valore massimo del timer }
 \paragraph{}
 Per completezza si riporta anche la funzionione iniziale del thread di generazione mappa
-\lstinputlisting[caption={Generazione nuova mappa e posizione players}, firstline={353}, lastline={364}]{../server.c}
+\lstinputlisting[caption={Generazione nuova mappa e posizione players}, firstline={441}, lastline={453}]{../server.c}
 \pagebreak
 \subsection{Gestione del file di Log}
 \paragraph{}
@@ -242,7 +246,7 @@ Una delle funzionalità del server è quella di creare un file di log con varie 
 Riteniamo l'implmentazione di questa funzione piuttosto interessante poichè, oltre ad essere una funzione gestita tramite un thread, fa uso sia di molte chiamate di sistema studiate durante il corso 
 ed utilizza anche il mutex per risolvere eventuali race condition.
 Riportiamo di seguito il codice:
-\lstinputlisting[caption={Funzione di log}, firstline={645}, lastline={683}]{../server.c}
+\lstinputlisting[caption={Funzione di log}, firstline={683}, lastline={721}]{../server.c}
 \paragraph{}
 Analizzando il codice si può notare l'uso open per aprire in append o, in caso di assenza del file, di creare
 il file di log ed i vari write per scrivere sul suddetto file; possiamo anche notare come la sezione critica, ovvero 
@@ -277,7 +281,7 @@ file temporaneo "tmp".\\ Dopodichè andiamo a verificare la dimensione del file 
 la dimensione è maggiore di 0 allora significa che è il nome esisteva nella lista dei client registrati ed è stato quindi trascritto in tmp
 altrimenti significa che il nome non era presente nella lista dei player registrati.
 A questo punto eliminiamo il file temporaneo e restituiamo il valore appropriato.
-\paragraph{}
+\paragraph{}\vspace{0.5mm}
 \lstinputlisting[caption={"Gestion del login 2"}, firstline={53}, lastline={75}]{../parser.c}
 La funziona validateLogin invece, tramite concatenazioni successive crea ed esegue il seguente comando:
 \begin{verbatim}
@@ -287,6 +291,7 @@ Verificando se la coppia nome password sia presente nel file degli utenti regist
 Ancora una volta si va a verificare tramite la struttura stat se è stato trascritto qualcosa oppure no, ritornando 
 il valore appropriato.
 \appendix
+\pagebreak
 \section{Codici sorgente}
 Di seguito sono riportati tutti i codici sorgenti integrali del progetto.
 \subsection{Codice sorgente del client}

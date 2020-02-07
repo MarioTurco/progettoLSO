@@ -4,3 +4,5 @@
 \contentsline {lstlisting}{\numberline {4}Risoluzione url del client}{3}{lstlisting.4}% 
 \contentsline {lstlisting}{\numberline {5}Prima comunicazione del server}{4}{lstlisting.5}% 
 \contentsline {lstlisting}{\numberline {6}Prima comunicazione del client}{4}{lstlisting.6}% 
+\contentsline {lstlisting}{\numberline {7}Funzione play del server}{6}{lstlisting.7}% 
+\contentsline {lstlisting}{\numberline {8}Funzione play del client}{7}{lstlisting.8}% 

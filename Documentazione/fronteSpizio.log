@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2020.2.4)  7 FEB 2020 00:58
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2020.2.4)  7 FEB 2020 01:23
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -471,37 +471,42 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.2}) has b
 <to be read again> 
                    \relax 
 l.189 \subsection
-                 {Configurazione del client} [2] [3]
-Underfull \hbox (badness 10000) in paragraph at lines 287--289
-
- []
-
-[4] (/home/mario/Scrivania/progettoLSO/Documentazione/fronteSpizio.lol)
+                 {Configurazione del client} [2] [3] [4]
+LaTeX Font Info:    Try loading font information for OMS+ptm on input line 292.
+ (/usr/share/texlive/texmf-dist/tex/latex/psnfss/omsptm.fd
+File: omsptm.fd 
+)
+LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <10> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 292.
+ [5]
+LaTeX Font Info:    Font shape `OT1/pcr/m/it' in size <7> not available
+(Font)              Font shape `OT1/pcr/m/sl' tried instead on input line 324.
+ [6] (/home/mario/Scrivania/progettoLSO/Documentazione/fronteSpizio.lol)
 \tf@lol=\write6
 \openout6 = `fronteSpizio.lol'.
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 291.
- [5]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 291.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 414.
+ [7]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 414.
  (/home/mario/Scrivania/progettoLSO/Documentazione/fronteSpizio.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 291.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 291.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 414.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 414.
 Package rerunfilecheck Info: File `fronteSpizio.out' has not changed.
 (rerunfilecheck)             Checksum: 765AE42C8CC26F8DE0C5DFDE2265E1CB;749.
  ) 
 Here is how much of TeX's memory you used:
- 9940 strings out of 492609
- 139078 string characters out of 6131463
- 554446 words of memory out of 5000000
- 13582 multiletter control sequences out of 15000+600000
- 26913 words of font info for 53 fonts, out of 8000000 for 9000
+ 10164 strings out of 492609
+ 142490 string characters out of 6131463
+ 653446 words of memory out of 5000000
+ 13690 multiletter control sequences out of 15000+600000
+ 27530 words of font info for 55 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  32i,5n,49p,798b,1195s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on /home/mario/Scrivania/progettoLSO/Documentazione/fronteSpizio.pdf (8 pages, 98485 bytes).
+{/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/courier/ucrro8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on /home/mario/Scrivania/progettoLSO/Documentazione/fronteSpizio.pdf (10 pages, 121876 bytes).
 PDF statistics:
- 291 PDF objects out of 1000 (max. 8388607)
- 272 compressed objects within 3 object streams
- 136 named destinations out of 1000 (max. 500000)
+ 446 PDF objects out of 1000 (max. 8388607)
+ 421 compressed objects within 5 object streams
+ 247 named destinations out of 1000 (max. 500000)
  94 words of extra memory for PDF output out of 10000 (max. 10000000)
 

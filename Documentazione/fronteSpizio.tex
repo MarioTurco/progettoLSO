@@ -284,8 +284,131 @@ Si noti come il server riceva, al rigo 7, il messaggio codificato da parte del c
     }
   \end{lstlisting}
 \section{Comunicazione durante la partita}
-Una volta effettuato il login, il client potrà iniziare a giocare tramite la funzione play 
-(Rigo 15 del \autoref{alg:clientPreLogin}  e rigo 12 del \autoref{alg:serverPreLogin}) che rappresentano il cuore della comunicazione tra client e server.\\
-
+Una volta effettuato il login, il client potrà iniziare a giocare tramite la funzione play (Vedi \autoref{alg:playServer} e \autoref{alg:playclient})
+che rappresentano il cuore della comunicazione tra client e server.\\
+La funzione play del server consiste di un ciclo infinito nel quale il server invia al client tre informazioni importanti:
+\begin{itemize}
+  \setlength\itemsep{0.2mm}
+  \item La griglia di gioco (Rigo 26)
+  \item Il player con le relative informazioni (Rigo 28 a 31)
+  \item Il timer (Rigo 32 )
+\end{itemize}
+Dopodichè il thread del server rimane in attesa di ricevere l'input del client per spostare il giocaore sulla mappa tramite la relativa funzione. (Rigo 34)
+\\Oltre questo, la funzione play del server si occupa anche di generare la nuova posizione del player (Rigo 52 a 66)quando viene effettuato il cambio di mappa (allo scadere del tempo o alla raggiunta del massimo punteggio).
+\pagebreak
+\begin{lstlisting}[caption=Funzione play del server, label=alg:playServer]
+  void play(int clientDesc, char name[]) {
+    int true = 1;
+    int turnoFinito = 0;
+    int turnoGiocatore = turno;
+    int posizione[2];
+    int destinazione[2] = {-1, -1};
+    PlayerStats giocatore = initStats(destinazione, 0, posizione, 0);
+    Obstacles listaOstacoli = NULL;
+    char inputFromClient;
+    if (timer != 0) {
+      inserisciPlayerNellaGrigliaInPosizioneCasuale(
+          grigliaDiGiocoConPacchiSenzaOstacoli, grigliaOstacoliSenzaPacchi,
+          giocatore->position);
+      playerGenerati++;
+    }
+    while (true) {
+      if (clientDisconnesso(clientDesc)) {
+        freeObstacles(listaOstacoli);
+        disconnettiClient(clientDesc);
+        return;
+      }
+      char grigliaTmp[ROWS][COLUMNS];
+      clonaGriglia(grigliaTmp, grigliaDiGiocoConPacchiSenzaOstacoli);
+      mergeGridAndList(grigliaTmp, listaOstacoli);
+      // invia la griglia
+      write(clientDesc, grigliaTmp, sizeof(grigliaTmp));
+      // invia la struttura del player
+      write(clientDesc, giocatore->deploy, sizeof(giocatore->deploy));
+      write(clientDesc, giocatore->position, sizeof(giocatore->position));
+      write(clientDesc, &giocatore->score, sizeof(giocatore->score));
+      write(clientDesc, &giocatore->hasApack, sizeof(giocatore->hasApack));
+      sendTimerValue(clientDesc);
+      // legge l'input
+      if (read(clientDesc, &inputFromClient, sizeof(char)) > 0)
+        numMosse++;
+      if (inputFromClient == 'e' || inputFromClient == 'E') {
+        freeObstacles(listaOstacoli);
+        listaOstacoli = NULL;
+        disconnettiClient(clientDesc);
+      } else if (inputFromClient == 't' || inputFromClient == 'T') {
+        write(clientDesc, &turnoFinito, sizeof(int));
+        sendTimerValue(clientDesc);
+      } else if (inputFromClient == 'l' || inputFromClient == 'L') {
+        write(clientDesc, &turnoFinito, sizeof(int));
+        sendPlayerList(clientDesc);
+      } else if (turnoGiocatore == turno) {
+        write(clientDesc, &turnoFinito, sizeof(int));
+        giocatore =
+            gestisciInput(grigliaDiGiocoConPacchiSenzaOstacoli,
+                          grigliaOstacoliSenzaPacchi, inputFromClient, giocatore,
+                          &listaOstacoli, deployCoords, packsCoords, name);
+      } else {
+        turnoFinito = 1;
+        write(clientDesc, &turnoFinito, sizeof(int));
+        freeObstacles(listaOstacoli);
+        listaOstacoli = NULL;
+        inserisciPlayerNellaGrigliaInPosizioneCasuale(
+            grigliaDiGiocoConPacchiSenzaOstacoli, grigliaOstacoliSenzaPacchi,
+            giocatore->position);
+        giocatore->score = 0;
+        giocatore->hasApack = 0;
+        giocatore->deploy[0] = -1;
+        giocatore->deploy[1] = -1;
+        turnoGiocatore = turno;
+        turnoFinito = 0;
+        playerGenerati++;
+      }
+    }
+  }  
+\end{lstlisting}
+\pagebreak
+\begin{lstlisting}[caption=Funzione play del client, label=alg:playclient]
+  void play() {
+    PlayerStats giocatore = NULL;
+    int score, deploy[2], position[2], timer;
+    int turnoFinito = 0;
+    int exitFlag = 0, hasApack = 0;
+    while (!exitFlag) {
+      if (serverCaduto())
+        serverCrashHandler();
+      if (read(socketDesc, grigliaDiGioco, sizeof(grigliaDiGioco)) < 1)
+        printf("Impossibile comunicare con il server\n"), exit(-1);
+      if (read(socketDesc, deploy, sizeof(deploy)) < 1)
+        printf("Impossibile comunicare con il server\n"), exit(-1);
+      if (read(socketDesc, position, sizeof(position)) < 1)
+        printf("Impossibile comunicare con il server\n"), exit(-1);
+      if (read(socketDesc, &score, sizeof(score)) < 1)
+        printf("Impossibile comunicare con il server\n"), exit(-1);
+      if (read(socketDesc, &hasApack, sizeof(hasApack)) < 1)
+        printf("Impossibile comunicare con il server\n"), exit(-1);
+      timer = getTimer();
+      giocatore = initStats(deploy, score, position, hasApack);
+      printGrid(grigliaDiGioco, giocatore);
+      char send = getUserInput();
+      write(socketDesc, &send, sizeof(char));
+      read(socketDesc, &turnoFinito, sizeof(turnoFinito));
+      if (turnoFinito) {
+        system("clear");
+        printf("Turno finito\n");
+        sleep(1);
+      } else {
+        if (send == 'e' || send == 'E')
+          printf("Disconnessione in corso...\n"), exit(0);
+        if (send == 't' || send == 'T')
+          printTimer();
+        else if (send == 'l' || send == 'L')
+          printPlayerList();
+      }
+    }
+  }    
+\end{lstlisting}
 \lstlistoflistings
+
+
 \end{document}

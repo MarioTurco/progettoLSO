@@ -101,6 +101,9 @@ pthread_mutex_t LogMutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t RegMutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t PlayerMutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t MatrixMutex = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t PlayerGeneratiMutex = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t ScoreMassimoMutex = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t numMosseMutex = PTHREAD_MUTEX_INITIALIZER;
 
 int main(int argc, char **argv)
 {
@@ -200,8 +203,7 @@ int tryLogin(int clientDesc, char name[])
   if (validateLogin(userName, password, users) &&
       !isAlreadyLogged(onLineUsers, userName))
   {
-    ret = 1;
-    numeroClientLoggati++;
+    ret = 1; 
     write(clientDesc, "y", 1);
     strcpy(name, userName);
     Args args = (Args)malloc(sizeof(struct argsToSend));
@@ -212,6 +214,7 @@ int tryLogin(int clientDesc, char name[])
     pthread_create(&tid, NULL, fileWriter, (void *)args);
     printf("Nuovo client loggato, client loggati : %d\n", numeroClientLoggati);
     onLineUsers = addPlayer(onLineUsers, userName, clientDesc);
+    numeroClientLoggati++;
     pthread_mutex_unlock(&PlayerMutex);
     printPlayers(onLineUsers);
     printf("\n");
@@ -264,7 +267,9 @@ void play(int clientDesc, char name[])
     inserisciPlayerNellaGrigliaInPosizioneCasuale(
         grigliaDiGiocoConPacchiSenzaOstacoli, grigliaOstacoliSenzaPacchi,
         giocatore->position);
+    pthread_mutex_lock(&PlayerGeneratiMutex);
     playerGenerati++;
+    pthread_mutex_unlock(&PlayerGeneratiMutex);
   }
   while (true)
   {
@@ -285,8 +290,11 @@ void play(int clientDesc, char name[])
     write(clientDesc, &giocatore->score, sizeof(giocatore->score));
     write(clientDesc, &giocatore->hasApack, sizeof(giocatore->hasApack));
     // legge l'input
-    if (read(clientDesc, &inputFromClient, sizeof(char)) > 0)
+    if (read(clientDesc, &inputFromClient, sizeof(char)) > 0){
+      pthread_mutex_lock(&numMosseMutex);
       numMosse++;
+      pthread_mutex_unlock(&numMosseMutex);
+    }
     if (inputFromClient == 'e' || inputFromClient == 'E')
     {
       freeObstacles(listaOstacoli);
@@ -326,7 +334,9 @@ void play(int clientDesc, char name[])
       giocatore->deploy[1] = -1;
       turnoGiocatore = turno;
       turnoFinito = 0;
+      pthread_mutex_lock(&PlayerGeneratiMutex);
       playerGenerati++;
+      pthread_mutex_unlock(&PlayerGeneratiMutex);
     }
   }
 }
@@ -373,9 +383,9 @@ void clientCrashHandler(int signalNum)
 }
 void disconnettiClient(int clientDescriptor)
 {
+  pthread_mutex_lock(&PlayerMutex);
   if (numeroClientLoggati > 0)
     numeroClientLoggati--;
-  pthread_mutex_lock(&PlayerMutex);
   onLineUsers = removePlayer(onLineUsers, clientDescriptor);
   pthread_mutex_unlock(&PlayerMutex);
   printPlayers(onLineUsers);
@@ -489,8 +499,12 @@ void *timer(void *args)
     }
     if (timerCount == 0 || scoreMassimo == packageLimitNumber)
     {
+      pthread_mutex_lock(&PlayerGeneratiMutex);
       playerGenerati = 0;
+      pthread_mutex_unlock(&PlayerGeneratiMutex);
+      pthread_mutex_lock(&numMosseMutex);
       numMosse = 0;
+      pthread_mutex_unlock(&numMosseMutex);
       printf("Reset timer e generazione nuova mappa..\n");
       startProceduraGenrazioneMappa();
       pthread_join(tidGeneratoreMappa, NULL);
@@ -581,8 +595,11 @@ PlayerStats gestisciC(char grigliaDiGioco[ROWS][COLUMNS], PlayerStats giocatore,
       args->flag = 1;
       pthread_create(&tid, NULL, fileWriter, (void *)args);
       giocatore->score += 10;
-      if (giocatore->score > scoreMassimo)
+      if (giocatore->score > scoreMassimo){
+        pthread_mutex_lock(&ScoreMassimoMutex);
         scoreMassimo = giocatore->score;
+        pthread_mutex_unlock(&ScoreMassimoMutex);
+      }
       giocatore->deploy[0] = -1;
       giocatore->deploy[1] = -1;
       giocatore->hasApack = 0;

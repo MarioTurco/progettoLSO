@@ -1,0 +1,35 @@
+\babel@toc {italian}{}
+\babel@toc {italian}{}
+\contentsline {section}{\numberline {1}Istruzioni preliminari}{1}{section.1}% 
+\contentsline {subsection}{\numberline {1.1}Modalit\IeC {\`a} di compilazione}{1}{subsection.1.1}% 
+\contentsline {paragraph}{}{1}{section*.2}% 
+\contentsline {section}{\numberline {2}Guida all'uso }{1}{section.2}% 
+\contentsline {subsection}{\numberline {2.1}Server}{1}{subsection.2.1}% 
+\contentsline {paragraph}{}{1}{section*.3}% 
+\contentsline {subsection}{\numberline {2.2}Client}{1}{subsection.2.2}% 
+\contentsline {paragraph}{}{1}{section*.4}% 
+\contentsline {section}{\numberline {3}Comunicazione tra client e server}{2}{section.3}% 
+\contentsline {subsection}{\numberline {3.1}Configurazione del server}{2}{subsection.3.1}% 
+\contentsline {subsection}{\numberline {3.2}Configurazione del client}{4}{subsection.3.2}% 
+\contentsline {subsection}{\numberline {3.3}Comunicazione tra client e server}{5}{subsection.3.3}% 
+\contentsline {subsubsection}{\numberline {3.3.1}Esempio: la prima comunicazione}{5}{subsubsection.3.3.1}% 
+\contentsline {section}{\numberline {4}Comunicazione durante la partita}{6}{section.4}% 
+\contentsline {paragraph}{}{6}{section*.5}% 
+\contentsline {subsection}{\numberline {4.1}Funzione core del server}{6}{subsection.4.1}% 
+\contentsline {paragraph}{}{6}{section*.6}% 
+\contentsline {subsection}{\numberline {4.2}Funzione core del client}{6}{subsection.4.2}% 
+\contentsline {section}{\numberline {5}Dettagli implementativi degni di nota}{9}{section.5}% 
+\contentsline {subsection}{\numberline {5.1}Timer}{9}{subsection.5.1}% 
+\contentsline {paragraph}{}{9}{section*.7}% 
+\contentsline {paragraph}{}{9}{section*.8}% 
+\contentsline {paragraph}{}{10}{section*.9}% 
+\contentsline {subsection}{\numberline {5.2}Gestione del file di Log}{11}{subsection.5.2}% 
+\contentsline {paragraph}{}{11}{section*.10}% 
+\contentsline {paragraph}{}{11}{section*.11}% 
+\contentsline {subsection}{\numberline {5.3}Modifica della mappa di gioco da parte di pi\IeC {\`u} thread}{11}{subsection.5.3}% 
+\contentsline {section}{\numberline {A}Codici sorgente}{12}{appendix.Alph1}% 
+\contentsline {subsection}{\numberline {A.1}Codice sorgente del client}{12}{subsection.Alph1.1}% 
+\contentsline {subsection}{\numberline {A.2}Codice sorgente del server}{16}{subsection.Alph1.2}% 
+\contentsline {subsection}{\numberline {A.3}Codice sorgente boardUtility}{28}{subsection.Alph1.3}% 
+\contentsline {subsection}{\numberline {A.4}Codice sorgente list}{33}{subsection.Alph1.4}% 
+\contentsline {subsection}{\numberline {A.5}Codice sorgente parser}{36}{subsection.Alph1.5}% 

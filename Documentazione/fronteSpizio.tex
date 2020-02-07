@@ -153,6 +153,7 @@ viene stabilita una nuova connessione viene avviato un thread per gestire tale c
 \lstinputlisting[caption={Procedura di ascolto del server}, firstline={97}, lastline={131}]{../server.c}
 
 In particolare al rigo 31 notiamo la creazione di un nuovo thread per gestire la connessione in entrata a cui passiamo il descrittore del client di cui si deve occupare.
+Dal rigo 16 al rigo 27, estraiamo invece l'indirizzo ip del client per scriverlo sul file di log.
 \pagebreak
 \subsection{Configurazione del client}
 Il cliente invece viene configurato e si connette al server tramite la seguente funzione:

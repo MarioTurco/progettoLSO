@@ -1,9 +1,27 @@
 \babel@toc {italian}{}
 \babel@toc {italian}{}
-\contentsline {section}{\numberline {1}Modalit\IeC {\`a} di compilazione}{1}{section.1}% 
+\contentsline {section}{\numberline {1}Istruzioni preliminari}{1}{section.1}% 
+\contentsline {subsection}{\numberline {1.1}Modalit\IeC {\`a} di compilazione}{1}{subsection.1.1}% 
 \contentsline {paragraph}{}{1}{section*.2}% 
 \contentsline {section}{\numberline {2}Guida all'uso }{1}{section.2}% 
 \contentsline {subsection}{\numberline {2.1}Server}{1}{subsection.2.1}% 
 \contentsline {paragraph}{}{1}{section*.3}% 
 \contentsline {subsection}{\numberline {2.2}Client}{1}{subsection.2.2}% 
 \contentsline {paragraph}{}{1}{section*.4}% 
+\contentsline {section}{\numberline {3}Comunicazione tra client e server}{2}{section.3}% 
+\contentsline {subsection}{\numberline {3.1}Configurazione del server}{2}{subsection.3.1}% 
+\contentsline {subsection}{\numberline {3.2}Configurazione del client}{3}{subsection.3.2}% 
+\contentsline {subsection}{\numberline {3.3}Comunicazione tra client e server}{4}{subsection.3.3}% 
+\contentsline {subsubsection}{\numberline {3.3.1}Esempio: la prima comunicazione}{4}{subsubsection.3.3.1}% 
+\contentsline {section}{\numberline {4}Comunicazione durante la partita}{5}{section.4}% 
+\contentsline {subsection}{\numberline {4.1}Funzione core del server}{5}{subsection.4.1}% 
+\contentsline {subsection}{\numberline {4.2}Funzione core del client}{5}{subsection.4.2}% 
+\contentsline {section}{\numberline {A}Codici sorgente}{7}{appendix.Alph1}% 
+\contentsline {subsection}{\numberline {A.1}Codice sorgente del client}{7}{subsection.Alph1.1}% 
+\contentsline {subsection}{\numberline {A.2}server.c}{12}{subsection.Alph1.2}% 
+\contentsline {subsection}{\numberline {A.3}boardUtility.c}{12}{subsection.Alph1.3}% 
+\contentsline {subsection}{\numberline {A.4}boardUtility.h}{12}{subsection.Alph1.4}% 
+\contentsline {subsection}{\numberline {A.5}lsit.c}{12}{subsection.Alph1.5}% 
+\contentsline {subsection}{\numberline {A.6}lsit.h}{12}{subsection.Alph1.6}% 
+\contentsline {subsection}{\numberline {A.7}parser.c}{12}{subsection.Alph1.7}% 
+\contentsline {subsection}{\numberline {A.8}parser.h}{12}{subsection.Alph1.8}% 

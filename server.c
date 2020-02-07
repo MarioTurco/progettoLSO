@@ -21,9 +21,7 @@ struct argsToSend {
   char *userName;
   int flag;
 };
-
 typedef struct argsToSend *Args;
-
 void sendPlayerList(int clientDesc);
 PlayerStats gestisciC(char grigliaDiGioco[ROWS][COLUMNS], PlayerStats giocatore,
                       Point deployCoords[], Point packsCoords[], char name[]);
@@ -54,7 +52,7 @@ struct sockaddr_in configuraIndirizzo();
 void startListening();
 int clientDisconnesso(int clientSocket);
 void play(int clientDesc, char name[]);
-/*//////////////////////////////////*/
+
 char grigliaDiGiocoConPacchiSenzaOstacoli[ROWS][COLUMNS];
 char grigliaOstacoliSenzaPacchi[ROWS][COLUMNS];
 int numeroClientLoggati = 0;
@@ -73,10 +71,8 @@ Point packsCoords[numberOfPackages];
 pthread_mutex_t LogMutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t RegMutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t PlayerMutex = PTHREAD_MUTEX_INITIALIZER;
-/*///////////////////////////////*/
 
 int main(int argc, char **argv) {
-
   if (argc != 2) {
     printf("Wrong parameters number(Usage: ./server usersFile)\n");
     exit(-1);
@@ -84,15 +80,12 @@ int main(int argc, char **argv) {
     printf("Cannot use the Log file as a UserList \n");
     exit(-1);
   }
-
   users = argv[1];
   struct sockaddr_in mio_indirizzo = configuraIndirizzo();
   configuraSocket(mio_indirizzo);
-
   signal(SIGPIPE, clientCrashHandler);
   signal(SIGINT, quitServer);
   signal(SIGHUP, quitServer);
-
   startTimer();
   inizializzaGiocoSenzaPlayer(grigliaDiGiocoConPacchiSenzaOstacoli,
                               grigliaOstacoliSenzaPacchi, packsCoords);
@@ -101,7 +94,6 @@ int main(int argc, char **argv) {
   startListening();
   return 0;
 }
-
 void startListening() {
   pthread_t tid;
   int clientDesc;
@@ -115,7 +107,6 @@ void startListening() {
       exit(-1);
     }
     printf("Nuovo client connesso\n");
-    // creo un puntatore per il socket del client e lo passo al thread
     puntClientDesc = (int *)malloc(sizeof(int));
     *puntClientDesc = clientDesc;
     pthread_create(&tid, NULL, gestisci, (void *)puntClientDesc);
@@ -123,7 +114,6 @@ void startListening() {
   close(clientDesc);
   quitServer();
 }
-
 struct sockaddr_in configuraIndirizzo() {
   struct sockaddr_in mio_indirizzo;
   mio_indirizzo.sin_family = AF_INET;
@@ -132,13 +122,10 @@ struct sockaddr_in configuraIndirizzo() {
   printf("Indirizzo socket configurato\n");
   return mio_indirizzo;
 }
-
-/* Genera una nuova mappa appena il timer arriva a 0*/
 void startProceduraGenrazioneMappa() {
   printf("Inizio procedura generazione mappa\n");
   pthread_create(&tidGeneratoreMappa, NULL, threadGenerazioneMappa, NULL);
 }
-/* Inizia un count down*/
 void startTimer() {
   printf("Thread timer avviato\n");
   pthread_create(&tidTimer, NULL, timer, NULL);
@@ -151,7 +138,6 @@ int tryLogin(int clientDesc, char name[]) {
   read(clientDesc, &dimPwd, sizeof(int));
   read(clientDesc, userName, dimName);
   read(clientDesc, password, dimPwd);
-
   int ret = 0;
   if (validateLogin(userName, password, users) &&
       !isAlreadyLogged(onLineUsers, userName)) {
@@ -176,7 +162,6 @@ int tryLogin(int clientDesc, char name[]) {
   }
   return ret;
 }
-
 void *gestisci(void *descriptor) {
   int bufferReceive[2] = {1};
   int client_sd = *(int *)descriptor;
@@ -184,25 +169,18 @@ void *gestisci(void *descriptor) {
   char name[MAX_BUF];
   while (continua) {
     read(client_sd, bufferReceive, sizeof(bufferReceive));
-    if (bufferReceive[0] == 2) {
+    if (bufferReceive[0] == 2)
       registraClient(client_sd);
-    }
-
-    else if (bufferReceive[0] == 1) {
+    else if (bufferReceive[0] == 1)
       if (tryLogin(client_sd, name)) {
         play(client_sd, name);
         continua = 0;
+      } else if (bufferReceive[0] == 3)
+        disconnettiClient(client_sd);
+      else {
+        printf("Input invalido, uscita...\n");
+        disconnettiClient(client_sd);
       }
-    } else if (bufferReceive[0] == 3) {
-      disconnettiClient(client_sd);
-      break;
-    }
-    // TODO Aggiungere un opzione per stampare tutte le istruzioni
-    else {
-      printf("Input invalido, uscita...\n");
-      disconnettiClient(client_sd);
-      break;
-    }
   }
   pthread_exit(0);
 }

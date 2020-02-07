@@ -144,92 +144,24 @@ Una volta effettuata la registrazione dell'utente è possibile effettuare l'acce
 Di seguito verranno illustrate le modalità di comunicazione tra client e server.
 \subsection{Configurazione del server}
 Il socket del server viene configurato con famiglia di protoccoli PF\_NET, con tipo di trasmissione dati SOCK\_STREAM e con protocollo TCP. Mostriamo di seguito il codice sorgente:
-\begin{lstlisting}[caption={Configurazione socket del server}]
-void configuraSocket(struct sockaddr_in mio_indirizzo) {
-  if ((socketDesc = socket(PF_INET, SOCK_STREAM, 0)) < 0) {
-    perror("Impossibile creare socket");
-    exit(-1);
-  }
-  if (setsockopt(socketDesc, SOL_SOCKET, SO_REUSEADDR, &(int){1}, sizeof(int)) < 0)
-    perror("Impossibile impostare il riutilizzo dell'indirizzo ip e della "
-           "porta\n");
-  if ((bind(socketDesc, (struct sockaddr *)&mio_indirizzo,
-            sizeof(mio_indirizzo))) < 0) {
-    perror("Impossibile effettuare bind");
-    exit(-1);
-  }
-}
-\end{lstlisting}
+\lstinputlisting[caption= {Configurazione indirizzo del server}, firstline={117}, lastline={124}]{../server.c}
+\lstinputlisting[caption={Configurazione socket del server}, firstline={400}, lastline={414}]{../server.c}
 È importante notare anche come il server riesca a gestire in modo concorrente più client tramite l'uso di un thread dedicato ad ogni client. 
 Una volta aver configurato il socket, infatti,  il server si mette in ascolto per nuove connessioni in entrata ed ogni volta che
 viene stabilita una nuova connessione viene avviato un thread per gestire tale connessione. Di seguito il relativo codice: 
-\begin{lstlisting}[caption={Procedura di ascolto del server}]
-void startListening()
-{
-    pthread_t tid;
-    int clientDesc;
-    int *puntClientDesc;
-    while (1)
-    {
-      if (listen(socketDesc, 10) < 0)
-        perror("Impossibile mettersi in ascolto"), exit(-1);
-      printf("In ascolto..\n");
-      if ((clientDesc = accept(socketDesc, NULL, NULL)) < 0)
-      {
-        perror("Impossibile effettuare connessione\n");
-        exit(-1);
-      }
-      printf("Nuovo client connesso\n");
-      puntClientDesc = (int *)malloc(sizeof(int));
-      *puntClientDesc = clientDesc;
-      pthread_create(&tid, NULL, gestisci, (void *)puntClientDesc);
-    }
-    close(clientDesc);
-    quitServer();
-}
-\end{lstlisting}
+%97 116
+\lstinputlisting[caption={Procedura di ascolto del server}, firstline={97}, lastline={116}]{../server.c}
+
 In particolare al rigo 19 notiamo la creazione di un nuovo thread per gestire la connessione in entrata a cui passiamo il descrittore del client di cui si deve occupare.
 \pagebreak
 \subsection{Configurazione del client}
 Il cliente invece viene configurato e si connette al server tramite la seguente funzione:
-\begin{lstlisting}[caption={Configurazione e connessione del client}]
-int connettiAlServer(char **argv) {
-    char *indirizzoServer;
-    uint16_t porta = strtoul(argv[2], NULL, 10);
-    indirizzoServer = ipResolver(argv);
-    struct sockaddr_in mio_indirizzo;
-    mio_indirizzo.sin_family = AF_INET;
-    mio_indirizzo.sin_port = htons(porta);
-    inet_aton(indirizzoServer, &mio_indirizzo.sin_addr);
-    if ((socketDesc = socket(PF_INET, SOCK_STREAM, 0)) < 0)
-      perror("Impossibile creare socket"), exit(-1);
-    else
-      printf("Socket creato\n");
-    if (connect(socketDesc, (struct sockaddr *)&mio_indirizzo,
-                sizeof(mio_indirizzo)) < 0)
-      perror("Impossibile connettersi"), exit(-1);
-    else
-      printf("Connesso a %s\n", indirizzoServer);
-    return socketDesc;
-  }
-\end{lstlisting}
+\lstinputlisting[caption={Configurazione e connessione del client}, firstline={65}, lastline={83}]{../client.c}
+
 Si noti come al rigo 9 viene configurato il socket ed al rigo 13 viene invece effettuato il tentativo di connessione al server.\\
 Al rigo 3 invece viene convertita la porta inserita in input (argv$[$2$]$) dal tipo stringa al tipo della porta (uint16\_t ovvero unsigned long integer).\\
 Al rigo 4 notiamo invece la risoluzione dell'url da parte della funzione ipResolver che è riportata di seguito:
-\begin{lstlisting}[caption={Risoluzione url del client}]
-char *ipResolver(char **argv) {
-    char *ipAddress;
-    struct hostent *hp;
-    hp = gethostbyname(argv[1]);
-    if (!hp) {
-            perror("Impossibile risolvere l'indirizzo ip\n");
-            sleep(1);
-            exit(-1);
-        }
-    printf("Address:\t%s\n", inet_ntoa(*(struct in_addr *)hp->h_addr_list[0]));
-    return inet_ntoa(*(struct in_addr *)hp->h_addr_list[0]);
-}
-\end{lstlisting}
+\lstinputlisting[caption={Risoluzione url del client}, firstline={249}, lastline={260}]{../client.c}
 Al rigo 4, tramite l'url o l'indirizzo ip viene riempita la struttura hostent da cui poi possiamo estrarre l'indirizzo ip presente nel campo 
 h\_addr\_list  che, in effetti, è un array che contiene i vari indirizzi ip associati a quell'host.\\
 Infine, al rigo 11 decidiamo di ritoranre soltanto il primo indirizzo convertito in ascii.
@@ -265,7 +197,7 @@ Dopodichè il thread del server rimane in attesa di ricevere l'input del client 
 \subsection{Funzione core del client}
 Dall'altro lato, la funzione play del client, è stata mantenuta volutamente semplice.
 Lo scopo del client è unicamente quello di ricevere i dati forniti dal server, stampare la mappa di gioco e leggere l'input da inviare al server.
-Unica eccezzione sono il rigo 30 e 32 del client che non richiedono la ricezione di ulteriori dati dal server: al rigo 30 si avvia la procedura di disconnessione del client ed al rigo 32 si stampa il timer che è stato ricevuto precedentemente dal server.
+Unica eccezzione è il rigo 30  del client che non richiede la ricezione di ulteriori dati dal server: al rigo 30, infatti si avvia la procedura di disconnessione del client .
 \pagebreak
 \lstinputlisting[caption={Funzione play del server}, label={alg:playServer}, firstline={187}, lastline={255}]{../server.c}
 

@@ -6,3 +6,4 @@
 \contentsline {lstlisting}{\numberline {6}Prima comunicazione del client}{4}{lstlisting.6}% 
 \contentsline {lstlisting}{\numberline {7}Funzione play del server}{6}{lstlisting.7}% 
 \contentsline {lstlisting}{\numberline {8}Funzione play del client}{7}{lstlisting.8}% 
+\contentsline {lstlisting}{../client.c}{7}{lstlisting.-1}% 

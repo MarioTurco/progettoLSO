@@ -126,7 +126,6 @@ void play() {
       printf("Impossibile comunicare con il server\n"), exit(-1);
     if (read(socketDesc, &hasApack, sizeof(hasApack)) < 1)
       printf("Impossibile comunicare con il server\n"), exit(-1);
-    timer = getTimer();
     giocatore = initStats(deploy, score, position, hasApack);
     printGrid(grigliaDiGioco, giocatore);
     char send = getUserInput();

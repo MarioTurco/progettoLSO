@@ -1,4 +1,4 @@
-
+#include <arpa/inet.h>
 #include "boardUtility.h"
 #include "list.h"
 #include "parser.h"
@@ -107,6 +107,21 @@ void startListening() {
       exit(-1);
     }
     printf("Nuovo client connesso\n");
+    struct sockaddr_in address;
+    socklen_t size=sizeof(struct sockaddr_in);
+    if(getpeername(clientDesc,(struct sockaddr *)&address,&size)<0){
+        perror("Impossibile ottenere l'indirizzo del client");
+        exit(-1);
+    }
+    char clientAddr[20];
+    strcpy(clientAddr,inet_ntoa(address.sin_addr));
+    Args args = (Args)malloc(sizeof(struct argsToSend));
+    args->userName = (char *)calloc(MAX_BUF, 1);
+    strcpy(args->userName, clientAddr);
+    args->flag = 2;
+    pthread_t tid;
+    pthread_create(&tid, NULL, fileWriter, (void *)args);
+
     puntClientDesc = (int *)malloc(sizeof(int));
     *puntClientDesc = clientDesc;
     pthread_create(&tid, NULL, gestisci, (void *)puntClientDesc);
@@ -215,7 +230,6 @@ void play(int clientDesc, char name[]) {
     write(clientDesc, giocatore->position, sizeof(giocatore->position));
     write(clientDesc, &giocatore->score, sizeof(giocatore->score));
     write(clientDesc, &giocatore->hasApack, sizeof(giocatore->hasApack));
-    sendTimerValue(clientDesc);
     // legge l'input
     if (read(clientDesc, &inputFromClient, sizeof(char)) > 0)
       numMosse++;
@@ -521,6 +535,15 @@ void *fileWriter(void *args) {
   } else if (info->flag == 0) {
     char message[MAX_BUF] = "\"";
     strcat(message, info->userName);
+    strcat(message, "\" logged in at ");
+    strcat(message, toPrint);
+    strcat(message, "\n");
+    pthread_mutex_lock(&LogMutex);
+    write(fDes, message, strlen(message));
+    pthread_mutex_unlock(&LogMutex);
+  } else if (info->flag == 2){
+    char message[MAX_BUF] = "\"";
+    strcat(message, info->userName);
     strcat(message, "\" connected at ");
     strcat(message, toPrint);
     strcat(message, "\n");
@@ -529,5 +552,6 @@ void *fileWriter(void *args) {
     pthread_mutex_unlock(&LogMutex);
   }
   close(fDes);
+  free(info);
   pthread_exit(NULL);
 }

@@ -129,6 +129,10 @@ void play() {
     giocatore = initStats(deploy, score, position, hasApack);
     printGrid(grigliaDiGioco, giocatore);
     char send = getUserInput();
+    if (send == 'e' || send == 'E') {
+      esciDalServer();
+      exit(0);
+    }
     write(socketDesc, &send, sizeof(char));
     read(socketDesc, &turnoFinito, sizeof(turnoFinito));
     if (turnoFinito) {
@@ -136,11 +140,6 @@ void play() {
       printf("Turno finito\n");
       sleep(1);
     } else {
-      if (send == 'e' || send == 'E'){
-        printf("Disconnessione in corso...\n");
-        esciDalServer();
-        exit(0);
-      }
       if (send == 't' || send == 'T')
         printTimer();
       else if (send == 'l' || send == 'L')

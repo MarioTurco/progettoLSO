@@ -144,15 +144,15 @@ Una volta effettuata la registrazione dell'utente è possibile effettuare l'acce
 Di seguito verranno illustrate le modalità di comunicazione tra client e server.
 \subsection{Configurazione del server}
 Il socket del server viene configurato con famiglia di protoccoli PF\_NET, con tipo di trasmissione dati SOCK\_STREAM e con protocollo TCP. Mostriamo di seguito il codice sorgente:
-\lstinputlisting[caption= {Configurazione indirizzo del server}, firstline={117}, lastline={124}]{../server.c}
-\lstinputlisting[caption={Configurazione socket del server}, firstline={400}, lastline={414}]{../server.c}
+\lstinputlisting[caption= {Configurazione indirizzo del server}, firstline={132}, lastline={139}]{../server.c}
+\lstinputlisting[caption={Configurazione socket del server}, firstline={414}, lastline={428}]{../server.c}
 È importante notare anche come il server riesca a gestire in modo concorrente più client tramite l'uso di un thread dedicato ad ogni client. 
 Una volta aver configurato il socket, infatti,  il server si mette in ascolto per nuove connessioni in entrata ed ogni volta che
 viene stabilita una nuova connessione viene avviato un thread per gestire tale connessione. Di seguito il relativo codice: 
 %97 116
-\lstinputlisting[caption={Procedura di ascolto del server}, firstline={97}, lastline={116}]{../server.c}
+\lstinputlisting[caption={Procedura di ascolto del server}, firstline={97}, lastline={131}]{../server.c}
 
-In particolare al rigo 19 notiamo la creazione di un nuovo thread per gestire la connessione in entrata a cui passiamo il descrittore del client di cui si deve occupare.
+In particolare al rigo 31 notiamo la creazione di un nuovo thread per gestire la connessione in entrata a cui passiamo il descrittore del client di cui si deve occupare.
 \pagebreak
 \subsection{Configurazione del client}
 Il cliente invece viene configurato e si connette al server tramite la seguente funzione:
@@ -161,7 +161,7 @@ Il cliente invece viene configurato e si connette al server tramite la seguente 
 Si noti come al rigo 9 viene configurato il socket ed al rigo 13 viene invece effettuato il tentativo di connessione al server.\\
 Al rigo 3 invece viene convertita la porta inserita in input (argv$[$2$]$) dal tipo stringa al tipo della porta (uint16\_t ovvero unsigned long integer).\\
 Al rigo 4 notiamo invece la risoluzione dell'url da parte della funzione ipResolver che è riportata di seguito:
-\lstinputlisting[caption={Risoluzione url del client}, firstline={249}, lastline={260}]{../client.c}
+\lstinputlisting[caption={Risoluzione url del client}, firstline={250}, lastline={261}]{../client.c}
 Al rigo 4, tramite l'url o l'indirizzo ip viene riempita la struttura hostent da cui poi possiamo estrarre l'indirizzo ip presente nel campo 
 h\_addr\_list  che, in effetti, è un array che contiene i vari indirizzi ip associati a quell'host.\\
 Infine, al rigo 11 decidiamo di ritoranre soltanto il primo indirizzo convertito in Internet dot notation.
@@ -174,13 +174,13 @@ Il comportamento del server e del client è determinato da particolari messaggi 
 il server attenderà un messaggio dal client per poter avviare una delle tre possibili procedure, ovvero login, registrazione ed uscita ( rispettivamente codici: 1,2,3).\\
 Di seguito sono riportate le realtive funzioni di gestione che entrano in esecuzione subito dopo aver stabilito la connessione
 tra client e server.
-\lstinputlisting[caption={Prima comunicazione del server}, label={alg:serverPreLogin}, firstline={165}, lastline={186}]{../server.c}
+\lstinputlisting[caption={Prima comunicazione del server}, label={alg:serverPreLogin}, firstline={180}, lastline={201}]{../server.c}
 Si noti come il server riceva, al rigo 7, il messaggio codificato da parte del client e metta in esecuzione la funzione corrispondente.
 \lstinputlisting[caption={Prima comunicazione del client}, firstline={84}, lastline={102}, label={alg:clientPreLogin} ]{../client.c}
 
 \section{Comunicazione durante la partita}
 Una volta effettuato il login, il client potrà iniziare a giocare tramite la funzione play (Vedi \autoref{alg:playServer} e \autoref{alg:playclient})
-che rappresentano il cuore della comunicazione tra client e server.\\
+che rappresentano il cuore della comunicazione tra client e server.
 \subsection{Funzione core del server}
 La funzione play del server consiste di un ciclo infinito nel quale il server invia al client tre informazioni importanti:
 \begin{itemize}
@@ -191,18 +191,17 @@ La funzione play del server consiste di un ciclo infinito nel quale il server in
   \item Un messaggio che notifica al client se è iniziato un nuovo turno oppure no
 \end{itemize}
 Dopodichè il thread del server rimane in attesa di ricevere l'input del client per spostare il giocaore sulla mappa tramite la relativa funzione. (Rigo 34)
-\\Oltre questo, la funzione play del server si occupa anche di generare la posizione del player appena entra in partita e generare la nuova posizione del player (Rigo 52 a 66) quando viene effettuato il cambio di mappa (allo scadere del tempo o alla raggiunta del massimo punteggio).
-\\
-\\
+Oltre questo, la funzione play del server si occupa anche di generare la posizione del player appena entra in partita e generare la nuova posizione del player (Rigo 52 a 66) quando viene effettuato il cambio di mappa (allo scadere del tempo o alla raggiunta del massimo punteggio).
+
 \subsection{Funzione core del client}
 Dall'altro lato, la funzione play del client, è stata mantenuta volutamente semplice.
 Lo scopo del client è unicamente quello di ricevere i dati forniti dal server, stampare la mappa di gioco e leggere l'input da inviare al server.
 Unica eccezzione è il rigo 30  del client che non richiede la ricezione di ulteriori dati dal server: al rigo 30, infatti si avvia la procedura di disconnessione del client .
 \pagebreak
-\lstinputlisting[caption={Funzione play del server}, label={alg:playServer}, firstline={187}, lastline={255}]{../server.c}
+\lstinputlisting[caption={Funzione play del server}, label={alg:playServer}, firstline={202}, lastline={269}]{../server.c}
 
 \pagebreak
-\lstinputlisting[caption={Funzione play del client}, label={alg:playclient}, firstline={111}, lastline={148}]{../client.c}
+\lstinputlisting[caption={Funzione play del client}, label={alg:playclient}, firstline={111}, lastline={149}]{../client.c}
 \appendix
 \section{Codici sorgente}
 Di seguito sono riportati tutti i codici sorgenti integrali del progetto.

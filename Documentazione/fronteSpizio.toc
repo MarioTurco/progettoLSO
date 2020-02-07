@@ -16,3 +16,12 @@
 \contentsline {section}{\numberline {4}Comunicazione durante la partita}{5}{section.4}% 
 \contentsline {subsection}{\numberline {4.1}Funzione core del server}{5}{subsection.4.1}% 
 \contentsline {subsection}{\numberline {4.2}Funzione core del client}{5}{subsection.4.2}% 
+\contentsline {section}{\numberline {A}Codici sorgente}{7}{appendix.Alph1}% 
+\contentsline {subsection}{\numberline {A.1}Codice sorgente del client}{7}{subsection.Alph1.1}% 
+\contentsline {subsection}{\numberline {A.2}server.c}{12}{subsection.Alph1.2}% 
+\contentsline {subsection}{\numberline {A.3}boardUtility.c}{12}{subsection.Alph1.3}% 
+\contentsline {subsection}{\numberline {A.4}boardUtility.h}{12}{subsection.Alph1.4}% 
+\contentsline {subsection}{\numberline {A.5}lsit.c}{12}{subsection.Alph1.5}% 
+\contentsline {subsection}{\numberline {A.6}lsit.h}{12}{subsection.Alph1.6}% 
+\contentsline {subsection}{\numberline {A.7}parser.c}{12}{subsection.Alph1.7}% 
+\contentsline {subsection}{\numberline {A.8}parser.h}{12}{subsection.Alph1.8}% 

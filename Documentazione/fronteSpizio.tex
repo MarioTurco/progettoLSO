@@ -257,9 +257,9 @@ Questa funzione rappresenta l'unico punto del programma che effettivamente modif
 È possibile notare come l'intera funzione sia racchiusa in un mutex in modo da evitare che contemporaneamente più thread modifichino la mappa di gioco e 
 quindi evita che due player si trovino nella stessa poszione.
 \paragraph{}Il secondo accorgimento è stato quello di far in modo che un player possa raccogliere un pacco solo quando si trova nella poszione del pacco
-("sia sovrapposto al pacco") e possa depositare un pacco solo nella posizione in cui il player stesso si trova ("deposita sul pacco su se stesso").
+("sia sovrapposto al pacco") e possa depositare un pacco solo nella posizione in cui il player stesso si trova ("deposita il pacco su se stesso").
 \paragraph{}
-Questi due accorgimenti, assieme, evitano qualsiasi tipo di race condition tra i thread dei player: due player non potranno mai trovarsi nella stessa posizione
+Questi due accorgimenti, assieme, evitano qualsiasi tipo di conflitto tra i player: due player non potranno mai trovarsi nella stessa posizione
 e, di conseguenza non potranno mai raccogliere lo stesso pacco o depositare due pacchi nella stessa posizione contemporaneamente.
 \appendix
 \section{Codici sorgente}

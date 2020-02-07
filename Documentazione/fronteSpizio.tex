@@ -247,7 +247,11 @@ Riportiamo di seguito il codice:
 Analizzando il codice si può notare l'uso open per aprire in append o, in caso di assenza del file, di creare
 il file di log ed i vari write per scrivere sul suddetto file; possiamo anche notare come la sezione critica, ovvero 
 la scrittura su uno stesso file da parte di più thread, è gestita tramite un mutex.
-
+\subsection{Modifica della mappa di gioco da parte di più thread}
+La mappa di gioco è la stessa per tutti i player e c'è il rischio che lo spostamento dei player e/o la raccolta ed il deposito di pacchi possano provocare problemi
+a causa della race condition che si viene a creare tra i thread. Tutto ciò è stato risolto con una serie di semplici accorgimenti implementativi.
+Il primo accorgimento, e forse anche il più importante, è la funzione spostaPlayer mostrata qui di seguito.
+\lstinputlisting[caption={Funzione spostaPlayer}, firstline={722}, lastline={735}]{../server.c}
 \appendix
 \section{Codici sorgente}
 Di seguito sono riportati tutti i codici sorgenti integrali del progetto.

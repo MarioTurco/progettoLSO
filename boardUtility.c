@@ -99,6 +99,7 @@ PlayerStats gestisciP(char grigliaDiGioco[ROWS][COLUMNS], PlayerStats giocatore,
   giocatore->deploy[1] = nuovoDeploy[1];
   return giocatore;
 }
+
 void printGrid(char grigliaDaStampare[ROWS][COLUMNS], PlayerStats stats) {
   system("clear");
   printf("\n\n");
@@ -260,17 +261,7 @@ void inizializzaGiocoSenzaPlayer(char grigliaDiGioco[ROWS][COLUMNS],
   generaPosizioneOstacoli(grigliaDiGioco, grigliaConOstacoli);
   return;
 }
-void spostaPlayer(char griglia[ROWS][COLUMNS], int vecchiaPosizione[2],
-                  int nuovaPosizione[2], Point deployCoords[],
-                  Point packsCoords[]) {
-  griglia[nuovaPosizione[0]][nuovaPosizione[1]] = 'P';
-  if (eraUnPuntoDepo(vecchiaPosizione, deployCoords))
-    griglia[vecchiaPosizione[0]][vecchiaPosizione[1]] = '_';
-  else if (eraUnPacco(vecchiaPosizione, packsCoords))
-    griglia[vecchiaPosizione[0]][vecchiaPosizione[1]] = '$';
-  else
-    griglia[vecchiaPosizione[0]][vecchiaPosizione[1]] = '-';
-}
+
 int eraUnPuntoDepo(int vecchiaPosizione[2], Point depo[]) {
   int i = 0, ret = 0;
   while (ret == 0 && i < numberOfPackages) {
@@ -293,153 +284,7 @@ int eraUnPacco(int vecchiaPosizione[2], Point packsCoords[]) {
   }
   return ret;
 }
-PlayerStats gestisciW(char grigliaDiGioco[ROWS][COLUMNS],
-                      char grigliaOstacoli[ROWS][COLUMNS],
-                      PlayerStats giocatore, Obstacles *listaOstacoli,
-                      Point deployCoords[], Point packsCoords[]) {
-  if (giocatore == NULL)
-    return NULL;
-  int nuovaPosizione[2];
-  nuovaPosizione[1] = giocatore->position[1];
-  // Aggiorna la posizione vecchia spostando il player avanti di 1
-  nuovaPosizione[0] = (giocatore->position[0]) - 1;
-  int nuovoScore = giocatore->score;
-  int nuovoDeploy[2];
-  nuovoDeploy[0] = giocatore->deploy[0];
-  nuovoDeploy[1] = giocatore->deploy[1];
-  if (nuovaPosizione[0] >= 0 && nuovaPosizione[0] < ROWS) {
-    if (casellaVuotaOValida(grigliaDiGioco, grigliaOstacoli, nuovaPosizione)) {
-      spostaPlayer(grigliaDiGioco, giocatore->position, nuovaPosizione,
-                   deployCoords, packsCoords);
-    } else if (colpitoOstacolo(grigliaOstacoli, nuovaPosizione)) {
-      *listaOstacoli =
-          addObstacle(*listaOstacoli, nuovaPosizione[0], nuovaPosizione[1]);
-      nuovaPosizione[0] = giocatore->position[0];
-      nuovaPosizione[1] = giocatore->position[1];
-    } else if (colpitoPlayer(grigliaDiGioco, nuovaPosizione)) {
-      nuovaPosizione[0] = giocatore->position[0];
-      nuovaPosizione[1] = giocatore->position[1];
-    }
-    giocatore->deploy[0] = nuovoDeploy[0];
-    giocatore->deploy[1] = nuovoDeploy[1];
-    giocatore->score = nuovoScore;
-    giocatore->position[0] = nuovaPosizione[0];
-    giocatore->position[1] = nuovaPosizione[1];
-  }
-  return giocatore;
-}
-PlayerStats gestisciD(char grigliaDiGioco[ROWS][COLUMNS],
-                      char grigliaOstacoli[ROWS][COLUMNS],
-                      PlayerStats giocatore, Obstacles *listaOstacoli,
-                      Point deployCoords[], Point packsCoords[]) {
-  if (giocatore == NULL) {
-    return NULL;
-  }
-  int nuovaPosizione[2];
-  nuovaPosizione[1] = giocatore->position[1] + 1;
-  nuovaPosizione[0] = giocatore->position[0];
-  int nuovoScore = giocatore->score;
-  int nuovoDeploy[2];
-  nuovoDeploy[0] = giocatore->deploy[0];
-  nuovoDeploy[1] = giocatore->deploy[1];
-  if (nuovaPosizione[1] >= 0 && nuovaPosizione[1] < COLUMNS) {
-    if (casellaVuotaOValida(grigliaDiGioco, grigliaOstacoli, nuovaPosizione)) {
-      spostaPlayer(grigliaDiGioco, giocatore->position, nuovaPosizione,
-                   deployCoords, packsCoords);
-    } else if (colpitoOstacolo(grigliaOstacoli, nuovaPosizione)) {
-      printf("Ostacolo\n");
-      *listaOstacoli =
-          addObstacle(*listaOstacoli, nuovaPosizione[0], nuovaPosizione[1]);
-      nuovaPosizione[0] = giocatore->position[0];
-      nuovaPosizione[1] = giocatore->position[1];
-    } else if (colpitoPlayer(grigliaDiGioco, nuovaPosizione)) {
-      nuovaPosizione[0] = giocatore->position[0];
-      nuovaPosizione[1] = giocatore->position[1];
-    }
-    giocatore->deploy[0] = nuovoDeploy[0];
-    giocatore->deploy[1] = nuovoDeploy[1];
-    giocatore->score = nuovoScore;
-    giocatore->position[0] = nuovaPosizione[0];
-    giocatore->position[1] = nuovaPosizione[1];
-  }
-  return giocatore;
-}
-PlayerStats gestisciA(char grigliaDiGioco[ROWS][COLUMNS],
-                      char grigliaOstacoli[ROWS][COLUMNS],
-                      PlayerStats giocatore, Obstacles *listaOstacoli,
-                      Point deployCoords[], Point packsCoords[]) {
-  if (giocatore == NULL)
-    return NULL;
-  int nuovaPosizione[2];
-  nuovaPosizione[0] = giocatore->position[0];
-  // Aggiorna la posizione vecchia spostando il player avanti di 1
-  nuovaPosizione[1] = (giocatore->position[1]) - 1;
-  int nuovoScore = giocatore->score;
-  int nuovoDeploy[2];
-  nuovoDeploy[0] = giocatore->deploy[0];
-  nuovoDeploy[1] = giocatore->deploy[1];
-  if (nuovaPosizione[1] >= 0 && nuovaPosizione[1] < COLUMNS) {
-    if (casellaVuotaOValida(grigliaDiGioco, grigliaOstacoli, nuovaPosizione)) {
-      printf("Casella vuota \n");
-      spostaPlayer(grigliaDiGioco, giocatore->position, nuovaPosizione,
-                   deployCoords, packsCoords);
-    } else if (colpitoOstacolo(grigliaOstacoli, nuovaPosizione)) {
-      printf("Ostacolo\n");
-      *listaOstacoli =
-          addObstacle(*listaOstacoli, nuovaPosizione[0], nuovaPosizione[1]);
-      nuovaPosizione[0] = giocatore->position[0];
-      nuovaPosizione[1] = giocatore->position[1];
-    } else if (colpitoPlayer(grigliaDiGioco, nuovaPosizione)) {
-      printf("colpito player\n");
-      nuovaPosizione[0] = giocatore->position[0];
-      nuovaPosizione[1] = giocatore->position[1];
-    }
-    giocatore->deploy[0] = nuovoDeploy[0];
-    giocatore->deploy[1] = nuovoDeploy[1];
-    giocatore->score = nuovoScore;
-    giocatore->position[0] = nuovaPosizione[0];
-    giocatore->position[1] = nuovaPosizione[1];
-  }
-  return giocatore;
-}
-PlayerStats gestisciS(char grigliaDiGioco[ROWS][COLUMNS],
-                      char grigliaOstacoli[ROWS][COLUMNS],
-                      PlayerStats giocatore, Obstacles *listaOstacoli,
-                      Point deployCoords[], Point packsCoords[]) {
-  if (giocatore == NULL) {
-    return NULL;
-  }
-  // crea le nuove statistiche
-  int nuovaPosizione[2];
-  nuovaPosizione[1] = giocatore->position[1];
-  nuovaPosizione[0] = (giocatore->position[0]) + 1;
-  int nuovoScore = giocatore->score;
-  int nuovoDeploy[2];
-  nuovoDeploy[0] = giocatore->deploy[0];
-  nuovoDeploy[1] = giocatore->deploy[1];
-  // controlla che le nuove statistiche siano corrette
-  if (nuovaPosizione[0] >= 0 && nuovaPosizione[0] < ROWS) {
-    if (casellaVuotaOValida(grigliaDiGioco, grigliaOstacoli, nuovaPosizione)) {
-      spostaPlayer(grigliaDiGioco, giocatore->position, nuovaPosizione,
-                   deployCoords, packsCoords);
-    } else if (colpitoOstacolo(grigliaOstacoli, nuovaPosizione)) {
-      printf("Ostacolo\n");
-      *listaOstacoli =
-          addObstacle(*listaOstacoli, nuovaPosizione[0], nuovaPosizione[1]);
-      nuovaPosizione[0] = giocatore->position[0];
-      nuovaPosizione[1] = giocatore->position[1];
-    } else if (colpitoPlayer(grigliaDiGioco, nuovaPosizione)) {
-      nuovaPosizione[0] = giocatore->position[0];
-      nuovaPosizione[1] = giocatore->position[1];
-    }
-    giocatore->deploy[0] = nuovoDeploy[0];
-    giocatore->deploy[1] = nuovoDeploy[1];
-    giocatore->score = nuovoScore;
-    giocatore->position[0] = nuovaPosizione[0];
-    giocatore->position[1] = nuovaPosizione[1];
-  }
-  return giocatore;
-}
+
 int arrivatoADestinazione(int posizione[2], int destinazione[2]) {
   if (posizione[0] == destinazione[0] && posizione[1] == destinazione[1])
     return 1;

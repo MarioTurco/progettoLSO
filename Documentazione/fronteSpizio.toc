@@ -14,11 +14,15 @@
 \contentsline {subsection}{\numberline {3.3}Comunicazione tra client e server}{5}{subsection.3.3}% 
 \contentsline {subsubsection}{\numberline {3.3.1}Esempio: la prima comunicazione}{5}{subsubsection.3.3.1}% 
 \contentsline {section}{\numberline {4}Comunicazione durante la partita}{6}{section.4}% 
+\contentsline {paragraph}{}{6}{section*.5}% 
 \contentsline {subsection}{\numberline {4.1}Funzione core del server}{6}{subsection.4.1}% 
+\contentsline {paragraph}{}{6}{section*.6}% 
 \contentsline {subsection}{\numberline {4.2}Funzione core del client}{6}{subsection.4.2}% 
-\contentsline {section}{\numberline {A}Codici sorgente}{8}{appendix.Alph1}% 
-\contentsline {subsection}{\numberline {A.1}Codice sorgente del client}{8}{subsection.Alph1.1}% 
-\contentsline {subsection}{\numberline {A.2}Codice sorgente del server}{12}{subsection.Alph1.2}% 
+\contentsline {section}{\numberline {5}Dettagli implementativi degni di nota}{9}{section.5}% 
+\contentsline {subsection}{\numberline {5.1}Timer}{9}{subsection.5.1}% 
+\contentsline {section}{\numberline {A}Codici sorgente}{9}{appendix.Alph1}% 
+\contentsline {subsection}{\numberline {A.1}Codice sorgente del client}{9}{subsection.Alph1.1}% 
+\contentsline {subsection}{\numberline {A.2}Codice sorgente del server}{13}{subsection.Alph1.2}% 
 \contentsline {subsection}{\numberline {A.3}Codice sorgente boardUtility}{20}{subsection.Alph1.3}% 
-\contentsline {subsection}{\numberline {A.4}Codice sorgente list}{27}{subsection.Alph1.4}% 
+\contentsline {subsection}{\numberline {A.4}Codice sorgente list}{28}{subsection.Alph1.4}% 
 \contentsline {subsection}{\numberline {A.5}Codice sorgente parser}{30}{subsection.Alph1.5}% 

@@ -179,10 +179,11 @@ Si noti come il server riceva, al rigo 7, il messaggio codificato da parte del c
 \lstinputlisting[caption={Prima comunicazione del client}, firstline={84}, lastline={102}, label={alg:clientPreLogin} ]{../client.c}
 
 \section{Comunicazione durante la partita}
+\paragraph{}
 Una volta effettuato il login, il client potrà iniziare a giocare tramite la funzione play (Vedi \autoref{alg:playServer} e \autoref{alg:playclient})
 che rappresentano il cuore della comunicazione tra client e server.
 \subsection{Funzione core del server}
-La funzione play del server consiste di un ciclo infinito nel quale il server invia al client tre informazioni importanti:
+La funzione play del server consiste di un ciclo nel quale il server invia al client tre informazioni importanti:
 \begin{itemize}
   \setlength\itemsep{0.2mm}
   \item La griglia di gioco (Rigo 26)
@@ -190,17 +191,32 @@ La funzione play del server consiste di un ciclo infinito nel quale il server in
   \item Un messaggio che notifica al client se è iniziato un nuovo turno oppure no (Righi 40,43,46,53)
 \end{itemize}
 Dopodichè il thread del server rimane in attesa di ricevere l'input del client per spostare il giocaore sulla mappa tramite la relativa funzione. (Rigo 33) (Vedi \autoref{alg:sorgenteServer} Rigo 430 e \autoref{alg:boardUtility} Rigo 296, 331,367, 405 )
-Oltre questo, la funzione play del server si occupa anche di generare la posizione del player appena entra in partita e generare la nuova posizione  (Righi 56 a 65) quando viene effettuato il cambio di mappa (allo scadere del tempo o al raggiungimento del massimo punteggio).
+Oltre questo, la funzione play del server si occupa anche di generare la posizione del player appena entra in partita, generare la nuova posizione  (Righi 56 a 65) quando viene effettuato il cambio di mappa ed inviare il tempo rimanente o la lista degli utente loggati su richiesta del client. 
+
+\paragraph{}
+È anche importante notare il seguente dettaglio implementativo: la griglia di gioco
+è una matrice globale definita nel file del server che contiene tutti i player,
+i punti di raccolta ed i pacchi,  mentre gli ostacoli sono contenuti in una seconda matrice globale del server. 
+Ogni client però deve vedere soltanto gli ostacoli che ha già scoperto, 
+per questo motivo ad ogni client non viene mandata direttamente la matrice di gioco, bensì, dai righi 22 a 24, 
+inizializziamo una nuova matrice temporanea 
+a cui aggiungiamo gli ostacoli già scoperti dal client (rigo 24) prima di mandarla al client stesso.
+\\In questo modo ci assicuriamo che ogni client visualizzi soltanto gli ostacoli che ha già scoperto.
 
 \subsection{Funzione core del client}
 Dall'altro lato, la funzione play del client, è stata mantenuta il puù semplice possibile.
 Lo scopo del client è unicamente quello di ricevere i dati forniti dal server, stampare la mappa di gioco e ed inviare un input al server che rappresenta la volontà del giocatore di muoversi, vedere la lista degli utenti, uscire o stampare il timer.
-Unica eccezzione è il rigo 30  del client che non richiede la ricezione di ulteriori dati dal server: al rigo 30, infatti si avvia la procedura di disconnessione del client (Vedi \autoref{alg:sorgenteClient} \bf{rigo 59}).
+Unica eccezzione è il rigo 30  del client che non richiede la ricezione di ulteriori dati dal server: al rigo 23, infatti si avvia la procedura di disconnessione del client (Vedi \autoref{alg:sorgenteClient} rigo 59).
 \pagebreak
 \lstinputlisting[caption={Funzione play del server}, label={alg:playServer}, firstline={202}, lastline={269}]{../server.c}
 
 \pagebreak
 \lstinputlisting[caption={Funzione play del client}, label={alg:playclient}, firstline={111}, lastline={149}]{../client.c}
+\pagebreak
+\section{Dettagli implementativi degni di nota}
+In questa sezione verranno trattati alcuni dettagli implementativi da noi giudicati interessanti in realzione a ciò che è stato studiato durante il corso di sistemi operativi.
+\subsection{Timer}
+
 \appendix
 \section{Codici sorgente}
 Di seguito sono riportati tutti i codici sorgenti integrali del progetto.

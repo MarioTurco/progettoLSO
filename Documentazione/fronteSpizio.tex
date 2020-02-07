@@ -247,13 +247,13 @@ Riportiamo di seguito il codice:
 Analizzando il codice si può notare l'uso open per aprire in append o, in caso di assenza del file, di creare
 il file di log ed i vari write per scrivere sul suddetto file; possiamo anche notare come la sezione critica, ovvero 
 la scrittura su uno stesso file da parte di più thread, è gestita tramite un mutex.
+\pagebreak
 \subsection{Modifica della mappa di gioco da parte di più thread}
 La mappa di gioco è la stessa per tutti i player e c'è il rischio che lo spostamento dei player e/o la raccolta ed il deposito di pacchi possano provocare problemi
 a causa della race condition che si viene a creare tra i thread. Tutto ciò è stato risolto con una serie di semplici accorgimenti implementativi.
 Il primo accorgimento, e forse anche il più importante, è la funzione spostaPlayer mostrata qui di seguito.
 \lstinputlisting[caption={Funzione spostaPlayer}, firstline={723}, lastline={737}]{../server.c}
 Questa funzione rappresenta l'unico punto del programma che effettivamente modifica la matrice di gioco in seguito ad una richiesta di un client.
-\paragraph{}
 È possibile notare come l'intera funzione sia racchiusa in un mutex in modo da evitare che contemporaneamente più thread modifichino la mappa di gioco e 
 quindi evita che due player si trovino nella stessa poszione.
 \paragraph{}Il secondo accorgimento è stato quello di far in modo che un player possa raccogliere un pacco solo quando si trova nella poszione del pacco
@@ -261,6 +261,31 @@ quindi evita che due player si trovino nella stessa poszione.
 \paragraph{}
 Questi due accorgimenti, assieme, evitano qualsiasi tipo di conflitto tra i player: due player non potranno mai trovarsi nella stessa posizione
 e, di conseguenza non potranno mai raccogliere lo stesso pacco o depositare due pacchi nella stessa posizione contemporaneamente.
+\pagebreak
+\subsection{Gestione del login}
+La gestione del login è il quarto ed ultimo dettagli implementativo giusdicato abbastanza interessante poichè
+fa uso della system call system() per utilizzare le chiamate di sistema unix studiate durante la prima parte del corso.
+Di seguito riportiamo il codice e la spiegazione
+\lstinputlisting[caption={"Gestion del login 1"}, firstline={34}, lastline={52}]{../parser.c}
+La funzione isRegistered tramite varie concatenazioni produce ed esegue il seguente comando 
+\begin{verbatim}
+  cat file | cut -d" " -f1|grep "^name$">tmp
+\end{verbatim}
+Ovvero andiamo a leggere la prima colonna (dove sono conservati tutti i nomi utente)
+dal file degli utenti registrati, cerchiamo la stringa che combacia esattamente con name e la scriviamo sul
+file temporaneo "tmp".\\ Dopodichè andiamo a verificare la dimensione del file tmp tramite la struttura stat: se
+la dimensione è maggiore di 0 allora significa che è il nome esisteva nella lista dei client registrati ed è stato quindi trascritto in tmp
+altrimenti significa che il nome non era presente nella lista dei player registrati.
+A questo punto eliminiamo il file temporaneo e restituiamo il valore appropriato.
+\paragraph{}
+\lstinputlisting[caption={"Gestion del login 2"}, firstline={53}, lastline={75}]{../parser.c}
+La funziona validateLogin invece, tramite concatenazioni successive crea ed esegue il seguente comando:
+\begin{verbatim}
+  cat file | grep "^nome password$">tmp
+\end{verbatim}
+Verificando se la coppia nome password sia presente nel file degli utenti registrati, trascrivendola sul file tmp
+Ancora una volta si va a verificare tramite la struttura stat se è stato trascritto qualcosa oppure no, ritornando 
+il valore appropriato.
 \appendix
 \section{Codici sorgente}
 Di seguito sono riportati tutti i codici sorgenti integrali del progetto.

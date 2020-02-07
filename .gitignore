@@ -55,5 +55,5 @@ dkms.conf
 *.aux
 *.tox
 *.fls
-*.log
 *.fdb_latexmk
+*.lol

@@ -238,6 +238,11 @@ Per completezza si riporta anche la funzionione iniziale del thread di generazio
 \pagebreak
 \subsection{Gestione del file di Log}
 \paragraph{}
+Una delle funzionalità del server è quella di creare un file di log con varie informazioni durante la sua esecuzione.
+Riteniamo l'implmentazione di questa funzione piuttosto interessante poichè, oltre ad essere una funzione gestita tramite un thread, fa uso sia di molte chiamate di sistema studiate durante il corso 
+ed utilizza anche il mutex per risolvere eventuali race condition.
+Riportiamo di seguito il codice:
+\lstinputlisting[caption={Funzione di log}, firstline={645}, lastline={683}]{../server.c}
 \appendix
 \section{Codici sorgente}
 Di seguito sono riportati tutti i codici sorgenti integrali del progetto.

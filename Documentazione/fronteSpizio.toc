@@ -14,3 +14,5 @@
 \contentsline {subsection}{\numberline {3.3}Comunicazione tra client e server}{4}{subsection.3.3}% 
 \contentsline {subsubsection}{\numberline {3.3.1}Esempio: la prima comunicazione}{4}{subsubsection.3.3.1}% 
 \contentsline {section}{\numberline {4}Comunicazione durante la partita}{5}{section.4}% 
+\contentsline {subsection}{\numberline {4.1}Funzione core del server}{5}{subsection.4.1}% 
+\contentsline {subsection}{\numberline {4.2}Funzione core del client}{5}{subsection.4.2}% 

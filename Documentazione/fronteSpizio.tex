@@ -286,15 +286,23 @@ Si noti come il server riceva, al rigo 7, il messaggio codificato da parte del c
 \section{Comunicazione durante la partita}
 Una volta effettuato il login, il client potrà iniziare a giocare tramite la funzione play (Vedi \autoref{alg:playServer} e \autoref{alg:playclient})
 che rappresentano il cuore della comunicazione tra client e server.\\
+\subsection{Funzione core del server}
 La funzione play del server consiste di un ciclo infinito nel quale il server invia al client tre informazioni importanti:
 \begin{itemize}
   \setlength\itemsep{0.2mm}
   \item La griglia di gioco (Rigo 26)
   \item Il player con le relative informazioni (Rigo 28 a 31)
   \item Il timer (Rigo 32 )
+  \item Un messaggio che notifica al client se è iniziato un nuovo turno oppure no
 \end{itemize}
 Dopodichè il thread del server rimane in attesa di ricevere l'input del client per spostare il giocaore sulla mappa tramite la relativa funzione. (Rigo 34)
-\\Oltre questo, la funzione play del server si occupa anche di generare la nuova posizione del player (Rigo 52 a 66)quando viene effettuato il cambio di mappa (allo scadere del tempo o alla raggiunta del massimo punteggio).
+\\Oltre questo, la funzione play del server si occupa anche di generare la posizione del player appena entra in partita e generare la nuova posizione del player (Rigo 52 a 66) quando viene effettuato il cambio di mappa (allo scadere del tempo o alla raggiunta del massimo punteggio).
+\\
+\\
+\subsection{Funzione core del client}
+Dall'altro lato, la funzione play del client, è stata mantenuta volutamente semplice.
+Lo scopo del client è unicamente quello di ricevere i dati forniti dal server, stampare la mappa di gioco e leggere l'input da inviare al server.
+Unica eccezzione sono il rigo 30 e 32 del client che non richiedono la ricezione di ulteriori dati dal server: al rigo 30 si avvia la procedura di disconnessione del client ed al rigo 32 si stampa il timer che è stato ricevuto precedentemente dal server.
 \pagebreak
 \begin{lstlisting}[caption=Funzione play del server, label=alg:playServer]
   void play(int clientDesc, char name[]) {

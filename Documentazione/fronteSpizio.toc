@@ -25,9 +25,10 @@
 \contentsline {paragraph}{}{10}{section*.9}% 
 \contentsline {subsection}{\numberline {5.2}Gestione del file di Log}{11}{subsection.5.2}% 
 \contentsline {paragraph}{}{11}{section*.10}% 
+\contentsline {paragraph}{}{11}{section*.11}% 
 \contentsline {section}{\numberline {A}Codici sorgente}{11}{appendix.Alph1}% 
 \contentsline {subsection}{\numberline {A.1}Codice sorgente del client}{11}{subsection.Alph1.1}% 
-\contentsline {subsection}{\numberline {A.2}Codice sorgente del server}{15}{subsection.Alph1.2}% 
-\contentsline {subsection}{\numberline {A.3}Codice sorgente boardUtility}{25}{subsection.Alph1.3}% 
-\contentsline {subsection}{\numberline {A.4}Codice sorgente list}{32}{subsection.Alph1.4}% 
+\contentsline {subsection}{\numberline {A.2}Codice sorgente del server}{16}{subsection.Alph1.2}% 
+\contentsline {subsection}{\numberline {A.3}Codice sorgente boardUtility}{28}{subsection.Alph1.3}% 
+\contentsline {subsection}{\numberline {A.4}Codice sorgente list}{33}{subsection.Alph1.4}% 
 \contentsline {subsection}{\numberline {A.5}Codice sorgente parser}{35}{subsection.Alph1.5}% 

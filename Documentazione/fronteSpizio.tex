@@ -243,6 +243,11 @@ Riteniamo l'implmentazione di questa funzione piuttosto interessante poichè, ol
 ed utilizza anche il mutex per risolvere eventuali race condition.
 Riportiamo di seguito il codice:
 \lstinputlisting[caption={Funzione di log}, firstline={645}, lastline={683}]{../server.c}
+\paragraph{}
+Analizzando il codice si può notare l'uso open per aprire in append o, in caso di assenza del file, di creare
+il file di log ed i vari write per scrivere sul suddetto file; possiamo anche notare come la sezione critica, ovvero 
+la scrittura su uno stesso file da parte di più thread, è gestita tramite un mutex.
+
 \appendix
 \section{Codici sorgente}
 Di seguito sono riportati tutti i codici sorgenti integrali del progetto.

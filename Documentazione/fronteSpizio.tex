@@ -7,6 +7,7 @@
 \usepackage{fancyvrb}
 \usepackage{multicol}
 \usepackage{listings}
+\usepackage{caption}
 \usepackage{xcolor}
 \definecolor{RoyalBlue}{cmyk}{1, 0.50, 0, 0}
 \hypersetup{
@@ -31,7 +32,7 @@
 \renewcommand\lstlistlistingname{Listati}
 \renewcommand\lstlistingname{Listato}
 \def\lstlistingautorefname{List.}
-
+\captionsetup[lstlisting]{font={small,tt}}
 \begin{document} 
 
 \begin{titlepage}
@@ -241,51 +242,10 @@ Il comportamento del server e del client è determinato da particolari messaggi 
 il server attenderà un messaggio dal client per poter avviare una delle tre possibili procedure, ovvero login, registrazione ed uscita ( rispettivamente codici: 1,2,3).\\
 Di seguito sono riportate le realtive funzioni di gestione che entrano in esecuzione subito dopo aver stabilito la connessione
 tra client e server.
-\begin{lstlisting}[caption=Prima comunicazione del server, label=alg:serverPreLogin]
-  void *gestisci(void *descriptor) {
-    int bufferReceive[2] = {1};
-    int client_sd = *(int *)descriptor;
-    int continua = 1;
-    char name[MAX_BUF];
-    while (continua) {
-      read(client_sd, bufferReceive, sizeof(bufferReceive));
-      if (bufferReceive[0] == 2)
-        registraClient(client_sd);
-      else if (bufferReceive[0] == 1)
-        if (tryLogin(client_sd, name)) {
-          play(client_sd, name);
-          continua = 0;
-        } else if (bufferReceive[0] == 3)
-          disconnettiClient(client_sd);
-        else {
-          printf("Input invalido, uscita...\n");
-          disconnettiClient(client_sd);
-        }
-    }
-    pthread_exit(0);
-  }
-\end{lstlisting}
+\lstinputlisting[caption={Prima comunicazione del server}, label={alg:serverPreLogin}, firstline={165}, lastline={186}]{../server.c}
 Si noti come il server riceva, al rigo 7, il messaggio codificato da parte del client e metta in esecuzione la funzione corrispondente.
-\begin{lstlisting}[caption=Prima comunicazione del client, label=alg:clientPreLogin]
-  int gestisci() {
-    char choice;
-    while (1) {
-      printMenu();
-      scanf("%c", &choice);
-      fflush(stdin);
-      system("clear");
-      if (choice == '3') {
-        esciDalServer();
-        return (0);
-      } else if (choice == '2') {
-        registrati();
-      } else if (choice == '1') {
-        if (tryLogin())
-          play();
-      } else
-        printf("Input errato, inserire 1,2 o 3\n");
-    }
-  \end{lstlisting}
+\lstinputlisting[caption={Prima comunicazione del client}, firstline={84}, lastline={102}, label={alg:clientPreLogin} ]{../client.c}
+
 \section{Comunicazione durante la partita}
 Una volta effettuato il login, il client potrà iniziare a giocare tramite la funzione play (Vedi \autoref{alg:playServer} e \autoref{alg:playclient})
 che rappresentano il cuore della comunicazione tra client e server.\\
@@ -307,131 +267,27 @@ Dall'altro lato, la funzione play del client, è stata mantenuta volutamente sem
 Lo scopo del client è unicamente quello di ricevere i dati forniti dal server, stampare la mappa di gioco e leggere l'input da inviare al server.
 Unica eccezzione sono il rigo 30 e 32 del client che non richiedono la ricezione di ulteriori dati dal server: al rigo 30 si avvia la procedura di disconnessione del client ed al rigo 32 si stampa il timer che è stato ricevuto precedentemente dal server.
 \pagebreak
-\begin{lstlisting}[caption=Funzione play del server, label=alg:playServer]
-  void play(int clientDesc, char name[]) {
-    int true = 1;
-    int turnoFinito = 0;
-    int turnoGiocatore = turno;
-    int posizione[2];
-    int destinazione[2] = {-1, -1};
-    PlayerStats giocatore = initStats(destinazione, 0, posizione, 0);
-    Obstacles listaOstacoli = NULL;
-    char inputFromClient;
-    if (timer != 0) {
-      inserisciPlayerNellaGrigliaInPosizioneCasuale(
-          grigliaDiGiocoConPacchiSenzaOstacoli, grigliaOstacoliSenzaPacchi,
-          giocatore->position);
-      playerGenerati++;
-    }
-    while (true) {
-      if (clientDisconnesso(clientDesc)) {
-        freeObstacles(listaOstacoli);
-        disconnettiClient(clientDesc);
-        return;
-      }
-      char grigliaTmp[ROWS][COLUMNS];
-      clonaGriglia(grigliaTmp, grigliaDiGiocoConPacchiSenzaOstacoli);
-      mergeGridAndList(grigliaTmp, listaOstacoli);
-      // invia la griglia
-      write(clientDesc, grigliaTmp, sizeof(grigliaTmp));
-      // invia la struttura del player
-      write(clientDesc, giocatore->deploy, sizeof(giocatore->deploy));
-      write(clientDesc, giocatore->position, sizeof(giocatore->position));
-      write(clientDesc, &giocatore->score, sizeof(giocatore->score));
-      write(clientDesc, &giocatore->hasApack, sizeof(giocatore->hasApack));
-      sendTimerValue(clientDesc);
-      // legge l'input
-      if (read(clientDesc, &inputFromClient, sizeof(char)) > 0)
-        numMosse++;
-      if (inputFromClient == 'e' || inputFromClient == 'E') {
-        freeObstacles(listaOstacoli);
-        listaOstacoli = NULL;
-        disconnettiClient(clientDesc);
-      } else if (inputFromClient == 't' || inputFromClient == 'T') {
-        write(clientDesc, &turnoFinito, sizeof(int));
-        sendTimerValue(clientDesc);
-      } else if (inputFromClient == 'l' || inputFromClient == 'L') {
-        write(clientDesc, &turnoFinito, sizeof(int));
-        sendPlayerList(clientDesc);
-      } else if (turnoGiocatore == turno) {
-        write(clientDesc, &turnoFinito, sizeof(int));
-        giocatore =
-            gestisciInput(grigliaDiGiocoConPacchiSenzaOstacoli,
-                          grigliaOstacoliSenzaPacchi, inputFromClient, giocatore,
-                          &listaOstacoli, deployCoords, packsCoords, name);
-      } else {
-        turnoFinito = 1;
-        write(clientDesc, &turnoFinito, sizeof(int));
-        freeObstacles(listaOstacoli);
-        listaOstacoli = NULL;
-        inserisciPlayerNellaGrigliaInPosizioneCasuale(
-            grigliaDiGiocoConPacchiSenzaOstacoli, grigliaOstacoliSenzaPacchi,
-            giocatore->position);
-        giocatore->score = 0;
-        giocatore->hasApack = 0;
-        giocatore->deploy[0] = -1;
-        giocatore->deploy[1] = -1;
-        turnoGiocatore = turno;
-        turnoFinito = 0;
-        playerGenerati++;
-      }
-    }
-  }  
-\end{lstlisting}
+\lstinputlisting[caption={Funzione play del server}, label={alg:playServer}, firstline={187}, lastline={255}]{../server.c}
+
 \pagebreak
-\begin{lstlisting}[caption=Funzione play del client, label=alg:playclient]
-  void play() {
-    PlayerStats giocatore = NULL;
-    int score, deploy[2], position[2], timer;
-    int turnoFinito = 0;
-    int exitFlag = 0, hasApack = 0;
-    while (!exitFlag) {
-      if (serverCaduto())
-        serverCrashHandler();
-      if (read(socketDesc, grigliaDiGioco, sizeof(grigliaDiGioco)) < 1)
-        printf("Impossibile comunicare con il server\n"), exit(-1);
-      if (read(socketDesc, deploy, sizeof(deploy)) < 1)
-        printf("Impossibile comunicare con il server\n"), exit(-1);
-      if (read(socketDesc, position, sizeof(position)) < 1)
-        printf("Impossibile comunicare con il server\n"), exit(-1);
-      if (read(socketDesc, &score, sizeof(score)) < 1)
-        printf("Impossibile comunicare con il server\n"), exit(-1);
-      if (read(socketDesc, &hasApack, sizeof(hasApack)) < 1)
-        printf("Impossibile comunicare con il server\n"), exit(-1);
-      timer = getTimer();
-      giocatore = initStats(deploy, score, position, hasApack);
-      printGrid(grigliaDiGioco, giocatore);
-      char send = getUserInput();
-      write(socketDesc, &send, sizeof(char));
-      read(socketDesc, &turnoFinito, sizeof(turnoFinito));
-      if (turnoFinito) {
-        system("clear");
-        printf("Turno finito\n");
-        sleep(1);
-      } else {
-        if (send == 'e' || send == 'E')
-          printf("Disconnessione in corso...\n"), exit(0);
-        if (send == 't' || send == 'T')
-          printTimer();
-        else if (send == 'l' || send == 'L')
-          printPlayerList();
-      }
-    }
-  }    
-\end{lstlisting}
+\lstinputlisting[caption={Funzione play del client}, label={alg:playclient}, firstline={111}, lastline={148}]{../client.c}
 \appendix
 \section{Codici sorgente}
 Di seguito sono riportati tutti i codici sorgenti integrali del progetto.
 \subsection{Codice sorgente del client}
-\lstinputlisting{../client.c}[caption=Codice sorgente del client]
-
-\subsection{server.c}
-\subsection{boardUtility.c}
-\subsection{boardUtility.h}
-\subsection{lsit.c}
-\subsection{lsit.h}
-\subsection{parser.c}
-\subsection{parser.h}
+\lstinputlisting[caption ={ Codice sorgente del client}]{../client.c}
+\subsection{Codice sorgente del server}
+\lstinputlisting[caption ={Codice sorgente del server} ]{../server.c}
+\subsection{Codice sorgente boardUtility}
+\lstinputlisting[caption ={Codice header utility del gioco 1} ]{../boardUtility.h}
+\lstinputlisting[caption ={Codice sorgente utility del gioco 1} ]{../boardUtility.c}
+\subsection{Codice sorgente list}
+\lstinputlisting[caption ={Codice header utility del gioco 2} ]{../list.h}
+\lstinputlisting[caption ={Codice sorgente utility del gioco 2} ]{../list.c}
+\subsection{Codice sorgente parser}
+\lstinputlisting[caption ={Codice header utility del gioco 3} ]{../parser.h}
+\lstinputlisting[caption ={Codice sorgente utility del gioco 3} ]{../parser.c}
+\pagebreak
 \lstlistoflistings
 
 

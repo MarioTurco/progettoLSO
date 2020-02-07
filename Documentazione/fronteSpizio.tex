@@ -7,6 +7,7 @@
 \usepackage{fancyvrb}
 \usepackage{multicol}
 \usepackage{listings}
+\usepackage{caption}
 \usepackage{xcolor}
 \definecolor{RoyalBlue}{cmyk}{1, 0.50, 0, 0}
 \hypersetup{
@@ -31,7 +32,7 @@
 \renewcommand\lstlistlistingname{Listati}
 \renewcommand\lstlistingname{Listato}
 \def\lstlistingautorefname{List.}
-
+\captionsetup[lstlisting]{font={small,tt}}
 \begin{document} 
 
 \begin{titlepage}
@@ -143,92 +144,24 @@ Una volta effettuata la registrazione dell'utente è possibile effettuare l'acce
 Di seguito verranno illustrate le modalità di comunicazione tra client e server.
 \subsection{Configurazione del server}
 Il socket del server viene configurato con famiglia di protoccoli PF\_NET, con tipo di trasmissione dati SOCK\_STREAM e con protocollo TCP. Mostriamo di seguito il codice sorgente:
-\begin{lstlisting}[caption={Configurazione socket del server}]
-void configuraSocket(struct sockaddr_in mio_indirizzo) {
-  if ((socketDesc = socket(PF_INET, SOCK_STREAM, 0)) < 0) {
-    perror("Impossibile creare socket");
-    exit(-1);
-  }
-  if (setsockopt(socketDesc, SOL_SOCKET, SO_REUSEADDR, &(int){1}, sizeof(int)) < 0)
-    perror("Impossibile impostare il riutilizzo dell'indirizzo ip e della "
-           "porta\n");
-  if ((bind(socketDesc, (struct sockaddr *)&mio_indirizzo,
-            sizeof(mio_indirizzo))) < 0) {
-    perror("Impossibile effettuare bind");
-    exit(-1);
-  }
-}
-\end{lstlisting}
+\lstinputlisting[caption= {Configurazione indirizzo del server}, firstline={117}, lastline={124}]{../server.c}
+\lstinputlisting[caption={Configurazione socket del server}, firstline={400}, lastline={414}]{../server.c}
 È importante notare anche come il server riesca a gestire in modo concorrente più client tramite l'uso di un thread dedicato ad ogni client. 
 Una volta aver configurato il socket, infatti,  il server si mette in ascolto per nuove connessioni in entrata ed ogni volta che
 viene stabilita una nuova connessione viene avviato un thread per gestire tale connessione. Di seguito il relativo codice: 
-\begin{lstlisting}[caption={Procedura di ascolto del server}]
-void startListening()
-{
-    pthread_t tid;
-    int clientDesc;
-    int *puntClientDesc;
-    while (1)
-    {
-      if (listen(socketDesc, 10) < 0)
-        perror("Impossibile mettersi in ascolto"), exit(-1);
-      printf("In ascolto..\n");
-      if ((clientDesc = accept(socketDesc, NULL, NULL)) < 0)
-      {
-        perror("Impossibile effettuare connessione\n");
-        exit(-1);
-      }
-      printf("Nuovo client connesso\n");
-      puntClientDesc = (int *)malloc(sizeof(int));
-      *puntClientDesc = clientDesc;
-      pthread_create(&tid, NULL, gestisci, (void *)puntClientDesc);
-    }
-    close(clientDesc);
-    quitServer();
-}
-\end{lstlisting}
+%97 116
+\lstinputlisting[caption={Procedura di ascolto del server}, firstline={97}, lastline={116}]{../server.c}
+
 In particolare al rigo 19 notiamo la creazione di un nuovo thread per gestire la connessione in entrata a cui passiamo il descrittore del client di cui si deve occupare.
 \pagebreak
 \subsection{Configurazione del client}
 Il cliente invece viene configurato e si connette al server tramite la seguente funzione:
-\begin{lstlisting}[caption={Configurazione e connessione del client}]
-int connettiAlServer(char **argv) {
-    char *indirizzoServer;
-    uint16_t porta = strtoul(argv[2], NULL, 10);
-    indirizzoServer = ipResolver(argv);
-    struct sockaddr_in mio_indirizzo;
-    mio_indirizzo.sin_family = AF_INET;
-    mio_indirizzo.sin_port = htons(porta);
-    inet_aton(indirizzoServer, &mio_indirizzo.sin_addr);
-    if ((socketDesc = socket(PF_INET, SOCK_STREAM, 0)) < 0)
-      perror("Impossibile creare socket"), exit(-1);
-    else
-      printf("Socket creato\n");
-    if (connect(socketDesc, (struct sockaddr *)&mio_indirizzo,
-                sizeof(mio_indirizzo)) < 0)
-      perror("Impossibile connettersi"), exit(-1);
-    else
-      printf("Connesso a %s\n", indirizzoServer);
-    return socketDesc;
-  }
-\end{lstlisting}
+\lstinputlisting[caption={Configurazione e connessione del client}, firstline={65}, lastline={83}]{../client.c}
+
 Si noti come al rigo 9 viene configurato il socket ed al rigo 13 viene invece effettuato il tentativo di connessione al server.\\
 Al rigo 3 invece viene convertita la porta inserita in input (argv$[$2$]$) dal tipo stringa al tipo della porta (uint16\_t ovvero unsigned long integer).\\
 Al rigo 4 notiamo invece la risoluzione dell'url da parte della funzione ipResolver che è riportata di seguito:
-\begin{lstlisting}[caption={Risoluzione url del client}]
-char *ipResolver(char **argv) {
-    char *ipAddress;
-    struct hostent *hp;
-    hp = gethostbyname(argv[1]);
-    if (!hp) {
-            perror("Impossibile risolvere l'indirizzo ip\n");
-            sleep(1);
-            exit(-1);
-        }
-    printf("Address:\t%s\n", inet_ntoa(*(struct in_addr *)hp->h_addr_list[0]));
-    return inet_ntoa(*(struct in_addr *)hp->h_addr_list[0]);
-}
-\end{lstlisting}
+\lstinputlisting[caption={Risoluzione url del client}, firstline={249}, lastline={260}]{../client.c}
 Al rigo 4, tramite l'url o l'indirizzo ip viene riempita la struttura hostent da cui poi possiamo estrarre l'indirizzo ip presente nel campo 
 h\_addr\_list  che, in effetti, è un array che contiene i vari indirizzi ip associati a quell'host.\\
 Infine, al rigo 11 decidiamo di ritoranre soltanto il primo indirizzo convertito in ascii.
@@ -241,51 +174,10 @@ Il comportamento del server e del client è determinato da particolari messaggi 
 il server attenderà un messaggio dal client per poter avviare una delle tre possibili procedure, ovvero login, registrazione ed uscita ( rispettivamente codici: 1,2,3).\\
 Di seguito sono riportate le realtive funzioni di gestione che entrano in esecuzione subito dopo aver stabilito la connessione
 tra client e server.
-\begin{lstlisting}[caption=Prima comunicazione del server, label=alg:serverPreLogin]
-  void *gestisci(void *descriptor) {
-    int bufferReceive[2] = {1};
-    int client_sd = *(int *)descriptor;
-    int continua = 1;
-    char name[MAX_BUF];
-    while (continua) {
-      read(client_sd, bufferReceive, sizeof(bufferReceive));
-      if (bufferReceive[0] == 2)
-        registraClient(client_sd);
-      else if (bufferReceive[0] == 1)
-        if (tryLogin(client_sd, name)) {
-          play(client_sd, name);
-          continua = 0;
-        } else if (bufferReceive[0] == 3)
-          disconnettiClient(client_sd);
-        else {
-          printf("Input invalido, uscita...\n");
-          disconnettiClient(client_sd);
-        }
-    }
-    pthread_exit(0);
-  }
-\end{lstlisting}
+\lstinputlisting[caption={Prima comunicazione del server}, label={alg:serverPreLogin}, firstline={165}, lastline={186}]{../server.c}
 Si noti come il server riceva, al rigo 7, il messaggio codificato da parte del client e metta in esecuzione la funzione corrispondente.
-\begin{lstlisting}[caption=Prima comunicazione del client, label=alg:clientPreLogin]
-  int gestisci() {
-    char choice;
-    while (1) {
-      printMenu();
-      scanf("%c", &choice);
-      fflush(stdin);
-      system("clear");
-      if (choice == '3') {
-        esciDalServer();
-        return (0);
-      } else if (choice == '2') {
-        registrati();
-      } else if (choice == '1') {
-        if (tryLogin())
-          play();
-      } else
-        printf("Input errato, inserire 1,2 o 3\n");
-    }
-  \end{lstlisting}
+\lstinputlisting[caption={Prima comunicazione del client}, firstline={84}, lastline={102}, label={alg:clientPreLogin} ]{../client.c}
+
 \section{Comunicazione durante la partita}
 Una volta effettuato il login, il client potrà iniziare a giocare tramite la funzione play (Vedi \autoref{alg:playServer} e \autoref{alg:playclient})
 che rappresentano il cuore della comunicazione tra client e server.\\
@@ -305,133 +197,29 @@ Dopodichè il thread del server rimane in attesa di ricevere l'input del client 
 \subsection{Funzione core del client}
 Dall'altro lato, la funzione play del client, è stata mantenuta volutamente semplice.
 Lo scopo del client è unicamente quello di ricevere i dati forniti dal server, stampare la mappa di gioco e leggere l'input da inviare al server.
-Unica eccezzione sono il rigo 30 e 32 del client che non richiedono la ricezione di ulteriori dati dal server: al rigo 30 si avvia la procedura di disconnessione del client ed al rigo 32 si stampa il timer che è stato ricevuto precedentemente dal server.
+Unica eccezzione è il rigo 30  del client che non richiede la ricezione di ulteriori dati dal server: al rigo 30, infatti si avvia la procedura di disconnessione del client .
 \pagebreak
-\begin{lstlisting}[caption=Funzione play del server, label=alg:playServer]
-  void play(int clientDesc, char name[]) {
-    int true = 1;
-    int turnoFinito = 0;
-    int turnoGiocatore = turno;
-    int posizione[2];
-    int destinazione[2] = {-1, -1};
-    PlayerStats giocatore = initStats(destinazione, 0, posizione, 0);
-    Obstacles listaOstacoli = NULL;
-    char inputFromClient;
-    if (timer != 0) {
-      inserisciPlayerNellaGrigliaInPosizioneCasuale(
-          grigliaDiGiocoConPacchiSenzaOstacoli, grigliaOstacoliSenzaPacchi,
-          giocatore->position);
-      playerGenerati++;
-    }
-    while (true) {
-      if (clientDisconnesso(clientDesc)) {
-        freeObstacles(listaOstacoli);
-        disconnettiClient(clientDesc);
-        return;
-      }
-      char grigliaTmp[ROWS][COLUMNS];
-      clonaGriglia(grigliaTmp, grigliaDiGiocoConPacchiSenzaOstacoli);
-      mergeGridAndList(grigliaTmp, listaOstacoli);
-      // invia la griglia
-      write(clientDesc, grigliaTmp, sizeof(grigliaTmp));
-      // invia la struttura del player
-      write(clientDesc, giocatore->deploy, sizeof(giocatore->deploy));
-      write(clientDesc, giocatore->position, sizeof(giocatore->position));
-      write(clientDesc, &giocatore->score, sizeof(giocatore->score));
-      write(clientDesc, &giocatore->hasApack, sizeof(giocatore->hasApack));
-      sendTimerValue(clientDesc);
-      // legge l'input
-      if (read(clientDesc, &inputFromClient, sizeof(char)) > 0)
-        numMosse++;
-      if (inputFromClient == 'e' || inputFromClient == 'E') {
-        freeObstacles(listaOstacoli);
-        listaOstacoli = NULL;
-        disconnettiClient(clientDesc);
-      } else if (inputFromClient == 't' || inputFromClient == 'T') {
-        write(clientDesc, &turnoFinito, sizeof(int));
-        sendTimerValue(clientDesc);
-      } else if (inputFromClient == 'l' || inputFromClient == 'L') {
-        write(clientDesc, &turnoFinito, sizeof(int));
-        sendPlayerList(clientDesc);
-      } else if (turnoGiocatore == turno) {
-        write(clientDesc, &turnoFinito, sizeof(int));
-        giocatore =
-            gestisciInput(grigliaDiGiocoConPacchiSenzaOstacoli,
-                          grigliaOstacoliSenzaPacchi, inputFromClient, giocatore,
-                          &listaOstacoli, deployCoords, packsCoords, name);
-      } else {
-        turnoFinito = 1;
-        write(clientDesc, &turnoFinito, sizeof(int));
-        freeObstacles(listaOstacoli);
-        listaOstacoli = NULL;
-        inserisciPlayerNellaGrigliaInPosizioneCasuale(
-            grigliaDiGiocoConPacchiSenzaOstacoli, grigliaOstacoliSenzaPacchi,
-            giocatore->position);
-        giocatore->score = 0;
-        giocatore->hasApack = 0;
-        giocatore->deploy[0] = -1;
-        giocatore->deploy[1] = -1;
-        turnoGiocatore = turno;
-        turnoFinito = 0;
-        playerGenerati++;
-      }
-    }
-  }  
-\end{lstlisting}
+\lstinputlisting[caption={Funzione play del server}, label={alg:playServer}, firstline={187}, lastline={255}]{../server.c}
+
 \pagebreak
-\begin{lstlisting}[caption=Funzione play del client, label=alg:playclient]
-  void play() {
-    PlayerStats giocatore = NULL;
-    int score, deploy[2], position[2], timer;
-    int turnoFinito = 0;
-    int exitFlag = 0, hasApack = 0;
-    while (!exitFlag) {
-      if (serverCaduto())
-        serverCrashHandler();
-      if (read(socketDesc, grigliaDiGioco, sizeof(grigliaDiGioco)) < 1)
-        printf("Impossibile comunicare con il server\n"), exit(-1);
-      if (read(socketDesc, deploy, sizeof(deploy)) < 1)
-        printf("Impossibile comunicare con il server\n"), exit(-1);
-      if (read(socketDesc, position, sizeof(position)) < 1)
-        printf("Impossibile comunicare con il server\n"), exit(-1);
-      if (read(socketDesc, &score, sizeof(score)) < 1)
-        printf("Impossibile comunicare con il server\n"), exit(-1);
-      if (read(socketDesc, &hasApack, sizeof(hasApack)) < 1)
-        printf("Impossibile comunicare con il server\n"), exit(-1);
-      timer = getTimer();
-      giocatore = initStats(deploy, score, position, hasApack);
-      printGrid(grigliaDiGioco, giocatore);
-      char send = getUserInput();
-      write(socketDesc, &send, sizeof(char));
-      read(socketDesc, &turnoFinito, sizeof(turnoFinito));
-      if (turnoFinito) {
-        system("clear");
-        printf("Turno finito\n");
-        sleep(1);
-      } else {
-        if (send == 'e' || send == 'E')
-          printf("Disconnessione in corso...\n"), exit(0);
-        if (send == 't' || send == 'T')
-          printTimer();
-        else if (send == 'l' || send == 'L')
-          printPlayerList();
-      }
-    }
-  }    
-\end{lstlisting}
+\lstinputlisting[caption={Funzione play del client}, label={alg:playclient}, firstline={111}, lastline={148}]{../client.c}
 \appendix
 \section{Codici sorgente}
 Di seguito sono riportati tutti i codici sorgenti integrali del progetto.
 \subsection{Codice sorgente del client}
-\lstinputlisting{../client.c}[caption=Codice sorgente del client]
-
-\subsection{server.c}
-\subsection{boardUtility.c}
-\subsection{boardUtility.h}
-\subsection{lsit.c}
-\subsection{lsit.h}
-\subsection{parser.c}
-\subsection{parser.h}
+\lstinputlisting[caption ={ Codice sorgente del client}]{../client.c}
+\subsection{Codice sorgente del server}
+\lstinputlisting[caption ={Codice sorgente del server} ]{../server.c}
+\subsection{Codice sorgente boardUtility}
+\lstinputlisting[caption ={Codice header utility del gioco 1} ]{../boardUtility.h}
+\lstinputlisting[caption ={Codice sorgente utility del gioco 1} ]{../boardUtility.c}
+\subsection{Codice sorgente list}
+\lstinputlisting[caption ={Codice header utility del gioco 2} ]{../list.h}
+\lstinputlisting[caption ={Codice sorgente utility del gioco 2} ]{../list.c}
+\subsection{Codice sorgente parser}
+\lstinputlisting[caption ={Codice header utility del gioco 3} ]{../parser.h}
+\lstinputlisting[caption ={Codice sorgente utility del gioco 3} ]{../parser.c}
+\pagebreak
 \lstlistoflistings
 
 

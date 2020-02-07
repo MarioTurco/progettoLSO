@@ -12,7 +12,7 @@
 \contentsline {lstlisting}{\numberline {12}Codice sorgente del client}{11}{lstlisting.12}% 
 \contentsline {lstlisting}{\numberline {13}Codice sorgente del server}{15}{lstlisting.13}% 
 \contentsline {lstlisting}{\numberline {14}Codice header utility del gioco 1}{22}{lstlisting.14}% 
-\contentsline {lstlisting}{\numberline {15}Codice sorgente utility del gioco 1}{23}{lstlisting.15}% 
+\contentsline {lstlisting}{\numberline {15}Codice sorgente utility del gioco 1}{24}{lstlisting.15}% 
 \contentsline {lstlisting}{\numberline {16}Codice header utility del gioco 2}{30}{lstlisting.16}% 
 \contentsline {lstlisting}{\numberline {17}Codice sorgente utility del gioco 2}{31}{lstlisting.17}% 
 \contentsline {lstlisting}{\numberline {18}Codice header utility del gioco 3}{32}{lstlisting.18}% 

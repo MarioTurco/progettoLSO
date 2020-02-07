@@ -23,6 +23,8 @@
 \contentsline {paragraph}{}{9}{section*.7}% 
 \contentsline {paragraph}{}{9}{section*.8}% 
 \contentsline {paragraph}{}{10}{section*.9}% 
+\contentsline {subsection}{\numberline {5.2}Gestione del file di Log}{11}{subsection.5.2}% 
+\contentsline {paragraph}{}{11}{section*.10}% 
 \contentsline {section}{\numberline {A}Codici sorgente}{11}{appendix.Alph1}% 
 \contentsline {subsection}{\numberline {A.1}Codice sorgente del client}{11}{subsection.Alph1.1}% 
 \contentsline {subsection}{\numberline {A.2}Codice sorgente del server}{15}{subsection.Alph1.2}% 

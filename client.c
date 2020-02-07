@@ -283,7 +283,6 @@ void serverCrashHandler() {
   exit(0);
 }
 char getUserInput() {
-  fflush(stdin);
   char c;
   c = getchar();
   int daIgnorare;

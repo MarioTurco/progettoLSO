@@ -484,6 +484,8 @@ PlayerStats gestisciC(char grigliaDiGioco[ROWS][COLUMNS], PlayerStats giocatore,
           packsCoords[index]->x = giocatore->position[0];
           packsCoords[index]->y = giocatore->position[1];
           giocatore->hasApack = 0;
+          giocatore->deploy[0] = -1;
+          giocatore->deploy[1] = -1;
         }
       } else
         return giocatore;

@@ -149,7 +149,7 @@ Il socket del server viene configurato con famiglia di protoccoli PF\_NET, con t
 È importante notare anche come il server riesca a gestire in modo concorrente più client tramite l'uso di un thread dedicato ad ogni client. 
 Una volta aver configurato il socket, infatti,  il server si mette in ascolto per nuove connessioni in entrata ed ogni volta che
 viene stabilita una nuova connessione viene avviato un thread per gestire tale connessione. Di seguito il relativo codice: 
-%97 116
+\pagebreak
 \lstinputlisting[caption={Procedura di ascolto del server}, firstline={97}, lastline={131}]{../server.c}
 
 In particolare al rigo 31 notiamo la creazione di un nuovo thread per gestire la connessione in entrata a cui passiamo il descrittore del client di cui si deve occupare.
@@ -218,8 +218,8 @@ Unica eccezzione è il rigo 30  del client che non richiede la ricezione di ulte
 In questa sezione verranno trattati alcuni dettagli implementativi da noi giudicati interessanti in realzione a ciò che è stato studiato durante il corso di sistemi operativi.
 \subsection{Timer}
 \paragraph{}
-Lo svolgimento della partite è legato al timer in quanto ogni round durerà un numero finito di secondi od oppure terminarà prima dello scadere del tempo nel caso in cui
-un client raccoglierà il numero massimo di pacchi.
+Lo svolgimento della partite è legato al timer:  ogni round durerà un numero finito di secondi od oppure terminarà
+quando un client raccoglierà il numero massimo di pacchi.
 \paragraph{}
 Subito dopo aver configurato il socket, il server inizia la procedura di avvio del timer (Vedi \autoref{alg:sorgenteServer} rigo 89 e 144) che farà partire un thread il quale si occuperà
 di decrementare e resettare correttamente il timer (definito come variabile globale del server).
@@ -229,10 +229,10 @@ il thread che esegue la funzione del timer è legato ad un altro thread, ovvero 
 Oltre ad un thread per gestire ogni client abbiamo quindi anche un altro thread che va a gestire il tempo ,
 il quale attraverso un altro thread riesce a controllare la generazione della mappa e degli utenti allo scadere del tempo.
 Si noti anche come, tramite il pthread\_join, il timer attenda la terminazione del secondo thread prima di resettare il timer e ricominciare il contro alla rovescia.
-\footnote{Al rigo 2 c'è anche da giustificare la variabile "cambiato" che non è nient'altro che una flag, la quale imedisce al server di stampare in stdout il valore del timer nel caso in cui esso sia stato appena resettato e non sia ancora iniziato il conto alla rovescia. Ciò evita che, prima che inizi il conto alla rovescia, il server continui a stampare il valore massimo del timer }
+\footnote{Altro dettaglio meno importante, ma comunque degno di nota è il fatto che il timer non inizia il conto alla rovescia
+se non c'è almeno un giocatore loggato, se questo non è stato posizionato sulla mappa e se questo non ha effettuato la prima mossa.
+Al rigo 2 c'è anche da giustificare la variabile "cambiato" che non è nient'altro che un flag, il quale impedisce al server di stampare in stdout il valore del timer nel caso in cui esso sia stato appena resettato e non sia ancora iniziato il conto alla rovescia. Ciò evita che, prima che inizi il conto alla rovescia, il server continui a stampare il valore massimo del timer }
 \paragraph{}
-Altro dettaglio meno importante, ma comunque degno di nota è il fatto che il timer non inizia il conto alla rovescia
-se non c'è almeno un giocatore loggato, se questo è stato posizionato sulla mappa e se questo non ha effettuato la prima mossa.
 
 
 \appendix

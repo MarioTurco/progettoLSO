@@ -17,11 +17,14 @@
 #include <time.h>
 #include <unistd.h>
 
+//struttura di argomenti da mandare al thread che scrive sul file di log
 struct argsToSend {
   char *userName;
   int flag;
 };
+
 typedef struct argsToSend *Args;
+void prepareMessageForLogin(char message[],char username[],char date[]);
 void sendPlayerList(int clientDesc);
 PlayerStats gestisciC(char grigliaDiGioco[ROWS][COLUMNS], PlayerStats giocatore,
                       Point deployCoords[], Point packsCoords[], char name[]);
@@ -32,10 +35,12 @@ PlayerStats gestisciInput(char grigliaDiGioco[ROWS][COLUMNS],
                           char name[]);
 void clonaGriglia(char destinazione[ROWS][COLUMNS], char source[ROWS][COLUMNS]);
 int almenoUnClientConnesso();
+void prepareMessageForConnection(char message[],char ipAddress[],char date[]);
 int valoreTimerValido();
 int almenoUnPlayerGenerato();
 int almenoUnaMossaFatta();
 void sendTimerValue(int clientDesc);
+void putCurrentDateAndTimeInString(char dateAndTime[]);
 void startProceduraGenrazioneMappa();
 void *threadGenerazioneMappa(void *args);
 void *fileWriter(void *);
@@ -52,6 +57,7 @@ struct sockaddr_in configuraIndirizzo();
 void startListening();
 int clientDisconnesso(int clientSocket);
 void play(int clientDesc, char name[]);
+void prepareMessageForPackDelivery(char message[],char username[],char date[]);
 
 char grigliaDiGiocoConPacchiSenzaOstacoli[ROWS][COLUMNS];
 char grigliaOstacoliSenzaPacchi[ROWS][COLUMNS];
@@ -154,6 +160,7 @@ int tryLogin(int clientDesc, char name[]) {
   read(clientDesc, userName, dimName);
   read(clientDesc, password, dimPwd);
   int ret = 0;
+  pthread_mutex_lock(&PlayerMutex);
   if (validateLogin(userName, password, users) &&
       !isAlreadyLogged(onLineUsers, userName)) {
     ret = 1;
@@ -167,7 +174,6 @@ int tryLogin(int clientDesc, char name[]) {
     pthread_t tid;
     pthread_create(&tid, NULL, fileWriter, (void *)args);
     printf("Nuovo client loggato, client loggati : %d\n", numeroClientLoggati);
-    pthread_mutex_lock(&PlayerMutex);
     onLineUsers = addPlayer(onLineUsers, userName, clientDesc);
     pthread_mutex_unlock(&PlayerMutex);
     printPlayers(onLineUsers);
@@ -512,6 +518,34 @@ void sendPlayerList(int clientDesc) {
   }
 }
 
+void prepareMessageForPackDelivery(char message[],char username[],char date[]){
+  strcat(message,"Pack delivered by \"");
+  strcat(message, username);
+  strcat(message,"\" at ");
+  strcat(message, date);
+  strcat(message, "\n");
+}
+
+void prepareMessageForLogin(char message[],char username[],char date[]){
+  strcat(message, username);
+  strcat(message, "\" logged in at ");
+  strcat(message, date);
+  strcat(message, "\n");
+}
+
+void prepareMessageForConnection(char message[],char ipAddress[],char date[]){
+  strcat(message, ipAddress);
+  strcat(message, "\" connected at ");
+  strcat(message, date);
+  strcat(message, "\n");
+}
+
+void putCurrentDateAndTimeInString(char dateAndTime[]){
+  time_t t = time(NULL);
+  struct tm *infoTime = localtime(&t);
+  strftime(dateAndTime, 64, "%X %x", infoTime);
+}
+
 void *fileWriter(void *args) {
   int fDes = open("Log", O_RDWR | O_CREAT | O_APPEND, S_IWUSR | S_IRUSR);
   if (fDes < 0) {
@@ -519,35 +553,23 @@ void *fileWriter(void *args) {
     exit(-1);
   }
   Args info = (Args)args;
-  time_t t = time(NULL);
-  struct tm *infoTime = localtime(&t);
-  char toPrint[64];
-  strftime(toPrint, sizeof(toPrint), "%X %x", infoTime);
+  char dateAndTime[64];
+  putCurrentDateAndTimeInString(dateAndTime);
   if (info->flag == 1) {
-    char message[MAX_BUF] = "Pack delivered by \"";
-    strcat(message, info->userName);
-    char at[] = "\" at ";
-    strcat(message, at);
-    strcat(message, toPrint);
-    strcat(message, "\n");
+    char message[MAX_BUF]="";
+    prepareMessageForPackDelivery(message,info->userName,dateAndTime);
     pthread_mutex_lock(&LogMutex);
     write(fDes, message, strlen(message));
     pthread_mutex_unlock(&LogMutex);
   } else if (info->flag == 0) {
     char message[MAX_BUF] = "\"";
-    strcat(message, info->userName);
-    strcat(message, "\" logged in at ");
-    strcat(message, toPrint);
-    strcat(message, "\n");
+    prepareMessageForLogin(message,info->userName,dateAndTime);
     pthread_mutex_lock(&LogMutex);
     write(fDes, message, strlen(message));
     pthread_mutex_unlock(&LogMutex);
   } else if (info->flag == 2) {
     char message[MAX_BUF] = "\"";
-    strcat(message, info->userName);
-    strcat(message, "\" connected at ");
-    strcat(message, toPrint);
-    strcat(message, "\n");
+    prepareMessageForConnection(message,info->userName,dateAndTime);
     pthread_mutex_lock(&LogMutex);
     write(fDes, message, strlen(message));
     pthread_mutex_unlock(&LogMutex);

@@ -1,30 +1,16 @@
-**Università degli Studi di Napoli\
-** **Federico II\
-**
-
-![image](fiilogo.png){width="36mm"}
-
-**Dipartimento di Ingegneria Elettrica e\
-** **delle Tecnologie dell'Informazione\
-**
+Progetto di sistemi operativi
 
 Corso di Laurea Triennale in Informatica\
-*Classe n. L-31\
-*
-
-*Progetto di sistemi operativi\
-* Traccia A\
-
-2 Professore:\
+Professore:
 Finzi Alberto 
 
-Candidati:\
-Turco Mario\
-Matr. N8600/2503\
-Longobardi Francesco\
-Matr. N8600/2468\
+Candidati:
+Turco Mario
+Matr. N8600/2503
+Longobardi Francesco
+Matr. N8600/2468
 
-Anno Accademico\
+Anno Accademico
 2019/2020
 
 Istruzioni preliminari

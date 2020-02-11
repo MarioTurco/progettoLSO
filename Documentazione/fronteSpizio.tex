@@ -179,11 +179,12 @@ Infine, al rigo 11 ritorniamo il primo indirizzo convertito in Internet dot nota
 \pagebreak
 \subsection{Comunicazione tra client e server}
 La comunicazione tra client e server avviene tramite write e read sul socket.\\
-Il comportamento del server e del client è determinato da particolari messaggi inviati e/o ricevuti che codificano, tramite interi o caratteri, la richiesta da parte del client di usufruire di un determinato servizio e la relativa risposta del server.
+Il comportamento del server e del client è determinato da particolari messaggi inviati e/o ricevuti che codificano, tramite interi o caratteri, la richiesta da parte del client
+ di usufruire di un determinato servizio e la relativa risposta del server.
  \subsubsection{Esempio: la prima comunicazione}
- In particolare, una volta effettuata la connessione,
-il server attenderà un messaggio dal client per poter avviare una delle tre possibili procedure, ovvero login, registrazione ed uscita ( rispettivamente codici: 1,2,3).\\
-Di seguito sono riportate le realtive funzioni di gestione che entrano in esecuzione subito dopo aver stabilito la connessione
+ In particolare, una volta effettuata la connessione,il server attenderà un messaggio dal client per poter avviare 
+ una delle tre possibili procedure, ovvero login, registrazione ed uscita ( rispettivamente codici: 1,2,3).\\
+Di seguito sono riportate le realtive funzioni di gestione le quali vanno in esecuzione subito dopo aver stabilito la connessione
 tra client e server.
 \lstinputlisting[caption={Prima comunicazione del server}, label={alg:serverPreLogin}, firstline={228}, lastline={254}]{../server.c}
 Si noti come il server riceva, al rigo 9, il messaggio codificato da parte del client e metta in esecuzione la funzione corrispondente.
@@ -276,7 +277,7 @@ e, di conseguenza non potranno mai raccogliere lo stesso pacco o depositare due 
 La gestione del login è il quarto ed ultimo dettagli implementativo giusdicato abbastanza interessante poichè
 fa uso della system call system() per utilizzare le chiamate di sistema unix studiate durante la prima parte del corso.
 Di seguito riportiamo il codice e la spiegazione
-\lstinputlisting[caption={"Gestion del login 1"}, firstline={34}, lastline={52}]{../parser.c}
+\lstinputlisting[caption={"Gestione del login 1"}, firstline={34}, lastline={52}]{../parser.c}
 La funzione isRegistered tramite varie concatenazioni produce ed esegue il seguente comando 
 \begin{verbatim}
   cat file | cut -d" " -f1|grep "^name$">tmp
@@ -288,7 +289,7 @@ la dimensione è maggiore di 0 allora significa che è il nome esisteva nella li
 altrimenti significa che il nome non era presente nella lista dei player registrati.
 A questo punto eliminiamo il file temporaneo e restituiamo il valore appropriato.
 \paragraph{}\vspace{0.5mm}
-\lstinputlisting[caption={"Gestion del login 2"}, firstline={53}, lastline={75}]{../parser.c}
+\lstinputlisting[caption={"Gestione del login 2"}, firstline={53}, lastline={75}]{../parser.c}
 La funziona validateLogin invece, tramite concatenazioni successive crea ed esegue il seguente comando:
 \begin{verbatim}
   cat file | grep "^nome password$">tmp

@@ -11,8 +11,8 @@
 \contentsline {lstlisting}{\numberline {11}Generazione nuova mappa e posizione players}{8}{lstlisting.11}% 
 \contentsline {lstlisting}{\numberline {12}Funzione di log}{9}{lstlisting.12}% 
 \contentsline {lstlisting}{\numberline {13}Funzione spostaPlayer}{9}{lstlisting.13}% 
-\contentsline {lstlisting}{\numberline {14}"Gestion del login 1"}{10}{lstlisting.14}% 
-\contentsline {lstlisting}{\numberline {15}"Gestion del login 2"}{10}{lstlisting.15}% 
+\contentsline {lstlisting}{\numberline {14}"Gestione del login 1"}{10}{lstlisting.14}% 
+\contentsline {lstlisting}{\numberline {15}"Gestione del login 2"}{10}{lstlisting.15}% 
 \contentsline {lstlisting}{\numberline {16}Codice sorgente del client}{12}{lstlisting.16}% 
 \contentsline {lstlisting}{\numberline {17}Codice sorgente del server}{15}{lstlisting.17}% 
 \contentsline {lstlisting}{\numberline {18}Codice header utility del gioco 1}{26}{lstlisting.18}% 

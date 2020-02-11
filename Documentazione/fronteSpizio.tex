@@ -170,12 +170,12 @@ Il cliente invece viene configurato e si connette al server tramite la seguente 
 \lstinputlisting[caption={Configurazione e connessione del client}, firstline={65}, lastline={83}]{../client.c}
 
 Si noti come al rigo 9 viene configurato il socket ed al rigo 13 viene invece effettuato il tentativo di connessione al server.\\
-Al rigo 3 invece viene convertita la porta inserita in input (argv$[$2$]$) dal tipo stringa al tipo della porta (uint16\_t ovvero unsigned long integer).\\
+Al rigo 3 invece viene convertita la porta inserita in input (secondo argomento da riga di comando) dal tipo stringa al tipo corretto della porta (uint16\_t, unsigned long int).\\
 Al rigo 4 notiamo invece la risoluzione dell'url da parte della funzione ipResolver che è riportata di seguito:
 \lstinputlisting[caption={Risoluzione url del client}, firstline={250}, lastline={261}]{../client.c}
 Al rigo 4, tramite l'url o l'indirizzo ip viene riempita la struttura hostent da cui poi possiamo estrarre l'indirizzo ip presente nel campo 
 h\_addr\_list  che, in effetti, è un array che contiene i vari indirizzi ip associati a quell'host.\\
-Infine, al rigo 11 decidiamo di ritoranre soltanto il primo indirizzo convertito in Internet dot notation.
+Infine, al rigo 11 ritorniamo il primo indirizzo convertito in Internet dot notation.
 \pagebreak
 \subsection{Comunicazione tra client e server}
 La comunicazione tra client e server avviene tramite write e read sul socket.\\

@@ -202,8 +202,10 @@ La funzione play del server consiste di un ciclo nel quale il server invia al cl
   \item Il player con le relative informazioni (Righi 34 a 37)
   \item Un messaggio che notifica al client se è iniziato un nuovo turno oppure no (Righi 52,57,62,71)
 \end{itemize}
-Dopodichè il thread del server rimane in attesa di ricevere l'input del client per spostare il giocaore sulla mappa tramite la relativa funzione. (Rigo 33) (Vedi \autoref{alg:sorgenteServer} Rigo 430 e \autoref{alg:boardUtility} Rigo 296, 331,367, 405 )
-Oltre questo, la funzione play del server si occupa anche di generare la posizione del player appena entra in partita, generare la nuova posizione  (Righi 56 a 65) quando viene effettuato il cambio di mappa ed inviare il tempo rimanente o la lista degli utente loggati su richiesta del client. 
+Dopodichè il thread del server rimane in attesa di ricevere l'input del client per spostare il giocatore sulla mappa tramite la relativa funzione. (Rigo 33) (Vedi \autoref{alg:sorgenteServer} Rigo 430 e \autoref{alg:boardUtility} Rigo 296, 331,367, 405 )
+Oltre questo, la funzione play del server si occupa anche di generare la posizione del player appena entra in partita,
+ generare la nuova posizione  (Righi 56 a 65) quando viene effettuato il cambio di mappa ed inviare il tempo rimanente 
+ o la lista degli utente loggati al client su sua richiesta. 
 
 \paragraph{}
 È anche importante notare il seguente dettaglio implementativo: la griglia di gioco

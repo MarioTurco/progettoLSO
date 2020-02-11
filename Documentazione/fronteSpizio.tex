@@ -156,9 +156,9 @@ Di seguito verranno illustrate le modalità di comunicazione tra client e server
 Il socket del server viene configurato con famiglia di protoccoli PF\_NET, con tipo di trasmissione dati SOCK\_STREAM e con protocollo TCP. Mostriamo di seguito il codice sorgente:
 \lstinputlisting[caption= {Configurazione indirizzo del server}, firstline={173}, lastline={181}]{../server.c}
 \lstinputlisting[caption={Configurazione socket del server}, firstline={517}, lastline={534}]{../server.c}
-È importante notare anche come il server riesca a gestire in modo concorrente più client tramite l'uso di un thread dedicato ad ogni client. 
-Una volta aver configurato il socket, infatti,  il server si mette in ascolto per nuove connessioni in entrata ed ogni volta che
-viene stabilita una nuova connessione viene avviato un thread per gestire tale connessione. Di seguito il relativo codice: 
+È importante notare anche come il server riesca a gestire in modo concorrente più client tramite l'uso di un thread dedicato ad ogni client connesso. 
+Una volta aver configurato il socket, il server si mette in ascolto per nuove connessioni in entrata ed, ogni volta che
+viene stabilita una nuova connessione, il server avvia un thread per gestire tale connessione. Di seguito il relativo codice: 
 
 \lstinputlisting[caption={Procedura di ascolto del server}, firstline={134}, lastline={172}]{../server.c}
 

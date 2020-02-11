@@ -26,9 +26,9 @@ int colpitoPacco(Point packsCoords[], int posizione[2]) {
 }
 int casellaVuotaOValida(char grigliaDiGioco[ROWS][COLUMNS],
                         char grigliaOstacoli[ROWS][COLUMNS], int posizione[2]) {
-  if (grigliaDiGioco[posizione[0]][posizione[1]] == '-' ||
-      grigliaDiGioco[posizione[0]][posizione[1]] == '_' ||
-      grigliaDiGioco[posizione[0]][posizione[1]] == '$')
+  if (grigliaDiGioco[posizione[0]][posizione[1]] == '-' || // casella vuota
+      grigliaDiGioco[posizione[0]][posizione[1]] == '_' || // punto deploy
+      grigliaDiGioco[posizione[0]][posizione[1]] == '$')   // pacco
     if (grigliaOstacoli[posizione[0]][posizione[1]] == '-' ||
         grigliaOstacoli[posizione[0]][posizione[1]] == '_' ||
         grigliaOstacoli[posizione[0]][posizione[1]] == '$')

@@ -212,9 +212,8 @@ Oltre questo, la funzione play del server si occupa anche di generare la posizio
 è una matrice globale definita nel file del server che contiene tutti i player,
 i punti di raccolta ed i pacchi,  mentre gli ostacoli sono contenuti in una seconda matrice globale del server. 
 Ogni client però deve vedere soltanto gli ostacoli che ha già scoperto, 
-per questo motivo ad ogni client non viene mandata direttamente la matrice di gioco, bensì, dai righi 22 a 24, 
-inizializziamo una nuova matrice temporanea 
-a cui aggiungiamo gli ostacoli già scoperti dal client (rigo 24) prima di mandarla al client stesso.
+per questo motivo ad ogni client viene mandata una copia temporanea della matrice di gioco
+a cui vengono aggiunti gli ostacoli già scoperti dal quello specifico client (dai righi 22 a 24), 
 \\In questo modo ci assicuriamo che ogni client visualizzi soltanto gli ostacoli che ha già scoperto.
 
 

@@ -3,8 +3,8 @@
 #include <stdlib.h>
 #include <time.h>
 #include <unistd.h>
-#define ROWS 10
-#define COLUMNS 30
+#define ROWS 12
+#define COLUMNS 32
 #define numberOfObstacles 35
 #define numberOfPackages 15
 #define TIME_LIMIT_IN_SECONDS 90

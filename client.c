@@ -261,6 +261,7 @@ char *ipResolver(char **argv) {
 void clientCrashHandler() {
   int msg = 3;
   printf("\nChiusura client...\n");
+  write(socketDesc, &msg, sizeof(msg));
   close(socketDesc);
   signal(SIGINT, SIG_IGN);
   signal(SIGQUIT, SIG_IGN);

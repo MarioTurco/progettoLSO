@@ -190,6 +190,7 @@ int tryLogin(int clientDesc, char name[]) {
   printf("Letto tutto\n"); // TODO CANCELLARE
   int ret = 0;
   pthread_mutex_lock(&PlayerMutex);
+  printf("Entrato nel lock\n"); // TODO CANCELARE
   if (validateLogin(userName, password, users) &&
       !isAlreadyLogged(onLineUsers, userName)) {
     ret = 1;

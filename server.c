@@ -352,7 +352,6 @@ void disconnettiClient(int clientDescriptor, PlayerStats giocatore) {
   int msg = 1;
   printf("Client disconnesso (client attualmente loggati: %d)\n",
          numeroClientLoggati);
-  write(clientDescriptor, &msg, sizeof(msg));
   close(clientDescriptor);
 }
 int clientDisconnesso(int clientSocket) {

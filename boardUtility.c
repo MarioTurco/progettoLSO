@@ -120,10 +120,8 @@ void printGrid(char grigliaDaStampare[ROWS][COLUMNS], PlayerStats stats) {
         printf("%c", grigliaDaStampare[i][j]);
     }
     stampaIstruzioni(i);
-    if (i == 9)
-      printf(GREEN_COLOR "\t\t Punteggio: %d" RESET_COLOR, stats->score);
-    printf("\n");
   }
+  printf(GREEN_COLOR "\t\t Punteggio: %d\n" RESET_COLOR, stats->score);
 }
 void stampaIstruzioni(int i) {
   if (i == 0)

@@ -187,6 +187,8 @@ int tryLogin(int clientDesc, char name[]) {
   read(clientDesc, &dimPwd, sizeof(int));
   read(clientDesc, userName, dimName);
   read(clientDesc, password, dimPwd);
+  if (clientDisconnesso(clientDesc))
+    disconnettiClient(clientDesc, NULL);
   printf("Letto tutto\n"); // TODO CANCELLARE
   int ret = 0;
   pthread_mutex_lock(&PlayerMutex);

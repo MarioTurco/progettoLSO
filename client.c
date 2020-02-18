@@ -59,6 +59,7 @@ int main(int argc, char **argv) {
 void esciDalServer() {
   int msg = 3;
   printf("Uscita in corso\n");
+  write(socketDesc, &msg, sizeof(msg));
   close(socketDesc);
 }
 int connettiAlServer(char **argv) {

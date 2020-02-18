@@ -223,7 +223,6 @@ a cui vengono aggiunti gli ostacoli già scoperti dal quello specifico client (d
 Dall'altro lato, la funzione play del client, è stata mantenuta il puù semplice possibile.
 Lo scopo del client è unicamente quello di ricevere dal server la mappa di gioco e le informazioni sul player,
  stampare la mappa di gioco e ed inviare un input al server che rappresenta la volontà del giocatore di muoversi, vedere la lista degli utenti, uscire o stampare il timer.
-Unica eccezzione è il rigo 30  del client che non richiede la ricezione di ulteriori dati dal server: al rigo 23, infatti si avvia la procedura di disconnessione del client (Vedi \autoref{alg:sorgenteClient} rigo 59).
 
 \lstinputlisting[caption={Funzione play del client}, label={alg:playclient}, firstline={111}, lastline={149}]{../client.c}
 \pagebreak

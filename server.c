@@ -230,8 +230,7 @@ void *gestisci(void *descriptor) {
       } else if (bufferReceive[0] == 3)
         disconnettiClient(client_sd, NULL);
       else {
-        printf("Input invalido, uscita...\n");
-        disconnettiClient(client_sd, NULL);
+        printf("Input invalido\n");
       }
   }
   pthread_exit(0);

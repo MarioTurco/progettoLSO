@@ -191,9 +191,7 @@ int tryLogin(int clientDesc, char name[]) {
          dimPwd); // TODO CANCELLARE
   int ret = 0;
   pthread_mutex_lock(&PlayerMutex);
-  printf("Entrato nel lock\n");       // TODO CANCELARE
-  printf("Username: %s\n", userName); // TODO CANCELLARE
-  printf("Password: %s\n", password); // TODO CANCELLARE
+  printf("Entrato nel lock\n"); // TODO CANCELARE
   if (validateLogin(userName, password, users) &&
       !isAlreadyLogged(onLineUsers, userName)) {
     ret = 1;
@@ -210,13 +208,13 @@ int tryLogin(int clientDesc, char name[]) {
     printf("Nuovo client loggato, client loggati : %d\n", numeroClientLoggati);
     onLineUsers = addPlayer(onLineUsers, userName, clientDesc);
     numeroClientLoggati++;
-    pthread_mutex_unlock(&PlayerMutex);
     printPlayers(onLineUsers);
     printf("\n");
   } else {
     printf("Non validato\n");
     write(clientDesc, "n", 1);
   }
+  pthread_mutex_unlock(&PlayerMutex);
   return ret;
 }
 void *gestisci(void *descriptor) {

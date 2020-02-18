@@ -120,7 +120,7 @@ void printGrid(char grigliaDaStampare[ROWS][COLUMNS], PlayerStats stats) {
         printf("%c", grigliaDaStampare[i][j]);
     }
     stampaIstruzioni(i);
-    if (i == 8)
+    if (i == ROWS - 1)
       printf(GREEN_COLOR "\t\t Punteggio: %d" RESET_COLOR, stats->score);
     printf("\n");
   }
@@ -142,6 +142,19 @@ void stampaIstruzioni(int i) {
     printf("\t Inviare 'a'/'d' per andare a dx/sx");
   if (i == 7)
     printf("\t Inviare 'l' per la lista degli utenti ");
+  if (i == 8)
+    printf("\t Pacchi-> $ | Ostacoli -> O | Punti deposito -> _ ");
+  if (i == 9) {
+    printf("\t Player ->");
+    printf(RED_COLOR " P" RESET_COLOR);
+    printf(" | Altri Player -> P");
+    printf(" | Pacco preso -> ");
+    printf(GREEN_COLOR "P" RESET_COLOR);
+  }
+  if (i == 10) {
+    printf("\t Punto deposito designato -> ");
+    printf(RED_COLOR "_" RESET_COLOR);
+  }
 }
 // aggiunge alla griglia gli ostacoli visti fino ad ora dal client
 void mergeGridAndList(char grid[ROWS][COLUMNS], Obstacles top) {

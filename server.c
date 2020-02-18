@@ -187,12 +187,15 @@ int tryLogin(int clientDesc, char name[]) {
   read(clientDesc, &dimPwd, sizeof(int));
   read(clientDesc, userName, dimName);
   read(clientDesc, password, dimPwd);
+  printf("Letto tutto\n"); // TODO CANCELLARE
   int ret = 0;
   pthread_mutex_lock(&PlayerMutex);
   if (validateLogin(userName, password, users) &&
       !isAlreadyLogged(onLineUsers, userName)) {
     ret = 1;
+    printf("Entrato nell'if\n"); // TODO CANCELLARE
     write(clientDesc, "y", 1);
+    printf("Inviato messaggio 'y'\n"); // TODO CANCELLARE
     strcpy(name, userName);
     Args args = (Args)malloc(sizeof(struct argsToSend));
     args->userName = (char *)calloc(MAX_BUF, 1);

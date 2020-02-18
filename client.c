@@ -203,7 +203,8 @@ int tryLogin() {
     return 0;
   char validate;
   int ret;
-  read(socketDesc, &validate, 1);
+  if (read(socketDesc, &validate, 1) < 0)
+    serverCrashHandler();
   if (validate == 'y') {
     ret = 1;
     printf("Accesso effettuato\n");

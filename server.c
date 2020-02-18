@@ -449,6 +449,9 @@ void *timer(void *args) {
       startProceduraGenrazioneMappa();
       pthread_join(tidGeneratoreMappa, NULL);
       turno++;
+      pthread_mutex_lock(&ScoreMassimoMutex);
+      scoreMassimo = 0;
+      pthread_mutex_unlock(&ScoreMassimoMutex);
       timerCount = TIME_LIMIT_IN_SECONDS;
     }
   }

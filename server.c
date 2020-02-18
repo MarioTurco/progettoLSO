@@ -323,10 +323,9 @@ void clonaGriglia(char destinazione[ROWS][COLUMNS],
   }
 }
 void clientCrashHandler(int signalNum) {
-  char msg[0];
+  /*char msg[0];
   int socketClientCrashato;
   int flag = 1;
-  // TODO eliminare la lista degli ostacoli dell'utente
   if (onLineUsers != NULL) {
     Players prec = onLineUsers;
     Players top = prec->next;
@@ -334,12 +333,12 @@ void clientCrashHandler(int signalNum) {
       if (write(top->sockDes, msg, sizeof(msg)) < 0) {
         socketClientCrashato = top->sockDes;
         printPlayers(onLineUsers);
-        disconnettiClient(socketClientCrashato, NULL);
+        // disconnettiClient(socketClientCrashato, NULL);
         flag = 0;
       }
       top = top->next;
     }
-  }
+  }*/
   signal(SIGPIPE, SIG_IGN);
 }
 void disconnettiClient(int clientDescriptor, PlayerStats giocatore) {

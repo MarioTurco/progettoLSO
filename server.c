@@ -56,6 +56,7 @@ PlayerStats gestisciS(char grigliaDiGioco[ROWS][COLUMNS],
                       char grigliaOstacoli[ROWS][COLUMNS],
                       PlayerStats giocatore, Obstacles *listaOstacoli,
                       Point deployCoords[], Point packsCoords[]);
+void rimuoviPlayerDallaMappa(PlayerStats);
 int almenoUnPlayerGenerato();
 int almenoUnaMossaFatta();
 void sendTimerValue(int clientDesc);
@@ -64,7 +65,7 @@ void startProceduraGenrazioneMappa();
 void *threadGenerazioneMappa(void *args);
 void *fileWriter(void *);
 int tryLogin(int clientDesc, char name[]);
-void disconnettiClient(int);
+void disconnettiClient(int clientDescriptor, PlayerStats giocatore);
 int registraClient(int);
 void *timer(void *args);
 void *gestisci(void *descriptor);
@@ -224,10 +225,10 @@ void *gestisci(void *descriptor) {
         play(client_sd, name);
         continua = 0;
       } else if (bufferReceive[0] == 3)
-        disconnettiClient(client_sd);
+        disconnettiClient(client_sd, NULL);
       else {
         printf("Input invalido, uscita...\n");
-        disconnettiClient(client_sd);
+        disconnettiClient(client_sd, NULL);
       }
   }
   pthread_exit(0);
@@ -252,7 +253,7 @@ void play(int clientDesc, char name[]) {
   while (true) {
     if (clientDisconnesso(clientDesc)) {
       freeObstacles(listaOstacoli);
-      disconnettiClient(clientDesc);
+      disconnettiClient(clientDesc, giocatore);
       return;
     }
     char grigliaTmp[ROWS][COLUMNS];
@@ -274,7 +275,7 @@ void play(int clientDesc, char name[]) {
     if (inputFromClient == 'e' || inputFromClient == 'E') {
       freeObstacles(listaOstacoli);
       listaOstacoli = NULL;
-      disconnettiClient(clientDesc);
+      disconnettiClient(clientDesc, giocatore);
     } else if (inputFromClient == 't' || inputFromClient == 'T') {
       write(clientDesc, &turnoFinito, sizeof(int));
       sendTimerValue(clientDesc);
@@ -324,6 +325,7 @@ void clientCrashHandler(int signalNum) {
   char msg[0];
   int socketClientCrashato;
   int flag = 1;
+  fprintf(stdout, "Crash\n");
   // TODO eliminare la lista degli ostacoli dell'utente
   if (onLineUsers != NULL) {
     Players prec = onLineUsers;
@@ -332,7 +334,7 @@ void clientCrashHandler(int signalNum) {
       if (write(top->sockDes, msg, sizeof(msg)) < 0) {
         socketClientCrashato = top->sockDes;
         printPlayers(onLineUsers);
-        disconnettiClient(socketClientCrashato);
+        // disconnettiClient(socketClientCrashato, NULL);
         flag = 0;
       }
       top = top->next;
@@ -340,10 +342,11 @@ void clientCrashHandler(int signalNum) {
   }
   signal(SIGPIPE, SIG_IGN);
 }
-void disconnettiClient(int clientDescriptor) {
+void disconnettiClient(int clientDescriptor, PlayerStats giocatore) {
   pthread_mutex_lock(&PlayerMutex);
   if (numeroClientLoggati > 0)
     numeroClientLoggati--;
+  rimuoviPlayerDallaMappa(giocatore);
   onLineUsers = removePlayer(onLineUsers, clientDescriptor);
   pthread_mutex_unlock(&PlayerMutex);
   printPlayers(onLineUsers);
@@ -354,6 +357,8 @@ void disconnettiClient(int clientDescriptor) {
   close(clientDescriptor);
 }
 int clientDisconnesso(int clientSocket) {
+
+  fprintf(stdout, "Ping\n");
   char msg[1] = {'u'}; // UP?
   if (write(clientSocket, msg, sizeof(msg)) < 0)
     return 1;
@@ -804,4 +809,17 @@ int logDellaConnessione(int flag) {
   if (flag == 2)
     return 1;
   return 0;
+}
+
+void rimuoviPlayerDallaMappa(PlayerStats giocatore) {
+  if (giocatore == NULL)
+    return;
+  int x = giocatore->position[1];
+  int y = giocatore->position[0];
+  if (eraUnPacco(giocatore->position, packsCoords))
+    grigliaDiGiocoConPacchiSenzaOstacoli[y][x] = '$';
+  else if (eraUnPuntoDepo(giocatore->position, deployCoords))
+    grigliaDiGiocoConPacchiSenzaOstacoli[y][x] = '_';
+  else
+    grigliaDiGiocoConPacchiSenzaOstacoli[y][x] = '-';
 }

@@ -8,7 +8,7 @@
 #define numberOfObstacles 35
 #define numberOfPackages 15
 #define TIME_LIMIT_IN_SECONDS 90
-#define packageLimitNumber 4
+#define packageLimitNumber 40
 #define MATRIX_DIMENSION sizeof(char) * ROWS *COLUMNS
 #define RED_COLOR "\x1b[31m"
 #define GREEN_COLOR "\x1b[32m"

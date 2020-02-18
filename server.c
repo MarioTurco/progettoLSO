@@ -223,15 +223,16 @@ void *gestisci(void *descriptor) {
     read(client_sd, bufferReceive, sizeof(bufferReceive));
     if (bufferReceive[0] == 2)
       registraClient(client_sd);
-    else if (bufferReceive[0] == 1)
+    else if (bufferReceive[0] == 1) {
       if (tryLogin(client_sd, name)) {
         play(client_sd, name);
         continua = 0;
-      } else if (bufferReceive[0] == 3)
-        disconnettiClient(client_sd, NULL);
-      else {
-        printf("Input invalido\n");
       }
+    } else if (bufferReceive[0] == 3)
+      disconnettiClient(client_sd, NULL);
+    else {
+      printf("Input invalido\n");
+    }
   }
   pthread_exit(0);
 }

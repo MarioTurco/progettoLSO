@@ -279,10 +279,7 @@ void serverCrashHandler() {
   exit(0);
 }
 char getUserInput() {
-  char c;
-  c = getchar();
-  int daIgnorare;
-  while ((daIgnorare = getchar()) != '\n' && daIgnorare != EOF) {
-  }
-  return c;
+  char line[MAX_BUF];
+  fgets(line, sizeof(line), stdin);
+  return line[0];
 }

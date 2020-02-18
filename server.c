@@ -187,17 +187,12 @@ int tryLogin(int clientDesc, char name[]) {
   read(clientDesc, &dimPwd, sizeof(int));
   read(clientDesc, userName, dimName);
   read(clientDesc, password, dimPwd);
-  printf("Letto %s(%d) %s(%d)\n", userName, dimName, password,
-         dimPwd); // TODO CANCELLARE
   int ret = 0;
   pthread_mutex_lock(&PlayerMutex);
-  printf("Entrato nel lock\n"); // TODO CANCELARE
   if (validateLogin(userName, password, users) &&
       !isAlreadyLogged(onLineUsers, userName)) {
     ret = 1;
-    printf("Entrato nell'if\n"); // TODO CANCELLARE
     write(clientDesc, "y", 1);
-    printf("Inviato messaggio 'y'\n"); // TODO CANCELLARE
     strcpy(name, userName);
     Args args = (Args)malloc(sizeof(struct argsToSend));
     args->userName = (char *)calloc(MAX_BUF, 1);
@@ -208,13 +203,13 @@ int tryLogin(int clientDesc, char name[]) {
     printf("Nuovo client loggato, client loggati : %d\n", numeroClientLoggati);
     onLineUsers = addPlayer(onLineUsers, userName, clientDesc);
     numeroClientLoggati++;
+    pthread_mutex_unlock(&PlayerMutex);
     printPlayers(onLineUsers);
     printf("\n");
   } else {
     printf("Non validato\n");
     write(clientDesc, "n", 1);
   }
-  pthread_mutex_unlock(&PlayerMutex);
   return ret;
 }
 void *gestisci(void *descriptor) {
@@ -331,7 +326,6 @@ void clientCrashHandler(int signalNum) {
   char msg[0];
   int socketClientCrashato;
   int flag = 1;
-  fprintf(stdout, "Crash\n");
   // TODO eliminare la lista degli ostacoli dell'utente
   if (onLineUsers != NULL) {
     Players prec = onLineUsers;
@@ -340,7 +334,7 @@ void clientCrashHandler(int signalNum) {
       if (write(top->sockDes, msg, sizeof(msg)) < 0) {
         socketClientCrashato = top->sockDes;
         printPlayers(onLineUsers);
-        // disconnettiClient(socketClientCrashato, NULL);
+        disconnettiClient(socketClientCrashato, NULL);
         flag = 0;
       }
       top = top->next;

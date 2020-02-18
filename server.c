@@ -117,7 +117,7 @@ int main(int argc, char **argv) {
   users = argv[1];
   struct sockaddr_in mio_indirizzo = configuraIndirizzo();
   configuraSocket(mio_indirizzo);
-  signal(SIGPIPE, clientCrashHandler);
+  signal(SIGPIPE, SIG_IGN);
   signal(SIGINT, quitServer);
   signal(SIGHUP, quitServer);
   startTimer();

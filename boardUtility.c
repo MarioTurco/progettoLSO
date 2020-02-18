@@ -142,6 +142,9 @@ void stampaIstruzioni(int i) {
     printf("\t Inviare 'a'/'d' per andare a dx/sx");
   if (i == 7)
     printf("\t Inviare 'l' per la lista degli utenti ");
+  if (i == 8)
+    printf("Una volta raccolto un pacco\n la sua posizione di deposito\n sara' "
+           "colorata di rosso\n");
 }
 // aggiunge alla griglia gli ostacoli visti fino ad ora dal client
 void mergeGridAndList(char grid[ROWS][COLUMNS], Obstacles top) {

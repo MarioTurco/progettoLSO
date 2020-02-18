@@ -200,9 +200,9 @@ int tryLogin(int clientDesc, char name[]) {
     args->flag = 0;
     pthread_t tid;
     pthread_create(&tid, NULL, fileWriter, (void *)args);
+    numeroClientLoggati++;
     printf("Nuovo client loggato, client loggati : %d\n", numeroClientLoggati);
     onLineUsers = addPlayer(onLineUsers, userName, clientDesc);
-    numeroClientLoggati++;
     printPlayers(onLineUsers);
     printf("\n");
   } else {

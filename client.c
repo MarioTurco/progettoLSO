@@ -191,7 +191,7 @@ int tryLogin() {
   scanf(" %s", username);
   printf("\nInserisci password(MAX 20 caratteri):");
   scanf(" %s", password);
-  printf("Username: %s(%d), Pass: %s(%d)\n", username, strlen(username),
+  printf("Username: %s(%ld), Pass: %s(%ld)\n", username, strlen(username),
          password, strlen(password));
   int dimUname = strlen(username), dimPwd = strlen(password);
   if (write(socketDesc, &dimUname, sizeof(dimUname)) < 0)

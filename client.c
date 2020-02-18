@@ -191,8 +191,6 @@ int tryLogin() {
   scanf(" %s", username);
   printf("\nInserisci password(MAX 20 caratteri):");
   scanf(" %s", password);
-  printf("Username: %s(%ld), Pass: %s(%ld)\n", username, strlen(username),
-         password, strlen(password));
   int dimUname = strlen(username), dimPwd = strlen(password);
   if (write(socketDesc, &dimUname, sizeof(dimUname)) < 0)
     serverCrashHandler();
@@ -206,7 +204,6 @@ int tryLogin() {
   int ret;
   if (read(socketDesc, &validate, 1) < 0)
     serverCrashHandler();
-  printf("%c\n", validate);
   if (validate == 'y') {
     ret = 1;
     printf("Accesso effettuato\n");

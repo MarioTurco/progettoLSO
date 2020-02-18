@@ -203,17 +203,14 @@ int tryLogin() {
     return 0;
   char validate;
   int ret;
-  if (!serverCaduto()) {
-
-    if (read(socketDesc, &validate, 1) < 0)
-      serverCrashHandler();
-    if (validate == 'y') {
-      ret = 1;
-      printf("Accesso effettuato\n");
-    } else if (validate == 'n') {
-      printf("Credenziali Errate o Login già effettuato\n");
-      ret = 0;
-    }
+  if (read(socketDesc, &validate, 1) < 0)
+    serverCrashHandler();
+  if (validate == 'y') {
+    ret = 1;
+    printf("Accesso effettuato\n");
+  } else if (validate == 'n') {
+    printf("Credenziali Errate o Login già effettuato\n");
+    ret = 0;
   }
   sleep(1);
   return ret;

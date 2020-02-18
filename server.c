@@ -356,8 +356,6 @@ void disconnettiClient(int clientDescriptor, PlayerStats giocatore) {
   close(clientDescriptor);
 }
 int clientDisconnesso(int clientSocket) {
-
-  fprintf(stdout, "Ping\n");
   char msg[1] = {'u'}; // UP?
   if (write(clientSocket, msg, sizeof(msg)) < 0)
     return 1;

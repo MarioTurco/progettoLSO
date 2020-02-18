@@ -226,9 +226,10 @@ void *gestisci(void *descriptor) {
         play(client_sd, name);
         continua = 0;
       }
-    } else if (bufferReceive[0] == 3)
+    } else if (bufferReceive[0] == 3) {
       disconnettiClient(client_sd, NULL);
-    else {
+      continua = 0;
+    } else {
       printf("Input invalido\n");
     }
   }

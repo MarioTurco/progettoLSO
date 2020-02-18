@@ -187,7 +187,8 @@ int tryLogin(int clientDesc, char name[]) {
   read(clientDesc, &dimPwd, sizeof(int));
   read(clientDesc, userName, dimName);
   read(clientDesc, password, dimPwd);
-  printf("Letto tutto\n"); // TODO CANCELLARE
+  printf("Letto %s(%d) %s(%d)\n", userName, dimName, password,
+         dimPwd); // TODO CANCELLARE
   int ret = 0;
   pthread_mutex_lock(&PlayerMutex);
   printf("Entrato nel lock\n"); // TODO CANCELARE

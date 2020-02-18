@@ -203,13 +203,13 @@ int tryLogin(int clientDesc, char name[]) {
     printf("Nuovo client loggato, client loggati : %d\n", numeroClientLoggati);
     onLineUsers = addPlayer(onLineUsers, userName, clientDesc);
     numeroClientLoggati++;
-    pthread_mutex_unlock(&PlayerMutex);
     printPlayers(onLineUsers);
     printf("\n");
   } else {
     printf("Non validato\n");
     write(clientDesc, "n", 1);
   }
+  pthread_mutex_unlock(&PlayerMutex);
   return ret;
 }
 void *gestisci(void *descriptor) {

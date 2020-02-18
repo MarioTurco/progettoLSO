@@ -85,8 +85,7 @@ int gestisci() {
   char choice;
   while (1) {
     printMenu();
-    scanf("%c", &choice);
-    fflush(stdin);
+    choice = getUserInput();
     system("clear");
     if (choice == '3') {
       esciDalServer();

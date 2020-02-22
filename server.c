@@ -208,6 +208,7 @@ int tryLogin(int clientDesc, char name[]) {
   } else {
     printf("Non validato\n");
     write(clientDesc, "n", 1);
+    ret = 0;
   }
   pthread_mutex_unlock(&PlayerMutex);
   return ret;
@@ -218,7 +219,10 @@ void *gestisci(void *descriptor) {
   int continua = 1;
   char name[MAX_BUF];
   while (continua) {
-    read(client_sd, bufferReceive, sizeof(bufferReceive));
+    if (read(client_sd, bufferReceive, sizeof(bufferReceive)) < 1) {
+      continua = 0;
+      break;
+    }
     if (bufferReceive[0] == 2)
       registraClient(client_sd);
     else if (bufferReceive[0] == 1) {

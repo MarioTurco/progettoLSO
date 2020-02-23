@@ -10,6 +10,7 @@
 \usepackage{multicol}
 \usepackage{listings}
 \usepackage{caption}
+\usepackage{pdfpages}
 \usepackage{geometry}
 \usepackage{graphicx}
 \graphicspath{ {./immagini/} }
@@ -125,6 +126,9 @@
 \tableofcontents
 \clearpage\null\newpage
 \pagenumbering{arabic}
+\section{Traccia} 
+\includegraphics[width=\textwidth]{traccia.pdf}
+\pagebreak
 \section{Istruzioni preliminari}
 \subsection{Modalità di compilazione}
 \paragraph{}
@@ -173,6 +177,10 @@ verranno mostrate sia la mappa sia le istruzioni di gioco.\\
   \includegraphics[width=\textwidth]{clientConsegnato}
   \caption{Una volta consegnato il pacco, la P tornerà rossa ed il punteggio verrà incrementato. Da notare alcuni ostacoli scoperti marcati con una 'O'.}
 \end{figure}
+\paragraph{}
+Lo scopo del gioco è quello di raccogliere il numero massimo di pacchi prima dello scadere del tempo.
+Il server comunicherà agli utenti l'inizio di un nuovo turno allo scadere del tempo oppure quando un
+utente avrà consegnato il numero massimo di pacchi.
 
 
 

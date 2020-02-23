@@ -147,6 +147,7 @@ void startListening() {
       perror("Impossibile ottenere l'indirizzo del client");
       exit(-1);
     }
+    //Estrapolazione indirizzo ip del client
     char clientAddr[20];
     strcpy(clientAddr, inet_ntoa(address.sin_addr));
     Args args = (Args)malloc(sizeof(struct argsToSend));
@@ -154,10 +155,12 @@ void startListening() {
     strcpy(args->userName, clientAddr);
     args->flag = 2;
     pthread_t tid;
+    //avvio thread di scrittura dell'indirizzo sul file di Log
     pthread_create(&tid, NULL, fileWriter, (void *)args);
 
     puntClientDesc = (int *)malloc(sizeof(int));
     *puntClientDesc = clientDesc;
+    //avvio del thread di gestione del client
     pthread_create(&tid, NULL, gestisci, (void *)puntClientDesc);
   }
   close(clientDesc);

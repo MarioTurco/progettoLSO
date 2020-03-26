@@ -73,7 +73,7 @@ void quitServer();
 void clientCrashHandler(int signalNum);
 void startTimer();
 void configuraSocket(struct sockaddr_in mio_indirizzo);
-struct sockaddr_in configuraIndirizzo();
+struct sockaddr_in configuraIndirizzo(int);
 void startListening();
 int clientDisconnesso(int clientSocket);
 void play(int clientDesc, char name[]);
@@ -94,6 +94,7 @@ pthread_t tidGeneratoreMappa;
 int socketDesc;
 Players onLineUsers = NULL; // protetto
 char *users;
+int port;
 int scoreMassimo = 0; // mutex
 int numMosse = 0;     // mutex
 Point deployCoords[numberOfPackages];
@@ -107,15 +108,16 @@ pthread_mutex_t ScoreMassimoMutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t numMosseMutex = PTHREAD_MUTEX_INITIALIZER;
 
 int main(int argc, char **argv) {
-  if (argc != 2) {
-    printf("Wrong parameters number(Usage: ./server usersFile)\n");
+  if (argc != 3) {
+    printf("Wrong parameters number(Usage: ./server usersFile port)\n");
     exit(-1);
   } else if (strcmp(argv[1], "Log") == 0) {
     printf("Cannot use the Log file as a UserList \n");
     exit(-1);
   }
   users = argv[1];
-  struct sockaddr_in mio_indirizzo = configuraIndirizzo();
+  port = argv[2]
+  struct sockaddr_in mio_indirizzo = configuraIndirizzo(port);
   configuraSocket(mio_indirizzo);
   signal(SIGPIPE, SIG_IGN);
   signal(SIGINT, quitServer);
@@ -169,7 +171,7 @@ void startListening() {
 struct sockaddr_in configuraIndirizzo() {
   struct sockaddr_in mio_indirizzo;
   mio_indirizzo.sin_family = AF_INET;
-  mio_indirizzo.sin_port = htons(5200);
+  mio_indirizzo.sin_port = htons(port);
   mio_indirizzo.sin_addr.s_addr = htonl(INADDR_ANY);
   printf("Indirizzo socket configurato\n");
   return mio_indirizzo;

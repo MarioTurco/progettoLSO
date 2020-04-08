@@ -144,10 +144,11 @@ In alternativa è possibile compilare manualemente il client ed il server con i 
 \paragraph{}
 Una volta compilato il progetto è possibile avviare il server digitando da console il seguente comando
 \begin{verbatim}
-    ./server users
+    ./server users porta
 \end{verbatim}
-L'identificativo \textit{users} ri riferisce al nome del file sul quale sarà salvata la lista degli utenti e delle loro credenziali.\\
+L'identificativo \textit{users} si riferisce al nome del file sul quale sarà salvata la lista degli utenti e delle loro credenziali.\\
 È possibile scegliere un nome a piacimento per il file purchè esso sia diverso da \textit{Log}.\\
+L'identificativo \textit{porta} si riferisce alla porta che vogliamo usare per il server.
 \begin{figure}[H]
   \includegraphics[width=\textwidth]{Server}
   \caption{Menù del Server}
@@ -191,13 +192,13 @@ utente avrà consegnato il numero massimo di pacchi.
 Di seguito verranno illustrate le modalità di comunicazione tra client e server.
 \subsection{Configurazione del server}
 Il socket del server viene configurato con famiglia di protoccoli PF\_NET, con tipo di trasmissione dati SOCK\_STREAM e con protocollo TCP. Mostriamo di seguito il codice sorgente:
-\lstinputlisting[caption= {Configurazione indirizzo del server}, firstline={169}, lastline={176}]{../server.c}
-\lstinputlisting[caption={Configurazione socket del server}, firstline={451}, lastline={465}]{../server.c}
+\lstinputlisting[caption= {Configurazione indirizzo del server}, firstline={171}, lastline={178}]{../server.c}
+\lstinputlisting[caption={Configurazione socket del server}, firstline={453}, lastline={467}]{../server.c}
 È importante notare anche come il server riesca a gestire in modo concorrente più client tramite l'uso di un thread dedicato ad ogni client connesso. 
 Una volta aver configurato il socket, il server si mette in ascolto per nuove connessioni in entrata ed, ogni volta che
 viene stabilita una nuova connessione, il server avvia un thread per gestire tale connessione. Di seguito il relativo codice: 
 
-\lstinputlisting[caption={Procedura di ascolto del server}, firstline={131}, lastline={168}]{../server.c}
+\lstinputlisting[caption={Procedura di ascolto del server}, firstline={132}, lastline={170}]{../server.c}
 
 In particolare al rigo 34 notiamo la creazione di un nuovo thread per gestire la connessione in entrata a cui passiamo il descrittore del client di cui si deve occupare.
 
@@ -223,7 +224,7 @@ Il comportamento del server e del client è determinato da particolari messaggi 
  una delle tre possibili procedure, ovvero login, registrazione ed uscita ( rispettivamente codici: 1,2,3).\\
 Di seguito sono riportate le realtive funzioni di gestione le quali vanno in esecuzione subito dopo aver stabilito la connessione
 tra client e server.
-\lstinputlisting[caption={Prima comunicazione del server}, label={alg:serverPreLogin}, firstline={219}, lastline={244}]{../server.c}
+\lstinputlisting[caption={Prima comunicazione del server}, label={alg:serverPreLogin}, firstline={221}, lastline={246}]{../server.c}
 Si noti come il server riceva, al rigo 7, il messaggio codificato da parte del client e metta in esecuzione la funzione corrispondente.
 \lstinputlisting[caption={Prima comunicazione del client}, firstline={84}, lastline={101}, label={alg:clientPreLogin} ]{../client.c}
 \pagebreak
@@ -254,7 +255,7 @@ a cui vengono aggiunti gli ostacoli già scoperti dal quello specifico client (d
 \\In questo modo ci assicuriamo che ogni client visualizzi soltanto gli ostacoli che ha già scoperto.
 
 
-\lstinputlisting[caption={Funzione play del server}, label={alg:playServer}, firstline={245}, lastline={319}]{../server.c}
+\lstinputlisting[caption={Funzione play del server}, label={alg:playServer}, firstline={247}, lastline={321}]{../server.c}
 
 \subsection{Funzione core del client}
 Dall'altro lato, la funzione play del client, è stata mantenuta il puù semplice possibile.
@@ -272,7 +273,7 @@ quando un client raccoglierà il numero massimo di pacchi.
 \paragraph{}
 Subito dopo aver configurato il socket, il server inizia la procedura di avvio del timer che farà partire un thread il quale si occuperà
 di decrementare e resettare correttamente il timer (definito come variabile globale del server).
-\lstinputlisting[caption={Funzione di gestione del timer}, firstline={416}, lastline={449}]{../server.c}
+\lstinputlisting[caption={Funzione di gestione del timer}, firstline={418}, lastline={452}]{../server.c}
 Analizzando il codice della funzione di modifica del timer si può notare un dettaglio abbastanza interessante: 
 il thread che esegue la funzione del timer è legato ad un altro thread, ovvero quello della generazione di una nuova mappa.
 Oltre ad un thread per gestire ogni client abbiamo quindi anche un altro thread che va a gestire il tempo ,
@@ -283,7 +284,7 @@ se non c'è almeno un giocatore loggato, se questo non è stato posizionato sull
 Al rigo 6 c'è anche da giustificare la variabile "cambiato" che non è nient'altro che un flag, il quale impedisce al server di stampare in stdout il valore del timer nel caso in cui esso sia stato appena resettato e non sia ancora iniziato il conto alla rovescia. Ciò evita che, prima che inizi il conto alla rovescia, il server continui a stampare il valore massimo del timer }
 \paragraph{}
 Per completezza si riporta anche la funzionione iniziale del thread di generazione mappa
-\lstinputlisting[caption={Generazione nuova mappa e posizione players}, firstline={384}, lastline={395}]{../server.c}
+\lstinputlisting[caption={Generazione nuova mappa e posizione players}, firstline={386}, lastline={397}]{../server.c}
 
 \subsection{Gestione del file di Log}
 \paragraph{}
@@ -291,7 +292,7 @@ Una delle funzionalità del server è quella di creare un file di log con varie 
 Riteniamo l'implmentazione di questa funzione piuttosto interessante poichè, oltre ad essere una funzione gestita tramite un thread, fa uso sia di molte chiamate di sistema studiate durante il corso 
 ed utilizza anche il mutex per risolvere eventuali race condition.
 Riportiamo di seguito il codice:
-\lstinputlisting[caption={Funzione di log}, firstline={587}, lastline={618}]{../server.c}
+\lstinputlisting[caption={Funzione di log}, firstline={589}, lastline={620}]{../server.c}
 \paragraph{}
 Analizzando il codice si può notare l'uso open per aprire in append o, in caso di assenza del file, di creare
 il file di log ed i vari write per scrivere sul suddetto file; possiamo anche notare come la sezione critica, ovvero 
@@ -301,7 +302,7 @@ la scrittura su uno stesso file da parte di più thread, è gestita tramite un m
 La mappa di gioco è la stessa per tutti i player e c'è il rischio che lo spostamento dei player e/o la raccolta ed il deposito di pacchi possano provocare problemi
 a causa della race condition che si viene a creare tra i thread. Tutto ciò è stato risolto con una serie di semplici accorgimenti implementativi.
 Il primo accorgimento, e forse anche il più importante, è la funzione spostaPlayer mostrata qui di seguito.
-\lstinputlisting[caption={Funzione spostaPlayer}, firstline={620}, lastline={633}]{../server.c}
+\lstinputlisting[caption={Funzione spostaPlayer}, firstline={622}, lastline={635}]{../server.c}
 Questa funzione rappresenta l'unico punto del programma che effettivamente modifica la matrice di gioco in seguito ad una richiesta di un client.
 È possibile notare come l'intera funzione sia racchiusa in un mutex in modo da evitare che contemporaneamente più thread modifichino la mappa di gioco e 
 quindi evita che due player si trovino nella stessa poszione.
